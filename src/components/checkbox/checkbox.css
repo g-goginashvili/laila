@@ -1,0 +1,97 @@
+@import "../../styles/typography-system.css";
+@import "../../styles/color-system.css";
+
+.check-box-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.check-box {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.check-box-input {
+    appearance: none;
+    position: relative;
+
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+
+    margin: 0;
+    border-radius: 4px;
+    border: 1px solid var(--border-default);
+    background-color: var(--surface-sunken);
+
+    cursor: pointer;
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+
+    transition: background-color 0.2s ease-out, border-color 0.2s ease-out, outline-color 0.2s ease-out;
+}
+
+.check-box-input::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 6px;
+    width: 5px;
+    height: 9px;
+
+    border: solid var(--text-on-inverse);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) scale(0);
+    transition: transform 0.15s ease-out;
+}
+
+.check-box-input:hover:not(:disabled) {
+    border-color: var(--primary-hover);
+}
+
+.check-box-input:checked {
+    background-color: var(--primary-default);
+    border-color: var(--primary-default);
+}
+
+.check-box-input:checked::after {
+    transform: rotate(45deg) scale(1);
+}
+
+.check-box-input:focus-visible {
+    outline-color: var(--info-60);
+}
+
+.check-box-input:disabled {
+    cursor: not-allowed;
+    background-color: var(--disabled-bg);
+    border-color: var(--disabled-border);
+}
+
+.check-box-input:disabled::after {
+    border-color: var(--disabled-text);
+}
+
+.check-box-label {
+    cursor: pointer;
+}
+
+.check-box:has(.check-box-input:disabled) .check-box-label {
+    cursor: not-allowed;
+    color: var(--disabled-text);
+}
+
+.check-box-helper-reserved {
+    min-height: calc(var(--body-small-line-height) + 4px);
+}
+
+.check-box-helper-text-field {
+    padding-top: 4px;
+    padding-left: 28px;
+}
+
+.check-box-error-state .check-box-input {
+    border-color: var(--text-error);
+}

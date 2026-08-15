@@ -1,0 +1,77 @@
+@import "../../styles/typography-system.css";
+@import "../../styles/color-system.css";
+
+.text-input-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.text-input-field {
+    position: relative;
+}
+
+.text-input-label {
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    transition: top 0.3s ease-out,
+        transform 0.3s ease-out,
+        font-size 0.3s ease-out,
+        color 0.3s ease-out;
+}
+
+.text-input-element {
+    width: 100%;
+
+    padding: 16px;
+    border-radius: 4px;
+    border: 1px solid var(--border-default);
+    background-color: var(--surface-sunken);
+
+    color: var(--text-primary);
+    font-size: var(--body-large-size);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--body-large-tracking);
+
+    outline: 2px solid transparent;
+    outline-offset: 1px;
+
+    transition: outline 0.2s ease, border-color 0.2s ease-out;
+}
+
+.text-input-element::placeholder {
+    color: transparent;
+}
+
+.text-input-element:focus {
+    outline: 2px solid var(--info-60);
+    border-color: var(--surface-sunken);
+}
+
+.text-input-element:focus::placeholder {
+    color: var(--text-muted);
+}
+
+.text-input-block:has(.text-input-element:focus) .text-input-label,
+.text-input-block:has(.text-input-element:not(:placeholder-shown)) .text-input-label {
+    top: calc(var(--label-medium-size) / 2);
+    left: 18px;
+    transform: translateY(0);
+    color: var(--primary-default);
+    font-size: var(--label-medium-size);
+    line-height: var(--label-medium-size);
+    letter-spacing: var(--label-medium-tracking);
+}
+
+.text-input-helper-text-field {
+    min-height: calc(var(--body-small-line-height) + 4px);
+    padding-top: 4px;
+    padding-left: 8px;
+}
+
+.text-input-error-state {
+    outline-color: var(--text-error);
+    border-color: var(--surface-sunken);
+}
