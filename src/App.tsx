@@ -1,10 +1,11 @@
-import Typography from "./components/typography/typography";
+import SnackBarContextProvider from "./components/snack-bar/snack-bar-context-provider";
+import { LoginPage } from "./pages/login-page/login-page";
 
 function App() {
   return (
-    <>
-      <Typography variant="display" color="heading" >Genesis</Typography>
-    </>
+    <SnackBarContextProvider>
+      <LoginPage />
+    </SnackBarContextProvider>
   );
 }
 

@@ -1,0 +1,58 @@
+@import "../../styles/color-system.css";
+
+.login-page {
+  min-height: 100dvh;
+  display: flex;
+}
+
+.text-section,
+.login-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.text-section {
+  background-color: var(--surface-primary-container);
+  flex: 1 1 40%;
+  padding: 64px;
+}
+
+.text-section-div {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 500px;
+  color: var(--primary-20);
+}
+
+.login-section {
+  flex: 1 1 60%;
+  padding: 64px;
+  background-color: var(--surface-base);
+  justify-content: center;
+  align-items: center;
+}
+
+.login-section-div {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 32px;
+  border-radius: 24px;
+  box-shadow: 0px 0px 10px var(--neutral-90);
+  justify-content: flex-start;
+  background-color: var(--surface-raised);
+  width: 512px;
+}
+
+.buttons-div {
+  display: flex;
+  gap: 8px;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.create-account-button {
+  align-self: center;
+}

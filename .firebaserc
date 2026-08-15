@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "summit-laila"
+  },
+  "targets": {
+    "summit-laila": {
+      "hosting": {
+        "laila": [
+          "laila"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
