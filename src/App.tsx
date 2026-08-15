@@ -1,6 +1,8 @@
+import Typography from "./components/typography/typography";
+
 function App() {
   return (
-    <>Genesis</>
+    <Typography variant="display" color="heading" >Genesis</Typography>
   );
 }
 

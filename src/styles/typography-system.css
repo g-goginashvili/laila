@@ -1,0 +1,72 @@
+:root {
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+
+  --display-large-size: 57px;
+  --display-large-line-height: 64px;
+  --display-large-tracking: -0.25px;
+
+  --display-medium-size: 45px;
+  --display-medium-line-height: 52px;
+  --display-medium-tracking: 0px;
+
+  --display-small-size: 36px;
+  --display-small-line-height: 44px;
+  --display-small-tracking: 0px;
+
+  --headline-large-size: 32px;
+  --headline-large-line-height: 40px;
+  --headline-large-tracking: 0px;
+
+  --headline-medium-size: 28px;
+  --headline-medium-line-height: 36px;
+  --headline-medium-tracking: 0px;
+
+  --headline-small-size: 24px;
+  --headline-small-line-height: 32px;
+  --headline-small-tracking: 0px;
+
+  --title-large-size: 22px;
+  --title-large-line-height: 28px;
+  --title-large-tracking: 0px;
+
+  --title-medium-size: 16px;
+  --title-medium-line-height: 24px;
+  --title-medium-tracking: 0.15px;
+
+  --title-small-size: 14px;
+  --title-small-line-height: 20px;
+  --title-small-tracking: 0.1px;
+
+  --body-large-size: 16px;
+  --body-large-line-height: 24px;
+  --body-large-tracking: 0.5px;
+
+  --body-medium-size: 14px;
+  --body-medium-line-height: 20px;
+  --body-medium-tracking: 0.25px;
+
+  --body-small-size: 12px;
+  --body-small-line-height: 16px;
+  --body-small-tracking: 0.4px;
+
+  --label-large-size: 14px;
+  --label-large-line-height: 20px;
+  --label-large-tracking: 0.1px;
+
+  --label-medium-size: 12px;
+  --label-medium-line-height: 16px;
+  --label-medium-tracking: 0.5px;
+
+  --label-small-size: 11px;
+  --label-small-line-height: 16px;
+  --label-small-tracking: 0.5px;
+}

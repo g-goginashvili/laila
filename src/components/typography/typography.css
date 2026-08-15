@@ -1,0 +1,189 @@
+@import "../../styles/color-system.css";
+@import "../../styles/typography-system.css";
+
+.typography-display-large-baseline,
+.typography-display-medium-baseline,
+.typography-display-small-baseline,
+.typography-headline-large-baseline,
+.typography-headline-medium-baseline,
+.typography-headline-small-baseline,
+.typography-title-large-baseline,
+.typography-body-large-baseline,
+.typography-body-medium-baseline,
+.typography-body-small-baseline {
+    font-weight: var(--font-weight-regular);
+}
+
+.typography-title-medium-baseline,
+.typography-title-small-baseline,
+.typography-label-large-baseline,
+.typography-label-medium-baseline,
+.typography-label-small-baseline,
+.typography-display-large-emphasis,
+.typography-display-medium-emphasis,
+.typography-display-small-emphasis,
+.typography-headline-large-emphasis,
+.typography-headline-medium-emphasis,
+.typography-headline-small-emphasis,
+.typography-title-large-emphasis,
+.typography-body-large-emphasis,
+.typography-body-medium-emphasis,
+.typography-body-small-emphasis {
+    font-weight: var(--font-weight-medium);
+}
+
+.typography-title-medium-emphasis,
+.typography-title-small-emphasis,
+.typography-label-large-emphasis,
+.typography-label-medium-emphasis,
+.typography-label-small-emphasis {
+    font-weight: var(--font-weight-bold);
+}
+
+
+.typography-display-large {
+    font-size: var(--display-large-size);
+    line-height: var(--display-large-line-height);
+    letter-spacing: var(--display-large-tracking);
+}
+
+.typography-display-medium {
+    font-size: var(--display-medium-size);
+    line-height: var(--display-medium-line-height);
+    letter-spacing: var(--display-medium-tracking);
+}
+
+.typography-display-small {
+    font-size: var(--display-small-size);
+    line-height: var(--display-small-line-height);
+    letter-spacing: var(--display-small-tracking);
+}
+
+.typography-headline-large {
+    font-size: var(--headline-large-size);
+    line-height: var(--headline-large-line-height);
+    letter-spacing: var(--headline-large-tracking);
+}
+
+.typography-headline-medium {
+    font-size: var(--headline-medium-size);
+    line-height: var(--headline-medium-line-height);
+    letter-spacing: var(--headline-medium-tracking);
+}
+
+.typography-headline-small {
+    font-size: var(--headline-small-size);
+    line-height: var(--headline-small-line-height);
+    letter-spacing: var(--headline-small-tracking);
+}
+
+.typography-title-large {
+    font-size: var(--title-large-size);
+    line-height: var(--title-large-line-height);
+    letter-spacing: var(--title-large-tracking);
+}
+
+.typography-title-medium {
+    font-size: var(--title-medium-size);
+    line-height: var(--title-medium-line-height);
+    letter-spacing: var(--title-medium-tracking);
+}
+
+.typography-title-small {
+    font-size: var(--title-small-size);
+    line-height: var(--title-small-line-height);
+    letter-spacing: var(--title-small-tracking);
+}
+
+.typography-body-large {
+    font-size: var(--body-large-size);
+    line-height: var(--body-large-line-height);
+    letter-spacing: var(--body-large-tracking);
+}
+
+.typography-body-medium {
+    font-size: var(--body-medium-size);
+    line-height: var(--body-medium-line-height);
+    letter-spacing: var(--body-medium-tracking);
+}
+
+.typography-body-small {
+    font-size: var(--body-small-size);
+    line-height: var(--body-small-line-height);
+    letter-spacing: var(--body-small-tracking);
+}
+
+.typography-label-large {
+    font-size: var(--label-large-size);
+    line-height: var(--label-large-line-height);
+    letter-spacing: var(--label-large-tracking);
+}
+
+.typography-label-medium {
+    font-size: var(--label-medium-size);
+    line-height: var(--label-medium-line-height);
+    letter-spacing: var(--label-medium-tracking);
+}
+
+.typography-label-small {
+    font-size: var(--label-small-size);
+    line-height: var(--label-small-line-height);
+    letter-spacing: var(--label-small-tracking);
+}
+
+
+.typography-primary {
+    color: var(--text-primary);
+}
+
+.typography-secondary {
+    color: var(--text-secondary);
+}
+
+.typography-muted {
+    color: var(--text-muted);
+}
+
+.typography-disabled {
+    color: var(--text-disabled);
+}
+
+.typography-heading {
+    color: var(--text-heading);
+}
+
+.typography-on-primary {
+    color: var(--text-on-primary);
+}
+
+.typography-on-inverse {
+    color: var(--text-on-inverse);
+}
+
+.typography-link {
+    color: var(--text-link);
+}
+
+.typography-link:hover {
+    color: var(--text-link-hover);
+}
+
+.typography-success {
+    color: var(--text-success);
+}
+
+.typography-warning {
+    color: var(--text-warning);
+}
+
+.typography-error {
+    color: var(--text-error);
+}
+
+.typography-info {
+    color: var(--text-info);
+}
+
+.typography-inherit {
+    color: inherit;
+}
