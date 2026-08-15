@@ -6,7 +6,7 @@ import SnackBar from "../../components/snack-bar/snack-bar";
 import Typography from "../../components/typography/typography";
 import "./login-page.css";
 import * as Yup from 'yup';
-// import useLoginPageController from "./use-login-page-controller";
+import useLoginPageController from "./use-login-page-controller";
 import { useState } from "react";
 
 const LoginSchema = Yup.object().shape({
@@ -15,7 +15,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 export const LoginPage = () => {
-    // const { handleSignIn } = useLoginPageController();
+    const { handleSignIn } = useLoginPageController();
     const [isRegistering, setIsRegistering] = useState<boolean>(false);
 
     return (
@@ -79,7 +79,7 @@ export const LoginPage = () => {
                             { name: "email", type: "email", label: "Email" },
                             { name: "password", type: "password", label: "Password", helperText: "Password must be 8 characters" }
                         ]}
-                        onSubmit={() => { }}
+                        onSubmit={handleSignIn}
                     />
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <CheckBox
