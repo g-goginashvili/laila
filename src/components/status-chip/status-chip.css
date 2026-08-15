@@ -1,0 +1,62 @@
+@import "../../styles/color-system.css";
+
+.status-chip {
+    border-radius: 999px;
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    padding: 4px 12px;
+    align-items: center;
+    align-self: flex-start;
+}
+
+.status-chip-success {
+    background-color: var(--success-90);
+    color: var(--success-30)
+}
+
+.status-chip-warning {
+    background-color: var(--warning-90);
+    color: var(--warning-30)
+}
+
+.status-chip-error {
+    background-color: var(--error-90);
+    color: var(--error-30)
+}
+
+.status-chip-info {
+    background-color: var(--info-90);
+    color: var(--info-30)
+}
+
+.status-chip-neutral {
+    background-color: var(--neutral-90);
+    color: var(--neutral-30)
+}
+
+.status-chip-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+}
+
+.status-chip-dot-success {
+    background-color: var(--success-40);
+}
+
+.status-chip-dot-warning {
+    background-color: var(--warning-40);
+}
+
+.status-chip-dot-error {
+    background-color: var(--error-40);
+}
+
+.status-chip-dot-info {
+    background-color: var(--info-40);
+}
+
+.status-chip-dot-neutral {
+    background-color: var(--neutral-40);
+}

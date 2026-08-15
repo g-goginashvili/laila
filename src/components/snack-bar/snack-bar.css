@@ -1,0 +1,96 @@
+@import "../../styles/color-system.css";
+
+.snack-bar {
+    border-radius: 14px;
+    display: flex;
+    gap: 8px;
+    padding: 14px 16px;
+    align-items: flex-start;
+    width: 475px;
+}
+
+.snack-bar button {
+    align-self: center;
+}
+
+.snack-bar p {
+    width: 100%;
+}
+
+.snack-bar-success {
+    background-color: var(--success-90);
+    border: 2px solid var(--success-90);
+    color: var(--success-30);
+}
+
+.snack-bar-border-success {
+    border: 2px solid var(--success-30);
+}
+
+.snack-bar-warning {
+    background-color: var(--warning-90);
+    border: 2px solid var(--warning-90);
+    color: var(--warning-30);
+}
+
+.snack-bar-border-warning {
+    border: 2px solid var(--warning-30);
+}
+
+.snack-bar-error {
+    background-color: var(--error-90);
+    border: 2px solid var(--error-90);
+    color: var(--error-30);
+}
+
+.snack-bar-border-error {
+    border: 2px solid var(--error-30);
+}
+
+.snack-bar-info {
+    background-color: var(--info-90);
+    border: 2px solid var(--info-90);
+    color: var(--info-30);
+}
+
+.snack-bar-border-info {
+    border: 2px solid var(--info-30);
+}
+
+.snack-bar-neutral {
+    background-color: var(--neutral-90);
+    border: 2px solid var(--neutral-90);
+    color: var(--neutral-30);
+}
+
+.snack-bar-border-neutral {
+    border: 2px solid var(--neutral-30);
+}
+
+.snack-bar-dot {
+    width: 8px;
+    height: 8px;
+    margin-top: 5px;
+    flex-shrink: 0;
+    border-radius: 999px;
+}
+
+.snack-bar-dot-success {
+    background-color: var(--success-40);
+}
+
+.snack-bar-dot-warning {
+    background-color: var(--warning-40);
+}
+
+.snack-bar-dot-error {
+    background-color: var(--error-40);
+}
+
+.snack-bar-dot-info {
+    background-color: var(--info-40);
+}
+
+.snack-bar-dot-neutral {
+    background-color: var(--neutral-40);
+}
