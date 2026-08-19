@@ -1,5 +1,33 @@
 .custom-form-fields-div {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 8px;
+}
+
+.custom-form-fields-div-inline {
+    flex-wrap: nowrap;
+}
+
+.custom-form-fields-div-inline .input-width-modifier {
+    flex: 1 1 0;
+}
+
+.input-width-modifier-full {
+    flex-basis: 100%;
+}
+
+.input-width-modifier-half {
+    flex-basis: calc(50% - 4px);
+}
+
+.input-width-modifier-third {
+    flex-basis: calc(33.333% - 5.33px);
+}
+
+.input-width-modifier-quarter {
+    flex-basis: calc(25% - 6px);
+}
+
+.input-width-modifier-auto {
+    flex: 0 1 auto;
 }

@@ -10,6 +10,7 @@ type InputFieldType = {
     label?: string;
     placeholder?: string;
     helperText?: string;
+    width?: "full" | "half" | "third" | "quarter" | "auto";
 };
 
 type CustomFormPropType = {
@@ -17,6 +18,7 @@ type CustomFormPropType = {
     initialValues: Record<string, string>;
     validationSchema: AnySchema;
     inputFields: InputFieldType[];
+    layout?: "wrap" | "inline";
     onSubmit: (values: Record<string, string>, formikHelpers: FormikHelpers<Record<string, string>>) => void;
 };
 
@@ -25,6 +27,7 @@ const CustomForm = ({
     initialValues,
     validationSchema,
     inputFields,
+    layout = "wrap",
     onSubmit,
 }: CustomFormPropType) => {
     return (
@@ -42,26 +45,32 @@ const CustomForm = ({
                 handleSubmit,
             }) => (
                 <form id={formName} onSubmit={handleSubmit}>
-                    <div className="custom-form-fields-div" >
+                    <div className={
+                        `custom-form-fields-div ${layout === "inline" ? "custom-form-fields-div-inline" : ""}`
+                    }>
                         {inputFields.map(value =>
-                            <TextInput
+                            <div
+                                className={`input-width-modifier input-width-modifier-${value.width ?? "full"}`}
                                 key={`text-input-${value.type}-${value.name}`}
-                                type={value.type}
-                                name={value.name}
-                                label={value.label}
-                                placeholder={value.placeholder}
-                                value={values[value.name]}
-                                helperText={value.helperText}
-                                errorText={touched[value.name] ? errors[value.name] : undefined}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
+                            >
+                                <TextInput
+                                    type={value.type}
+                                    name={value.name}
+                                    label={value.label}
+                                    placeholder={value.placeholder}
+                                    value={values[value.name]}
+                                    helperText={value.helperText}
+                                    errorText={touched[value.name] ? errors[value.name] : undefined}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                            </div>
                         )}
                     </div>
                 </form>
             )}
         </Formik>
     )
-}
+};
 
 export default CustomForm;

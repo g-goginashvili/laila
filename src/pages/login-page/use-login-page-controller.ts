@@ -4,9 +4,51 @@ import type { FormikHelpers } from "formik";
 import { useSnackBar } from "../../components/snack-bar/snack-bar-context";
 import { FirebaseError } from "firebase/app";
 
-const useLoginPageController = () => {
+const FirebaseErrorsMap: Record<string, string> = {
+    "auth/user-not-found": "Unable to authorize an user.",
+    "auth/email-already-in-use": "Email address is already in use."
+};
+
+const useAuthorizationPageController = () => {
 
     const { addSnackBar } = useSnackBar();
+
+    const handleSignUp = async (
+        values: Record<string, string>,
+        formikHelpers: FormikHelpers<Record<string, string>>
+    ) => {
+        try {
+            addSnackBar("sign up success");
+
+            await fetch("https://core.gviano.com/api/auth/admin-sign-up",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        name: values.name,
+                        surname: values.surname,
+                        email: values.email,
+                        phoneNumber: values.phoneNumber,
+                        orgName: values.orgName,
+                        address: values.address,
+                        password: values.password,
+                    })
+                }
+            );
+
+            formikHelpers.resetForm();
+            addSnackBar("Success");
+
+        } catch (error) {
+            if (error instanceof FirebaseError && Boolean(FirebaseErrorsMap[error.code])) {
+                addSnackBar(FirebaseErrorsMap[error.code], { variant: "error" });
+            } else {
+                addSnackBar("Behold An Unknown Error", { variant: "error" });
+            }
+        }
+    };
 
     const handleSignIn = async (
         values: Record<string, string>,
@@ -14,13 +56,11 @@ const useLoginPageController = () => {
     ) => {
         try {
             await signInWithEmailAndPassword(firebaseAuth, values.email, values.password)
-        } catch (error) {
-            const firebaseErrors: Record<string, string> = {
-                "auth/user-not-found": "Unable to authorize an user."
-            };
+            addSnackBar("Signed in.");
 
-            if (error instanceof FirebaseError && Boolean(firebaseErrors[error.code])) {
-                addSnackBar(firebaseErrors[error.code], { variant: "error" });
+        } catch (error) {
+            if (error instanceof FirebaseError && Boolean(FirebaseErrorsMap[error.code])) {
+                addSnackBar(FirebaseErrorsMap[error.code], { variant: "error" });
             } else {
                 addSnackBar("Behold An Unknown Error", { variant: "error" });
 
@@ -31,8 +71,9 @@ const useLoginPageController = () => {
     };
 
     return {
+        handleSignUp,
         handleSignIn
     };
 };
 
-export default useLoginPageController;
+export default useAuthorizationPageController;

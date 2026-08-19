@@ -6,16 +6,31 @@ import SnackBar from "../../components/snack-bar/snack-bar";
 import Typography from "../../components/typography/typography";
 import "./login-page.css";
 import * as Yup from 'yup';
-import useLoginPageController from "./use-login-page-controller";
+import useAuthorizationPageController from "./use-login-page-controller";
 import { useState } from "react";
 
-const LoginSchema = Yup.object().shape({
+const SignInSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string().required("Required"),
 });
 
-export const LoginPage = () => {
-    const { handleSignIn } = useLoginPageController();
+const SignUpSchema = Yup.object().shape({
+    name: Yup.string().required("Required"),
+    surname: Yup.string().required("Required"),
+    email: Yup.string().email("Invalid email").required("Required"),
+    phoneNumber: Yup.string().required("Required"),
+    orgName: Yup.string().required("Required"),
+    address: Yup.string().required("Required"),
+    numberOfStores: Yup.string().required("Required"),
+    password: Yup.string().required("Required"),
+});
+
+export const AuthorizationPage = () => {
+    const {
+        handleSignUp,
+        handleSignIn
+    } = useAuthorizationPageController();
+
     const [isRegistering, setIsRegistering] = useState<boolean>(false);
 
     return (
@@ -68,19 +83,52 @@ export const LoginPage = () => {
                             )}
                         </Typography>
                     </div>
-                    <CustomForm
-                        formName="loginCustomForm"
-                        initialValues={{
-                            email: "",
-                            password: "",
-                        }}
-                        validationSchema={LoginSchema}
-                        inputFields={[
-                            { name: "email", type: "email", label: "Email" },
-                            { name: "password", type: "password", label: "Password", helperText: "Password must be 8 characters" }
-                        ]}
-                        onSubmit={handleSignIn}
-                    />
+                    {!isRegistering ?
+                        <CustomForm
+                            key="signInCustomForm"
+                            formName="signInCustomForm"
+                            initialValues={{
+                                email: "",
+                                password: "",
+                            }}
+                            validationSchema={SignInSchema}
+                            inputFields={[
+                                { name: "email", type: "email", label: "Email" },
+                                { name: "password", type: "password", label: "Password", helperText: "Password must be 8 characters" }
+                            ]}
+                            onSubmit={handleSignIn}
+                        /> :
+                        <CustomForm
+                            key="signUpCustomForm"
+                            formName="signUpCustomForm"
+                            initialValues={{
+                                name: "",
+                                surname: "",
+                                email: "",
+                                phoneNumber: "",
+                                orgName: "",
+                                address: "",
+                                numberOfStores: "Single",
+                                password: "",
+                            }}
+                            validationSchema={SignUpSchema}
+                            inputFields={[
+                                { name: "name", type: "text", label: "Name", width: "half" },
+                                { name: "surname", type: "text", label: "Surname", width: "half" },
+                                { name: "phoneNumber", type: "text", label: "Phone Number", width: "half" },
+                                { name: "email", type: "email", label: "Email", width: "half" },
+                                { name: "orgName", type: "text", label: "Organisation", width: "half" },
+                                { name: "numberOfStores", type: "text", label: "Number of Stores", width: "half" },
+                                { name: "address", type: "text", label: "Address" },
+                                { name: "password", type: "password", label: "Password", helperText: "Password must be 8 characters" }
+                            ]}
+                            onSubmit={isRegistering ?
+                                (values, formikHelpers) => {
+                                    handleSignUp(values, formikHelpers);
+                                    setIsRegistering(prev => !prev)
+                                } : handleSignIn}
+                        />
+                    }
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                         <CheckBox
                             name="Gocha"
@@ -89,7 +137,7 @@ export const LoginPage = () => {
                         {!isRegistering && <CustomButton variant="text">Forgot password ?</CustomButton>}
                     </div>
                     <div className="buttons-div">
-                        <CustomButton isFitContent={false} type="submit" form="loginCustomForm">
+                        <CustomButton isFitContent={false} type="submit" form={isRegistering ? "signUpCustomForm" : "signInCustomForm"}>
                             {isRegistering ? "Create" : "Sign in"}
                         </CustomButton>
                         <CustomButton
