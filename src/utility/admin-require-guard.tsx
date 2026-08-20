@@ -12,12 +12,12 @@ const AdminRequireGuard = () => {
     const role = useAuth((state) => state.role);
     const user = useAuth((state) => state.user);
 
+    const { addSnackBar } = useSnackBar();
+    const navigate = useNavigate();
+
     if (status === "initializing") return <div>Loading…</div>;
     if (status === "unauthenticated") return <Navigate to="/admin-auth" replace />;
     if (role !== "admin") return <Navigate to="/" replace />;
-
-    const { addSnackBar } = useSnackBar();
-    const navigate = useNavigate();
 
     const handleSendVerification = async () => {
         user && await sendEmailVerification(user);
