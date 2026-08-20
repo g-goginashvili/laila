@@ -1,40 +1,30 @@
+import "./admin-auth-page.css";
+
 import StatusChip from "../../components/status-chip/status-chip";
 import CustomButton from "../../components/custom-button/custom-button";
 import CheckBox from "../../components/checkbox/checkbox";
 import CustomForm from "../../components/custom-form/custom-form";
 import SnackBar from "../../components/snack-bar/snack-bar";
 import Typography from "../../components/typography/typography";
-import "./login-page.css";
-import * as Yup from 'yup';
-import useAuthorizationPageController from "./use-login-page-controller";
-import { useState } from "react";
+import useAdminAuthPageController from "./use-admin-auth-page-controller";
+import { signInInitialValues, signInInputFields, SignInSchema, signUpInitialValues, signUpInputFields, SignUpSchema } from "./admin-auth-page-formik-controller";
+import ForgotPasswordModal from "./admin-auth-page-forgot-password";
 
-const SignInSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().required("Required"),
-});
-
-const SignUpSchema = Yup.object().shape({
-    name: Yup.string().required("Required"),
-    surname: Yup.string().required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
-    phoneNumber: Yup.string().required("Required"),
-    orgName: Yup.string().required("Required"),
-    address: Yup.string().required("Required"),
-    numberOfStores: Yup.string().required("Required"),
-    password: Yup.string().required("Required"),
-});
-
-export const AuthorizationPage = () => {
+export const AdminAuthPage = () => {
     const {
+        isForgotPassword,
+        isRegistering,
+        setIsRegistering,
         handleSignUp,
-        handleSignIn
-    } = useAuthorizationPageController();
-
-    const [isRegistering, setIsRegistering] = useState<boolean>(false);
+        handleSignIn,
+        handlePasswordResetModal,
+    } = useAdminAuthPageController();
 
     return (
         <main className="login-page">
+
+            {isForgotPassword && <ForgotPasswordModal handleClose={handlePasswordResetModal} />}
+
             <section className="text-section">
                 <div className="text-section-div">
                     <StatusChip variant="success" textValue="Reservations pouring in" />
@@ -62,6 +52,7 @@ export const AuthorizationPage = () => {
                     />
                 </div>
             </section>
+
             <section className="login-section">
                 <div className="login-section-div">
                     <div className="login-section-header">
@@ -87,41 +78,17 @@ export const AuthorizationPage = () => {
                         <CustomForm
                             key="signInCustomForm"
                             formName="signInCustomForm"
-                            initialValues={{
-                                email: "",
-                                password: "",
-                            }}
+                            initialValues={signInInitialValues}
                             validationSchema={SignInSchema}
-                            inputFields={[
-                                { name: "email", type: "email", label: "Email" },
-                                { name: "password", type: "password", label: "Password", helperText: "Password must be 8 characters" }
-                            ]}
+                            inputFields={signInInputFields}
                             onSubmit={handleSignIn}
                         /> :
                         <CustomForm
                             key="signUpCustomForm"
                             formName="signUpCustomForm"
-                            initialValues={{
-                                name: "",
-                                surname: "",
-                                email: "",
-                                phoneNumber: "",
-                                orgName: "",
-                                address: "",
-                                numberOfStores: "Single",
-                                password: "",
-                            }}
+                            initialValues={signUpInitialValues}
                             validationSchema={SignUpSchema}
-                            inputFields={[
-                                { name: "name", type: "text", label: "Name", width: "half" },
-                                { name: "surname", type: "text", label: "Surname", width: "half" },
-                                { name: "phoneNumber", type: "text", label: "Phone Number", width: "half" },
-                                { name: "email", type: "email", label: "Email", width: "half" },
-                                { name: "orgName", type: "text", label: "Organisation", width: "half" },
-                                { name: "numberOfStores", type: "text", label: "Number of Stores", width: "half" },
-                                { name: "address", type: "text", label: "Address" },
-                                { name: "password", type: "password", label: "Password", helperText: "Password must be 8 characters" }
-                            ]}
+                            inputFields={signUpInputFields}
                             onSubmit={isRegistering ?
                                 (values, formikHelpers) => {
                                     handleSignUp(values, formikHelpers);
@@ -134,10 +101,19 @@ export const AuthorizationPage = () => {
                             name="Gocha"
                             label={isRegistering ? "Agree to the terms & conditions" : "Stay signed in"}
                         />
-                        {!isRegistering && <CustomButton variant="text">Forgot password ?</CustomButton>}
+                        {!isRegistering &&
+                            <CustomButton
+                                onClick={handlePasswordResetModal}
+                                variant="text"
+                            >Forgot password ?
+                            </CustomButton>}
                     </div>
                     <div className="buttons-div">
-                        <CustomButton isFitContent={false} type="submit" form={isRegistering ? "signUpCustomForm" : "signInCustomForm"}>
+                        <CustomButton
+                            isFitContent={false}
+                            type="submit"
+                            form={isRegistering ? "signUpCustomForm" : "signInCustomForm"}
+                        >
                             {isRegistering ? "Create" : "Sign in"}
                         </CustomButton>
                         <CustomButton
@@ -145,7 +121,7 @@ export const AuthorizationPage = () => {
                             className="create-account-button"
                             onClick={() => setIsRegistering(prev => !prev)}
                         >
-                            {isRegistering ? "Back" : "Create an account"}
+                            {isRegistering ? "Back to Sign in" : "Create an account"}
                         </CustomButton>
                     </div>
                 </div>

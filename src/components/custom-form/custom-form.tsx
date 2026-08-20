@@ -4,7 +4,7 @@ import { Formik, type FormikHelpers } from "formik";
 import TextInput from "../text-input/text-input";
 import type { AnySchema } from "yup";
 
-type InputFieldType = {
+export type InputFieldType = {
     name: string;
     type?: "text" | "password" | "email";
     label?: string;

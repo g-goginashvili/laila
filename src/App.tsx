@@ -1,12 +1,17 @@
 import SnackBarContextProvider from "./components/snack-bar/snack-bar-context-provider";
-import { AuthorizationPage } from "./pages/login-page/login-page";
+import { customRouter } from "./router/router";
+import AuthListener from "./utility/auth-listener";
+import { RouterProvider } from "react-router";
+
 
 function App() {
-  return (
-    <SnackBarContextProvider>
-      <AuthorizationPage />
-    </SnackBarContextProvider>
-  );
+	return (
+		<AuthListener>
+			<SnackBarContextProvider>
+				<RouterProvider router={customRouter} />
+			</SnackBarContextProvider>
+		</AuthListener>
+	);
 }
 
 export default App;

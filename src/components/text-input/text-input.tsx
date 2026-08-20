@@ -11,8 +11,8 @@ type TextInputPropType = {
     value?: string;
     helperText?: string;
     errorText?: string;
-    onChange?: (e: ChangeEvent) => void;
-    onBlur?: (e: FocusEvent) => void;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
 }
 
 const TextInput = ({
