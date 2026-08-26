@@ -1,4 +1,4 @@
-import "./admin-require-guard.css";
+import "./admin-panel-wrapper.css"
 
 import { Navigate, Outlet, useNavigate } from "react-router";
 import useAuth from "../hooks/use-auth";
@@ -6,6 +6,7 @@ import Typography from "../components/typography/typography";
 import CustomButton from "../components/custom-button/custom-button";
 import { sendEmailVerification } from "firebase/auth";
 import { useSnackBar } from "../components/snack-bar/snack-bar-context";
+import AdminPanelNavigation from "../modules/admin-panel-navigation/admin-panel-navigation";
 
 const AdminRequireGuard = () => {
     const status = useAuth((state) => state.status);
@@ -68,7 +69,10 @@ const AdminRequireGuard = () => {
                     </div>
                 </div>
             }
-            <Outlet />
+            <div className="admin-panel-wrapper" >
+                <AdminPanelNavigation />
+                <Outlet />
+            </div>
         </>
     );
 };

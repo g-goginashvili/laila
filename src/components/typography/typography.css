@@ -1,6 +1,10 @@
 @import "../../styles/color-system.css";
 @import "../../styles/typography-system.css";
 
+.typography {
+    cursor: inherit;
+}
+
 .typography-display-large-baseline,
 .typography-display-medium-baseline,
 .typography-display-small-baseline,

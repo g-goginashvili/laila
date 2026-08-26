@@ -1,0 +1,131 @@
+.admin-panel-navigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 12px;
+    background-color: var(--surface-primary-container);
+    margin: 4px;
+    border-radius: 12px;
+}
+
+.admin-panel-navigation-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px
+}
+
+.admin-panel-navigation-header-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+}
+
+.admin-panel-navigation-header-text,
+.admin-panel-navigation-account-settings-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+}
+
+.admin-panel-navigation-header-text>* {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.admin-panel-navigation-items-list {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 0;
+}
+
+.admin-panel-navigation-item {
+    border-radius: 8px;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 6px 12px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.admin-panel-navigation-active-item {
+    background-color: var(--info-60);
+}
+
+.line-under-list-item-venue {
+    margin-top: 6px;
+    margin-bottom: 2px;
+    border-top: 1px solid var(--border-strong);
+}
+
+.admin-panel-navigation-sub-items-list {
+    list-style: none;
+    padding-left: 12px;
+}
+
+.admin-panel-navigation-sub-item {
+    border: none;
+    width: 100%;
+    text-align: left;
+    background-color: transparent;
+    cursor: pointer;
+    color: var(--text-secondary);
+}
+
+.admin-panel-navigation-active-sub-item {
+    color: blueviolet;
+}
+
+.admin-panel-navigation-account-settings {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    border: none;
+    gap: 8px;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+.admin-panel-navigation-account-avatar-holder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background-color: var(--info-30);
+    color: var(--text-on-primary)
+}
+
+.admin-panel-navigation-account-settings-details {
+    display: flex;
+    flex-direction: column;
+    background-color: color-mix(in srgb, var(--surface-sunken) 70%, transparent);
+    padding: 12px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+}
+
+.admin-panel-navigation-account-settings-details>button {
+    text-align: left;
+    padding: 4px;
+    background-color: transparent;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 8px;
+}
+
+.admin-panel-navigation-account-settings-details>button:hover {
+    border: 1px solid var(--border-default);
+}
+
+.admin-panel-navigation-account-settings-details>button:active {
+    border: 1px solid var(--border-default);
+    background-color: var(--border-default);
+}

@@ -1,5 +1,10 @@
 @import "../styles/color-system.css";
 
+.admin-panel-wrapper {
+    display: flex;
+    flex-direction: row;
+}
+
 .email-verification-screen {
     position: fixed;
     top: 0;

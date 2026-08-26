@@ -1,8 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import GvianoReservationsLanding from "../blob/Blob";
 import { AdminAuthPage } from "../modules/admin-auth-page/admin-auth-page";
-import GvianoReservationsSession from "../blob/blob-out";
-import AdminRequireGuard from "../utility/admin-require-guard";
+import AdminRequireGuard from "../utility/admin-panel-wrapper";
 
 
 export const customRouter = createBrowserRouter([
@@ -23,7 +22,7 @@ export const customRouter = createBrowserRouter([
         children: [
             {
                 path: "/admin-panel",
-                Component: GvianoReservationsSession,
+                Component: GvianoReservationsLanding
             },
         ]
     }

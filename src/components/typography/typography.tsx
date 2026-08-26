@@ -49,6 +49,7 @@ const Typography = ({
 
     const TypographyTag = variantMap[variant] as ElementType;
     const preciseClass =
+        `typography ` +
         `typography-${color} ` +
         `typography-${variant}-${size} ` +
         `typography-${variant}-${size}-${weight} ` +
