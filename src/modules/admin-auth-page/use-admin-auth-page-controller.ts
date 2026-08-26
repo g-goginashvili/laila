@@ -5,6 +5,8 @@ import { useSnackBar } from "../../components/snack-bar/snack-bar-context";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { adminSignUp } from "../../api/auth-api";
 
 const FirebaseErrorsMap: Record<string, string> = {
     "auth/user-not-found": "Unable to authorize an user.",
@@ -18,41 +20,28 @@ const useAdminAuthPageController = () => {
     const [isForgotPassword, setIsForgotPassword] = useState<boolean>(false);
     const [isRegistering, setIsRegistering] = useState<boolean>(false);
 
-    const handleSignUp = async (
-        values: Record<string, string>,
-        formikHelpers: FormikHelpers<Record<string, string>>
-    ) => {
-        try {
-            addSnackBar("sign up success");
-
-            await fetch("https://core.gviano.com/api/auth/admin-sign-up",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        name: values.name,
-                        surname: values.surname,
-                        email: values.email,
-                        phoneNumber: values.phoneNumber,
-                        orgName: values.orgName,
-                        address: values.address,
-                        password: values.password,
-                    })
-                }
-            );
-
-            formikHelpers.resetForm();
-            addSnackBar("Success");
-
-        } catch (error) {
+    const { mutate: adminSignUpMutation } = useMutation({
+        mutationFn: adminSignUp,
+        onSuccess: () => { addSnackBar("sign up success") },
+        onError: (error) => {
             if (error instanceof FirebaseError && Boolean(FirebaseErrorsMap[error.code])) {
                 addSnackBar(FirebaseErrorsMap[error.code], { variant: "error" });
             } else {
                 addSnackBar("Behold An Unknown Error", { variant: "error" });
             }
         }
+    });
+
+    const handleSignUp = async (
+        values: Record<string, string>,
+        formikHelpers: FormikHelpers<Record<string, string>>
+    ) => {
+        adminSignUpMutation(values, {
+            onSuccess: () => {
+                setIsRegistering(prev => !prev)
+                formikHelpers.resetForm();
+            }
+        });
     };
 
     const handleSignIn = async (
@@ -72,7 +61,6 @@ const useAdminAuthPageController = () => {
 
             }
             formikHelpers.resetForm();
-
         }
     };
 

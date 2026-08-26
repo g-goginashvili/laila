@@ -89,11 +89,7 @@ export const AdminAuthPage = () => {
                             initialValues={signUpInitialValues}
                             validationSchema={SignUpSchema}
                             inputFields={signUpInputFields}
-                            onSubmit={isRegistering ?
-                                (values, formikHelpers) => {
-                                    handleSignUp(values, formikHelpers);
-                                    setIsRegistering(prev => !prev)
-                                } : handleSignIn}
+                            onSubmit={isRegistering ? handleSignUp : handleSignIn}
                         />
                     }
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
