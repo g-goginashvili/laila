@@ -1,10 +1,10 @@
 .admin-panel-navigation {
     display: flex;
+    height: 100dvh;
     flex-direction: column;
     justify-content: space-between;
     padding: 24px 12px;
     background-color: var(--surface-primary-container);
-    margin: 4px;
     border-radius: 12px;
 }
 
@@ -44,6 +44,8 @@
 }
 
 .admin-panel-navigation-item {
+    display: inline-block;
+    text-decoration: none;
     border-radius: 8px;
     border: none;
     width: 100%;
@@ -57,7 +59,7 @@
     background-color: var(--info-60);
 }
 
-.line-under-list-item-venue {
+.line-under-list-item-store {
     margin-top: 6px;
     margin-bottom: 2px;
     border-top: 1px solid var(--border-strong);
@@ -69,6 +71,8 @@
 }
 
 .admin-panel-navigation-sub-item {
+    display: inline-block;
+    text-decoration: none;
     border: none;
     width: 100%;
     text-align: left;

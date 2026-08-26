@@ -1,68 +1,34 @@
 import Typography from "../../components/typography/typography";
-import useAuth from "../../hooks/use-auth";
 import Chevron from "../../icons/chevron";
 import { firebaseAuth } from "../../utility/firebase";
 import "./admin-panel-navigation.css";
 
-import { useState, type ReactElement } from "react";
+import { type ReactElement } from "react";
+import useAdminPanelNavigationController from "./use-admin-panel-navigation-controller";
+import { NavLink } from "react-router";
 
 type NavItemType = {
-    name: "Dashboard" | "Venues" | "Payments";
-}
-
-const navItems: NavItemType[] = [
-    { name: "Dashboard" },
-    { name: "Venues" },
-    { name: "Payments" },
-];
-
-const venues = [
-    "venue1", "venue2", "venue3"
-];
-
-const VenueList = ({ activeVenue, setActiveVenue }: { activeVenue: string, setActiveVenue: (value: string) => void }) => {
-    const [activeOption, setActiveOption] = useState("");
-
-    return (
-        <ul className="admin-panel-navigation-sub-items-list" >
-            {venues.map(venue => (
-                <li key={venue}>
-                    <button
-                        type="button"
-                        onClick={() => setActiveVenue(venue)}
-                        className={`admin-panel-navigation-sub-item ${activeVenue === venue ? "admin-panel-navigation-active-sub-item" : ""}`}
-                    >
-                        <Typography variant="label" color="inherit">{venue}</Typography>
-                    </button>
-
-                    {activeVenue === venue &&
-                        <ul className="admin-panel-navigation-sub-items-list">
-                            {
-                                ["Details", "Menu", "Availability"].map(option => (
-                                    <li key={option}>
-                                        <button
-                                            type="button"
-                                            onClick={() => setActiveOption(option)}
-                                            className={`admin-panel-navigation-sub-item ${activeOption === option ? "admin-panel-navigation-active-sub-item" : ""}`}
-                                        >
-                                            {option}
-                                        </button>
-                                    </li>
-                                ))
-                            }
-                        </ul>
-                    }
-                </li>
-            ))}
-        </ul>
-    )
+    name: "Dashboard" | "Stores" | "Payments";
+    route: string;
 };
 
+const navItems: NavItemType[] = [
+    { name: "Dashboard", route: "/dashboard" },
+    { name: "Stores", route: "/stores" },
+    { name: "Payments", route: "/payments" },
+];
+
 const AdminPanelNavigation = (): ReactElement => {
-    const [activeItem, setActiveItem] = useState<"Dashboard" | "Venues" | "Payments">("Dashboard");
-    const [activeVenue, setActiveVenue] = useState("");
-    const [isOptionsActive, setIsOptionsActive] = useState<boolean>(false);
-    const { user } = useAuth();
+
+    const {
+        organisation,
+        stores,
+        isOptionsActive,
+        user,
+        isStoresSection,
+        storesMatch,
+        setIsOptionsActive
+    } = useAdminPanelNavigationController();
 
     return (
         <nav className="admin-panel-navigation">
@@ -75,40 +41,71 @@ const AdminPanelNavigation = (): ReactElement => {
                         className="admin-panel-navigation-header-icon"
                     />
                     <div className="admin-panel-navigation-header-text">
-                        <Typography variant="title" size="medium">Gviano</Typography>
-                        <Typography variant="body" size="medium">Admin panel</Typography>
+                        <Typography variant="title" size="medium">Gviano Admin Panel</Typography>
+                        <Typography variant="body" size="medium">{organisation?.orgName}</Typography>
                     </div>
                 </div>
 
                 <ul className="admin-panel-navigation-items-list">
-                    {navItems.map(({ name }) => (
+                    {navItems.map(({ name, route }) => (
                         <li key={name}>
-                            <button
-                                type="button"
-                                onClick={() => {
-                                    setActiveItem(name)
-                                    setActiveVenue("");
-                                }}
-                                className={`admin-panel-navigation-item ${activeItem === name ? "admin-panel-navigation-active-item" : ""}`}
+                            <NavLink
+                                to={route}
+                                className={({ isActive }) =>
+                                    `admin-panel-navigation-item ${isActive
+                                        ? "admin-panel-navigation-active-item" : ""}`}
                             >
                                 <Typography variant="label">{name}</Typography>
-                            </button>
-                            {(name === "Venues" && activeItem === "Venues") && (
+                            </NavLink>
+
+                            {(name === "Stores" && isStoresSection && stores.length > 0) &&
                                 <>
-                                    <div className="line-under-list-item-venue" />
-                                    <VenueList activeVenue={activeVenue} setActiveVenue={setActiveVenue} />
+                                    <div className="line-under-list-item-store" />
+                                    <ul className="admin-panel-navigation-sub-items-list" >
+                                        {stores.map((store: any) => (
+                                            <li key={store.id}>
+                                                <NavLink
+                                                    to={`/stores/${store.id}/details`}
+                                                    className={`admin-panel-navigation-sub-item ${storesMatch?.params.storeId === store.id
+                                                        ? "admin-panel-navigation-active-sub-item" : ""}`}
+                                                >
+                                                    <Typography variant="label" color="inherit">{store.storeName}</Typography>
+                                                </NavLink>
+
+                                                {storesMatch?.params.storeId === store.id &&
+                                                    <ul className="admin-panel-navigation-sub-items-list">
+                                                        {
+                                                            ["Details", "Menu", "Availability"].map(option => (
+                                                                <li key={option}>
+                                                                    <NavLink
+                                                                        to={`/stores/${store.id}/${option}`}
+                                                                        className={({ isActive }) =>
+                                                                            `admin-panel-navigation-sub-item ${isActive
+                                                                                ? "admin-panel-navigation-active-sub-item" : ""}`}
+                                                                    >
+                                                                        <Typography variant="label" color="inherit">{option}</Typography>
+                                                                    </NavLink>
+                                                                </li>
+                                                            ))
+                                                        }
+                                                    </ul>
+                                                }
+                                            </li>
+                                        ))}
+                                    </ul>
                                 </>
-                            )}
+                            }
                         </li>
                     ))}
                 </ul>
+
             </div>
 
             <div>
                 {isOptionsActive &&
                     <div className="admin-panel-navigation-account-settings-details">
                         <button>
-                            <Typography variant="label">Accunt Settings</Typography>
+                            <Typography variant="label">Account Settings</Typography>
                         </button>
                         <button
                             onClick={() => { firebaseAuth.signOut() }}

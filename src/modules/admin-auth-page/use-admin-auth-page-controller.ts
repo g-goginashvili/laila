@@ -51,7 +51,7 @@ const useAdminAuthPageController = () => {
         try {
             await signInWithEmailAndPassword(firebaseAuth, values.email, values.password);
             addSnackBar("Signed in.");
-            navigate("/admin-panel", { replace: true });
+            navigate("/dashboard", { replace: true });
 
         } catch (error) {
             if (error instanceof FirebaseError && Boolean(FirebaseErrorsMap[error.code])) {
