@@ -18,53 +18,43 @@
 }
 
 .snack-bar-success {
-    background-color: var(--success-90);
-    border: 2px solid var(--success-90);
-    color: var(--success-30);
+    background-color: var(--success-container);
+    border: 2px solid var(--success-container);
+    color: var(--success-on-container);
 }
 
 .snack-bar-border-success {
-    border: 2px solid var(--success-30);
+    border: 2px solid var(--success-on-container);
 }
 
 .snack-bar-warning {
-    background-color: var(--warning-90);
-    border: 2px solid var(--warning-90);
-    color: var(--warning-30);
+    background-color: var(--warning-container);
+    border: 2px solid var(--warning-container);
+    color: var(--warning-on-container);
 }
 
 .snack-bar-border-warning {
-    border: 2px solid var(--warning-30);
+    border: 2px solid var(--warning-on-container);
 }
 
 .snack-bar-error {
-    background-color: var(--error-90);
-    border: 2px solid var(--error-90);
-    color: var(--error-30);
+    background-color: var(--error-container);
+    border: 2px solid var(--error-container);
+    color: var(--error-on-container);
 }
 
 .snack-bar-border-error {
-    border: 2px solid var(--error-30);
+    border: 2px solid var(--error-on-container);
 }
 
 .snack-bar-info {
-    background-color: var(--info-90);
-    border: 2px solid var(--info-90);
-    color: var(--info-30);
+    background-color: var(--info-container);
+    border: 2px solid var(--info-container);
+    color: var(--info-on-container);
 }
 
 .snack-bar-border-info {
-    border: 2px solid var(--info-30);
-}
-
-.snack-bar-neutral {
-    background-color: var(--neutral-90);
-    border: 2px solid var(--neutral-90);
-    color: var(--neutral-30);
-}
-
-.snack-bar-border-neutral {
-    border: 2px solid var(--neutral-30);
+    border: 2px solid var(--info-on-container);
 }
 
 .snack-bar-dot {
@@ -76,21 +66,17 @@
 }
 
 .snack-bar-dot-success {
-    background-color: var(--success-40);
+    background-color: var(--success-on-container);
 }
 
 .snack-bar-dot-warning {
-    background-color: var(--warning-40);
+    background-color: var(--warning-on-container);
 }
 
 .snack-bar-dot-error {
-    background-color: var(--error-40);
+    background-color: var(--error-on-container);
 }
 
 .snack-bar-dot-info {
-    background-color: var(--info-40);
-}
-
-.snack-bar-dot-neutral {
-    background-color: var(--neutral-40);
+    background-color: var(--info-on-container);
 }

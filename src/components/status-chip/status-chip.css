@@ -11,28 +11,23 @@
 }
 
 .status-chip-success {
-    background-color: var(--success-90);
-    color: var(--success-30)
+    background-color: var(--success-container);
+    color: var(--success-on-container);
 }
 
 .status-chip-warning {
-    background-color: var(--warning-90);
-    color: var(--warning-30)
+    background-color: var(--warning-container);
+    color: var(--warning-on-container);
 }
 
 .status-chip-error {
-    background-color: var(--error-90);
-    color: var(--error-30)
+    background-color: var(--error-container);
+    color: var(--error-on-container);
 }
 
 .status-chip-info {
-    background-color: var(--info-90);
-    color: var(--info-30)
-}
-
-.status-chip-neutral {
-    background-color: var(--neutral-90);
-    color: var(--neutral-30)
+    background-color: var(--info-container);
+    color: var(--info-on-container);
 }
 
 .status-chip-dot {
@@ -42,21 +37,17 @@
 }
 
 .status-chip-dot-success {
-    background-color: var(--success-40);
+    background-color: var(--success-on-container);
 }
 
 .status-chip-dot-warning {
-    background-color: var(--warning-40);
+    background-color: var(--warning-on-container);
 }
 
 .status-chip-dot-error {
-    background-color: var(--error-40);
+    background-color: var(--error-on-container);
 }
 
 .status-chip-dot-info {
-    background-color: var(--info-40);
-}
-
-.status-chip-dot-neutral {
-    background-color: var(--neutral-40);
+    background-color: var(--info-on-container);
 }

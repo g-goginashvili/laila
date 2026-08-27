@@ -34,7 +34,7 @@
 }
 
 .custom-button-pill {
-    border-radius: 9999px;
+    border-radius: 999px;
 }
 
 .custom-button-square {
@@ -55,56 +55,55 @@
 
 .custom-button-filled {
     color: var(--text-on-inverse);
-    background-color: var(--tertiary-default);
+    background-color: var(--primary-default);
 }
 
 .custom-button-filled:hover:not(:disabled) {
     color: var(--neutral-subtle-hover);
-    background-color: var(--tertiary-hover);
+    background-color: var(--primary-hover);
 }
 
 .custom-button-filled:active:not(:disabled) {
     color: var(--neutral-border);
-    background-color: var(--tertiary-active);
-
+    background-color: var(--primary-active);
 }
 
 .custom-button-filled:focus-visible {
-    outline-color: var(--tertiary-focus-ring);
+    outline-color: var(--primary-focus-ring);
 }
 
 .custom-button-outlined {
-    border-color: var(--tertiary-border);
-    color: var(--tertiary-default);
+    border-color: var(--primary-border);
+    color: var(--primary-default);
 }
 
 .custom-button-outlined:hover:not(:disabled) {
-    background-color: var(--tertiary-subtle-hover);
+    background-color: var(--primary-subtle-hover);
 }
 
 .custom-button-outlined:active:not(:disabled) {
-    background-color: var(--tertiary-subtle);
-    color: var(--tertiary-border);
+    background-color: var(--primary-subtle);
+    color: var(--primary-border);
 }
 
 .custom-button-outlined:focus-visible {
-    outline-color: var(--tertiary-focus-ring);
+    outline-color: var(--primary-focus-ring);
 }
 
 .custom-button-text {
     padding: 0;
     border: none;
-    color: var(--tertiary-text);
+    color: var(--primary-default);
 }
 
 .custom-button-text:hover:not(:disabled) {
-    color: var(--tertiary-border);
+    color: var(--primary-border);
 }
 
 .custom-button-text:active:not(:disabled) {
-    color: var(--tertiary-subtle-hover);
+    color: var(--primary-subtle-hover);
 }
 
 .custom-button-text:focus-visible {
-    outline-color: var(--tertiary-focus-ring);
+    outline-color: var(--primary-focus-ring);
 }

@@ -46,7 +46,7 @@
 }
 
 .text-input-element:focus {
-    outline: 2px solid var(--info-60);
+    outline: 2px solid var(--focus-ring);
     border-color: var(--surface-sunken);
 }
 

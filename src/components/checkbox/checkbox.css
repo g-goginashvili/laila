@@ -61,7 +61,7 @@
 }
 
 .check-box-input:focus-visible {
-    outline-color: var(--info-60);
+    outline-color: var(--info-600);
 }
 
 .check-box-input:disabled {

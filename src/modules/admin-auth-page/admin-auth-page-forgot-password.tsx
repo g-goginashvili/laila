@@ -5,14 +5,22 @@ import CustomButton from "../../components/custom-button/custom-button";
 import Typography from "../../components/typography/typography";
 import CustomForm from "../../components/custom-form/custom-form";
 import useAdminAuthPageController from './use-admin-auth-page-controller';
+import { useState } from "react";
 
 const ForgotPasswordModal = ({ handleClose }: { handleClose: () => void }) => {
     const {
         handlePasswordReset
     } = useAdminAuthPageController();
 
+    const [isClosing, setIsClosing] = useState<boolean>(false);
+
     return (
-        <div className="password-resset-screen">
+        <div
+            className={`password-resset-screen${isClosing ? " is-closing" : ""}`}
+            onAnimationEnd={(e) => {
+                if (isClosing && e.target === e.currentTarget) handleClose();
+            }}
+        >
             <div className="password-resset-popup">
                 <div className="password-resset-popup-decorative-line" />
                 <Typography
@@ -49,7 +57,7 @@ const ForgotPasswordModal = ({ handleClose }: { handleClose: () => void }) => {
                 </CustomButton>
                 <CustomButton
                     variant="text"
-                    onClick={handleClose}
+                    onClick={() => { setIsClosing(true) }}
                     className="password-resset-return-button"
                 >
                     Close
