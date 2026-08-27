@@ -55,7 +55,7 @@ const AdminPanelNavigation = (): ReactElement => {
                                     `admin-panel-navigation-item ${isActive
                                         ? "admin-panel-navigation-active-item" : ""}`}
                             >
-                                <Typography variant="label">{name}</Typography>
+                                <Typography variant="label" color="inherit">{name}</Typography>
                             </NavLink>
 
                             {(name === "Stores" && isStoresSection && stores.length > 0) &&
@@ -120,7 +120,7 @@ const AdminPanelNavigation = (): ReactElement => {
                     className="admin-panel-navigation-account-settings"
                 >
                     <div className="admin-panel-navigation-account-avatar-holder">
-                        <Typography variant="body" color="on-primary" weight="emphasis">
+                        <Typography variant="body" color="inherit" weight="emphasis">
                             {
                                 user?.displayName
                                     ?.split(" ")

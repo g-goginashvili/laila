@@ -2,7 +2,10 @@
 
 .login-page {
   height: 100dvh;
+  width: 100vw;
   display: flex;
+  padding: 12px 0px 12px 12px;
+  background-color: var(--surface-base);
 }
 
 .text-section,
@@ -14,8 +17,10 @@
 
 .text-section {
   background-color: var(--surface-primary-container);
-  flex: 0 0 40%;
+  flex: 0 1 40%;
   padding: 64px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px var(--border-default);
 }
 
 .text-section-div {
@@ -27,9 +32,8 @@
 }
 
 .login-section {
-  flex: 0 0 60%;
+  flex: 0 1 60%;
   padding: 24px;
-  background-color: var(--surface-base);
   justify-content: center;
   align-items: center;
 }

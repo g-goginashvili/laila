@@ -42,19 +42,17 @@
 }
 
 .verification-button {
-    background-color: var(--info-30);
     width: 100%;
     margin-top: 12px;
 }
 
 .return-button {
-    color: var(--error-30);
+    color: var(--error-default);
     margin-top: 6px;
     margin-bottom: 6px;
 }
 
 .email-verification-popup h3 {
-    color: var(--info-30);
     font-weight: 700;
 }
 

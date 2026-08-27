@@ -1,6 +1,4 @@
-@import "../../styles/color-system.css";
-
-.password-resset-screen {
+.modal-screen {
     position: fixed;
     top: 0;
     left: 0;
@@ -34,12 +32,13 @@
     }
 }
 
-.password-resset-popup {
+.modal-popup {
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     padding: 32px;
     border-radius: 24px;
     box-shadow: 0px 0px 10px var(--border-default);
@@ -73,45 +72,11 @@
     }
 }
 
-.password-resset-screen.is-closing {
-    animation: modal-disappear 0.4s cubic-bezier(0.7, 0, 0.84, 0) forwards;
-    pointer-events: none;
-}
-
-.password-resset-screen.is-closing .password-resset-popup {
-    animation: popup-collapse 0.4s cubic-bezier(0.7, 0, 0.84, 0) forwards;
-}
-
-.password-resset-popup form {
-    width: 100%;
-}
-
-.password-resset-popup-decorative-line {
+.modal-decorative-line {
     position: absolute;
     top: 0;
     left: 0;
     background-color: var(--primary-default);
     width: 100%;
     height: 3%;
-}
-
-.password-resset-verification-button {
-    width: 100%;
-}
-
-.password-resset-return-button {
-    color: var(--error-default);
-    margin-top: 6px;
-    margin-bottom: 6px;
-}
-
-.password-resset-popup h3 {
-    color: var(--primary-default);
-    font-weight: 700;
-}
-
-.password-resset-popup p {
-    font-weight: 300;
-    text-align: center;
-    margin-bottom: 12px;
 }
