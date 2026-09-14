@@ -10,7 +10,7 @@ import useAdminAuthPageController from "./use-admin-auth-page-controller";
 import { signInInitialValues, signInInputFields, SignInSchema, signUpInitialValues, signUpInputFields, SignUpSchema } from "./admin-auth-page-formik-controller";
 import ForgotPasswordModal from "./admin-auth-page-forgot-password";
 
-export const AdminAuthPage = () => {
+const AdminAuthPage = () => {
     const {
         isForgotPassword,
         isRegistering,
@@ -125,3 +125,5 @@ export const AdminAuthPage = () => {
         </main>
     );
 };
+
+export default AdminAuthPage;
