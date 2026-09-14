@@ -10,9 +10,9 @@ const LandingPage = () => {
         handleBusinessRedirect,
     } = useLandingPageContreller();
     return (
-        <div className="landing-page-wrapper-div">
+        <div className="landing-page-root-div">
             <nav className="landing-page-nav">
-                <div className="landing-page-nav-div">
+                <div className="landing-page-icon-div">
                     <img
                         src="../../../favicon.svg"
                         alt="Company logo"
@@ -28,40 +28,80 @@ const LandingPage = () => {
                 </div>
                 <CustomButton size="medium" onClick={handleBusinessRedirect}>For Restaurants</CustomButton>
             </nav>
-            <main className="landing-page-main">
-                <section className="landing-page-left-section">
-                    <StatusChip variant="info" textValue="User Application * Coming Soon" />
-                    <Typography weight="emphasis">Book a spot hustle free.</Typography>
-                    <Typography variant="body" color="secondary">
-                        Gviano lets you book a spot at your favorite place.
-                        Choose the table and reserve it. Might as well
-                        preorder from the menu while you're at it.
-                        Just remember, don't be late — you get rated too.
-                    </Typography>
-                    <Typography variant="body" color="secondary">
-                        Leave us your email and we will let you know the lounch.
-                    </Typography>
-                    <div className="landing-page-email-div">
-                        <TextInput
-                            name="customer-email"
-                            label="Email address"
-                            placeholder="your-email@example.com"
-                            helperText="One email on launch day. No newsletter, and we never share it."
-                        />
-                        <CustomButton>Notife Me</CustomButton>
+            <div className="landing-page-wrapper-div">
+                <main className="landing-page-main">
+                    <section className="landing-page-left-section">
+                        <StatusChip variant="info" textValue="User Application * Coming Soon" />
+                        <Typography weight="emphasis">Book a spot hustle free.</Typography>
+                        <Typography variant="body" color="secondary">
+                            Gviano lets you book a spot at your favorite place.
+                            Choose the table and reserve it. Might as well
+                            preorder from the menu while you're at it.
+                            Just remember, don't be late — you get rated too.
+                        </Typography>
+                        <Typography variant="body" color="secondary">
+                            Leave us your email and we will let you know the lounch.
+                        </Typography>
+                        <div className="landing-page-email-div">
+                            <TextInput
+                                name="customer-email"
+                                label="Email address"
+                                placeholder="your-email@example.com"
+                                helperText="One email on launch day. No newsletter, and we never share it."
+                            />
+                            <CustomButton>Notify Me</CustomButton>
+                        </div>
+                    </section>
+                    <section className="landing-page-right-section">
+                        <div className="landing-page-web-app-paceholder" />
+                        <div className="landing-page-mobile-app-paceholder" />
+                        <Typography
+                            variant="title"
+                            className="landing-page-drawing-paceholder-text"
+                        >
+                            User Application Coming Soon ...
+                        </Typography>
+                    </section>
+                </main>
+                <footer className="landing-page-footer">
+
+                    <div className="landing-page-footer-wrapper-grid">
+
+                        <div className="landing-page-footer-left-div">
+                            <div className="landing-page-icon-div">
+                                <img
+                                    src="../../../favicon.svg"
+                                    alt="Company logo"
+                                    className="landing-page-footer-icon"
+                                />
+                                <Typography
+                                    variant="title"
+                                    weight="emphasis"
+                                    color="on-inverse"
+                                >
+                                    Gviano
+                                </Typography>
+                            </div>
+                            <Typography variant="body" size="small" color="disabled">
+                                Table reservations for diners. Launching soon on iOS, Android and the web.
+                            </Typography>
+                        </div>
+
+                        <div className="landing-page-footer-right-div">
+                            <Typography variant="body" weight="emphasis" color="on-inverse" size="medium">Running a restaurant?</Typography>
+                            <Typography variant="body" color="disabled" size="medium">
+                                The Gviano admin panel is already live. Sign in to manage tables, hours and bookings.
+                            </Typography>
+                            <CustomButton size="small" onClick={handleBusinessRedirect}>For Restaurants</CustomButton>
+                        </div>
+
                     </div>
-                </section>
-                <section className="landing-page-right-section">
-                    <div className="landing-page-web-app-paceholder" />
-                    <div className="landing-page-mobile-app-paceholder" />
-                    <Typography
-                        variant="title"
-                        className="landing-page-drawing-paceholder-text"
-                    >
-                        User Application Coming Soon ...
+
+                    <Typography variant="body" size="small" color="muted">
+                        © {new Date().getFullYear()} Gviano. All rights reserved.
                     </Typography>
-                </section>
-            </main>
+                </footer>
+            </div>
         </div>
     );
 };
