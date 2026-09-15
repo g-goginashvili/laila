@@ -27,6 +27,7 @@
 .landing-page-icon-div {
     display: flex;
     align-items: center;
+    gap: 8px;
 }
 
 .landing-page-nav-icon {
@@ -148,6 +149,9 @@
 .landing-page-footer-icon {
     width: 48px;
     height: 48px;
+    background-color: var(--surface-base);
+    border-radius: 8px;
+    padding: 8px;
 }
 
 .landing-page-footer-left-div {
