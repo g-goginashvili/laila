@@ -14,7 +14,7 @@ const LandingPage = () => {
             <nav className="landing-page-nav">
                 <div className="landing-page-icon-div">
                     <img
-                        src="../../../favicon.svg"
+                        src="../../../gviano-icon.svg"
                         alt="Company logo"
                         className="landing-page-nav-icon"
                     />
@@ -70,7 +70,7 @@ const LandingPage = () => {
                         <div className="landing-page-footer-left-div">
                             <div className="landing-page-icon-div">
                                 <img
-                                    src="../../../favicon.svg"
+                                    src="../../../gviano-icon.svg"
                                     alt="Company logo"
                                     className="landing-page-footer-icon"
                                 />

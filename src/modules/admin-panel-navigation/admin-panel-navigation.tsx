@@ -36,7 +36,7 @@ const AdminPanelNavigation = (): ReactElement => {
             <div>
                 <div className="admin-panel-navigation-header">
                     <img
-                        src="../../../favicon.svg"
+                        src="../../../gviano-icon.svg"
                         alt="Company logo"
                         className="admin-panel-navigation-header-icon"
                     />
