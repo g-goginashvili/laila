@@ -11,20 +11,14 @@ const SnackBarContextProvider = ({
     const [snackBarArray, setSnackBarArray] = useState<SnackBarContextValueType[]>([]);
 
     const nodeMapRef = useRef(new Map<string, HTMLDivElement>());
-    const refCallbacksRef = useRef(new Map<string, (node: HTMLDivElement | null) => void>());
     const positionsRef = useRef(new Map<string, number>());
 
-    const refHandler = (id: string) => {
-        if (!refCallbacksRef.current.has(id)) {
-            refCallbacksRef.current.set(id, (node) => {
-                if (node) nodeMapRef.current.set(id, node);
-                else nodeMapRef.current.delete(id);
-            });
-        }
-        return refCallbacksRef.current.get(id);
-    };
+    const registerNode = useCallback((id: string, node: HTMLDivElement) => {
+        nodeMapRef.current.set(id, node);
+        return () => { nodeMapRef.current.delete(id) };
+    }, []);
 
-    const onExpire = (id: string) => {
+    const onExpire = useCallback((id: string) => {
         setSnackBarArray((prev) => {
             const target = prev.find(item => item.id === id);
             if (!target || target.isExpired) return prev;
@@ -32,7 +26,7 @@ const SnackBarContextProvider = ({
                 item.id === id ? { ...item, isExpired: true } : item
             );
         });
-    };
+    }, []);
 
     const addSnackBar = useCallback((
         message: string,
@@ -57,9 +51,11 @@ const SnackBarContextProvider = ({
     }), [snackBarArray, addSnackBar, removeSnackBar]);
 
     useLayoutEffect(() => {
-        snackBarArray.length > 4 && snackBarArray.forEach((item, index) => {
-            if (index < snackBarArray.length - 4) onExpire(item.id);
-        });
+        if (snackBarArray.length > 4) {
+            snackBarArray.forEach((item, index) => {
+                if (index < snackBarArray.length - 4) onExpire(item.id);
+            });
+        }
 
         const prevPositions = positionsRef.current;
         const nextPositions = new Map<string, number>();
@@ -96,7 +92,7 @@ const SnackBarContextProvider = ({
         });
 
         positionsRef.current = nextPositions;
-    }, [snackBarArray]);
+    }, [snackBarArray, onExpire]);
 
     return (
         <SnackBarContext.Provider value={contextValue}>
@@ -105,7 +101,7 @@ const SnackBarContextProvider = ({
                     <SnackBar
                         key={snackBar.id}
                         id={snackBar.id}
-                        ref={refHandler(snackBar.id)}
+                        ref={(node: HTMLDivElement | null) => node ? registerNode(snackBar.id, node) : undefined}
                         onButtonClick={() => { onExpire(snackBar.id) }}
                         message={snackBar.message}
                         variant={snackBar.variant}

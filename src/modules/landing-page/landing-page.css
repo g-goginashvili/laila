@@ -87,7 +87,7 @@
     width: 100%;
 }
 
-.landing-page-web-app-paceholder {
+.landing-page-web-app-placeholder {
     box-sizing: border-box;
     width: 100%;
     aspect-ratio: 755 / 485;
@@ -101,7 +101,7 @@
     filter: drop-shadow(0px 0px 10px var(--border-strong));
 }
 
-.landing-page-mobile-app-paceholder {
+.landing-page-mobile-app-placeholder {
     position: absolute;
     top: 30%;
     left: 60%;
@@ -118,7 +118,7 @@
     filter: drop-shadow(0px 0px 10px var(--border-strong));
 }
 
-.landing-page-drawing-paceholder-text {
+.landing-page-drawing-placeholder-text {
     position: absolute;
     background-color: var(--surface-raised);
     padding: 8px;

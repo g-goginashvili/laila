@@ -3,18 +3,23 @@ import CustomButton from "../../components/custom-button/custom-button";
 import Typography from "../../components/typography/typography";
 import StatusChip from "../../components/status-chip/status-chip";
 import TextInput from "../../components/text-input/text-input";
-import useLandingPageContreller from "./use-landing-page-controller";
+import useLandingPageController from "./use-landing-page-controller";
 
 const LandingPage = () => {
     const {
+        waitlistEmail,
+        waitlistError,
+        isJoiningWaitlist,
         handleBusinessRedirect,
-    } = useLandingPageContreller();
+        handleWaitlistEmailChange,
+        handleJoinWaitlist,
+    } = useLandingPageController();
     return (
         <div className="landing-page-root-div">
             <nav className="landing-page-nav">
                 <div className="landing-page-icon-div">
                     <img
-                        src="../../../gviano-icon.svg"
+                        src="/gviano-icon.svg"
                         alt="Company logo"
                         className="landing-page-nav-icon"
                     />
@@ -32,7 +37,7 @@ const LandingPage = () => {
                 <main className="landing-page-main">
                     <section className="landing-page-left-section">
                         <StatusChip variant="info" textValue="User Application * Coming Soon" />
-                        <Typography weight="emphasis">Book a spot hustle free.</Typography>
+                        <Typography weight="emphasis">Book a spot hassle-free.</Typography>
                         <Typography variant="body" color="secondary">
                             Gviano lets you book a spot at your favorite place.
                             Choose the table and reserve it. Might as well
@@ -40,24 +45,33 @@ const LandingPage = () => {
                             Just remember, don't be late — you get rated too.
                         </Typography>
                         <Typography variant="body" color="secondary">
-                            Leave us your email and we will let you know the lounch.
+                            Leave us your email and we will let you know about the launch.
                         </Typography>
-                        <div className="landing-page-email-div">
+                        <form
+                            className="landing-page-email-div"
+                            noValidate
+                            onSubmit={(e) => { e.preventDefault(); handleJoinWaitlist(); }}
+                        >
                             <TextInput
+                                type="email"
                                 name="customer-email"
                                 label="Email address"
                                 placeholder="your-email@example.com"
+                                value={waitlistEmail}
+                                errorText={waitlistError}
+                                disabled={isJoiningWaitlist}
+                                onChange={(e) => handleWaitlistEmailChange(e.target.value)}
                                 helperText="One email on launch day. No newsletter, and we never share it."
                             />
-                            <CustomButton>Notify Me</CustomButton>
-                        </div>
+                            <CustomButton type="submit" disabled={isJoiningWaitlist}>Notify Me</CustomButton>
+                        </form>
                     </section>
                     <section className="landing-page-right-section">
-                        <div className="landing-page-web-app-paceholder" />
-                        <div className="landing-page-mobile-app-paceholder" />
+                        <div className="landing-page-web-app-placeholder" />
+                        <div className="landing-page-mobile-app-placeholder" />
                         <Typography
                             variant="title"
-                            className="landing-page-drawing-paceholder-text"
+                            className="landing-page-drawing-placeholder-text"
                         >
                             User Application Coming Soon ...
                         </Typography>
@@ -70,7 +84,7 @@ const LandingPage = () => {
                         <div className="landing-page-footer-left-div">
                             <div className="landing-page-icon-div">
                                 <img
-                                    src="../../../gviano-icon.svg"
+                                    src="/gviano-icon.svg"
                                     alt="Company logo"
                                     className="landing-page-footer-icon"
                                 />

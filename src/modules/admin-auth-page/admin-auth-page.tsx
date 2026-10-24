@@ -14,7 +14,12 @@ const AdminAuthPage = () => {
     const {
         isForgotPassword,
         isRegistering,
-        setIsRegistering,
+        isSigningUp,
+        staySignedIn,
+        acceptedTerms,
+        setStaySignedIn,
+        setAcceptedTerms,
+        toggleRegistering,
         handleSignUp,
         handleSignIn,
         handlePasswordResetModal,
@@ -34,18 +39,18 @@ const AdminAuthPage = () => {
                         size="medium"
                         weight="emphasis"
                     >
-                        Every customers reservation in one place.
+                        Every customer's reservation in one place.
                     </Typography>
                     <Typography
                         variant="body"
                         color="secondary"
                         size="large"
                     >
-                        Sign in to manage reservations and details, review schedules and aproove pre-orders.
+                        Sign in to manage reservations and details, review schedules and approve pre-orders.
                     </Typography>
                     <SnackBar
                         buttonText={isRegistering ? "Sign in" : "Jump in"}
-                        onButtonClick={() => setIsRegistering(prev => !prev)}
+                        onButtonClick={toggleRegistering}
                         variant="info"
                         message="Reservations are being made as you read. Get the good times rolling."
                         hasBorder={false}
@@ -89,14 +94,26 @@ const AdminAuthPage = () => {
                             initialValues={signUpInitialValues}
                             validationSchema={SignUpSchema}
                             inputFields={signUpInputFields}
-                            onSubmit={isRegistering ? handleSignUp : handleSignIn}
+                            onSubmit={handleSignUp}
                         />
                     }
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <CheckBox
-                            name="Gocha"
-                            label={isRegistering ? "Agree to the terms & conditions" : "Stay signed in"}
-                        />
+                        {isRegistering ?
+                            <CheckBox
+                                key="acceptTermsCheckBox"
+                                name="acceptTerms"
+                                label="Agree to the terms & conditions"
+                                checked={acceptedTerms}
+                                onChange={(e) => setAcceptedTerms(e.target.checked)}
+                            /> :
+                            <CheckBox
+                                key="staySignedInCheckBox"
+                                name="staySignedIn"
+                                label="Stay signed in"
+                                checked={staySignedIn}
+                                onChange={(e) => setStaySignedIn(e.target.checked)}
+                            />
+                        }
                         {!isRegistering &&
                             <CustomButton
                                 onClick={handlePasswordResetModal}
@@ -109,13 +126,14 @@ const AdminAuthPage = () => {
                             isFitContent={false}
                             type="submit"
                             form={isRegistering ? "signUpCustomForm" : "signInCustomForm"}
+                            disabled={isRegistering && isSigningUp}
                         >
-                            {isRegistering ? "Create" : "Sign in"}
+                            {isRegistering ? (isSigningUp ? "Creating…" : "Create") : "Sign in"}
                         </CustomButton>
                         <CustomButton
                             variant="text"
                             className="create-account-button"
-                            onClick={() => setIsRegistering(prev => !prev)}
+                            onClick={toggleRegistering}
                         >
                             {isRegistering ? "Back to Sign in" : "Create an account"}
                         </CustomButton>

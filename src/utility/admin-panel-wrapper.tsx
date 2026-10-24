@@ -8,6 +8,7 @@ import { sendEmailVerification } from "firebase/auth";
 import { useSnackBar } from "../components/snack-bar/snack-bar-context";
 import AdminPanelNavigation from "../modules/admin-panel-navigation/admin-panel-navigation";
 import Modal from "../components/modal/modal";
+import { firebaseAuth } from "./firebase";
 
 const AdminRequireGuard = () => {
     const status = useAuth((state) => state.status);
@@ -22,8 +23,18 @@ const AdminRequireGuard = () => {
     if (role !== "admin") return <Navigate to="/" replace />;
 
     const handleSendVerification = async () => {
-        user && await sendEmailVerification(user);
-        addSnackBar("Verification sent.")
+        if (!user) return;
+        try {
+            await sendEmailVerification(user);
+            addSnackBar("Verification sent.");
+        } catch {
+            addSnackBar("Could not send the verification email. Try again later.", { variant: "error" });
+        }
+    };
+
+    const handleReturnToSignIn = async () => {
+        await firebaseAuth.signOut();
+        navigate("/admin-auth", { replace: true });
     };
 
     return (
@@ -35,7 +46,7 @@ const AdminRequireGuard = () => {
                         color="primary"
                         weight="emphasis"
                     >
-                        Email Verification Requiered
+                        Email Verification Required
                     </Typography>
                     <Typography
                         variant="body"
@@ -43,7 +54,7 @@ const AdminRequireGuard = () => {
                         size="medium"
                     >
                         Hi {user?.displayName?.split(" ")[0]}, Please verify your email address:{" "}
-                        <strong>{user?.email}</strong>
+                        <strong>{user?.email}</strong>. Once verified, sign in again.
                     </Typography>
                     <CustomButton
                         isFitContent={false}
@@ -54,7 +65,7 @@ const AdminRequireGuard = () => {
                     </CustomButton>
                     <CustomButton
                         variant="text"
-                        onClick={() => { navigate("/admin-auth", { replace: true }) }}
+                        onClick={handleReturnToSignIn}
                         className="return-button"
                     >
                         Return to Sign In Page
@@ -69,7 +80,9 @@ const AdminRequireGuard = () => {
             }
             <div className="admin-panel-wrapper" >
                 <AdminPanelNavigation />
-                <Outlet />
+                <main className="admin-panel-content">
+                    <Outlet />
+                </main>
             </div>
         </>
     );

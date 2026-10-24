@@ -1,15 +1,16 @@
 import "./custom-form.css";
 
 import { Formik, type FormikHelpers } from "formik";
-import TextInput from "../text-input/text-input";
+import TextInput, { type TextInputOptionType } from "../text-input/text-input";
 import type { AnySchema } from "yup";
 
 export type InputFieldType = {
     name: string;
-    type?: "text" | "password" | "email";
+    type?: "text" | "password" | "email" | "tel" | "select";
     label?: string;
     placeholder?: string;
     helperText?: string;
+    options?: TextInputOptionType[];
     width?: "full" | "half" | "third" | "quarter" | "auto";
 };
 
@@ -19,6 +20,8 @@ type CustomFormPropType = {
     validationSchema: AnySchema;
     inputFields: InputFieldType[];
     layout?: "wrap" | "inline";
+    disabled?: boolean;
+    enableReinitialize?: boolean;
     onSubmit: (values: Record<string, string>, formikHelpers: FormikHelpers<Record<string, string>>) => void;
 };
 
@@ -28,12 +31,15 @@ const CustomForm = ({
     validationSchema,
     inputFields,
     layout = "wrap",
+    disabled = false,
+    enableReinitialize = false,
     onSubmit,
 }: CustomFormPropType) => {
     return (
         <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
+            enableReinitialize={enableReinitialize}
             onSubmit={onSubmit}
         >
             {({
@@ -58,9 +64,11 @@ const CustomForm = ({
                                     name={value.name}
                                     label={value.label}
                                     placeholder={value.placeholder}
+                                    options={value.options}
                                     value={values[value.name]}
                                     helperText={value.helperText}
                                     errorText={touched[value.name] ? errors[value.name] : undefined}
+                                    disabled={disabled}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />

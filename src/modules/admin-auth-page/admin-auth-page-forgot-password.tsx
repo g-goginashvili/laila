@@ -16,19 +16,19 @@ const ForgotPasswordModal = ({ handleClose }: { handleClose: () => void }) => {
 
     return (
         <div
-            className={`password-resset-screen${isClosing ? " is-closing" : ""}`}
+            className={`password-reset-screen${isClosing ? " is-closing" : ""}`}
             onAnimationEnd={(e) => {
                 if (isClosing && e.target === e.currentTarget) handleClose();
             }}
         >
-            <div className="password-resset-popup">
-                <div className="password-resset-popup-decorative-line" />
+            <div className="password-reset-popup">
+                <div className="password-reset-popup-decorative-line" />
                 <Typography
                     variant="title"
                     color="primary"
                     weight="emphasis"
                 >
-                    Resset your password
+                    Reset your password
                 </Typography>
                 <Typography
                     variant="body"
@@ -38,27 +38,29 @@ const ForgotPasswordModal = ({ handleClose }: { handleClose: () => void }) => {
                     Please enter your email to reset your password
                 </Typography>
                 <CustomForm
-                    key="ressetPasswordCustomForm"
-                    formName="ressetPasswordCustomForm"
+                    key="resetPasswordCustomForm"
+                    formName="resetPasswordCustomForm"
                     initialValues={{ email: "" }}
                     validationSchema={Yup.object().shape({
                         email: Yup.string().email("Invalid email").required("Required"),
                     })}
                     inputFields={[{ name: "email", type: "email", label: "Email", width: "full" }]}
-                    onSubmit={(values) => { handlePasswordReset(values.email) }}
+                    onSubmit={async (values) => {
+                        if (await handlePasswordReset(values.email)) setIsClosing(true);
+                    }}
                 />
                 <CustomButton
                     isFitContent={false}
                     type="submit"
-                    form="ressetPasswordCustomForm"
-                    className="password-resset-verification-button"
+                    form="resetPasswordCustomForm"
+                    className="password-reset-verification-button"
                 >
                     Send Verification Email
                 </CustomButton>
                 <CustomButton
                     variant="text"
                     onClick={() => { setIsClosing(true) }}
-                    className="password-resset-return-button"
+                    className="password-reset-return-button"
                 >
                     Close
                 </CustomButton>

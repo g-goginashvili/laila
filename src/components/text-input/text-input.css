@@ -75,3 +75,23 @@
     outline-color: var(--text-error);
     border-color: var(--surface-sunken);
 }
+.text-input-select {
+    appearance: none;
+    padding-top: 24px;
+    padding-bottom: 8px;
+    cursor: pointer;
+}
+
+.text-input-element:disabled {
+    color: var(--disabled-text);
+    cursor: not-allowed;
+}
+
+.text-input-block:has(.text-input-select) .text-input-label {
+    top: calc(var(--label-medium-size) / 2);
+    transform: translateY(0);
+    color: var(--primary-default);
+    font-size: var(--label-medium-size);
+    line-height: var(--label-medium-size);
+    letter-spacing: var(--label-medium-tracking);
+}

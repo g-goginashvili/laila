@@ -1,7 +1,6 @@
 import { http } from "../utility/http-client"
+import type { OrganisationType } from "./types";
 
-export const getOrganisationDetails = async (uid: string) => {
-    return await http.get(
-        `/org/organisation-details?id=${uid}`
-    );
+export const getOrganisationDetails = async () => {
+    return await http.get<OrganisationType>("/org");
 };

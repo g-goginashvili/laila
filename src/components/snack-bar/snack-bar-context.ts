@@ -5,7 +5,7 @@ type SnackBarContextValueType = {
     id: string;
     message: string;
     buttonText?: string;
-    onButtonClick?: (...args: any[]) => any;
+    onButtonClick?: () => void;
     variant?: SnackBarVariantType;
     hasBorder?: boolean;
     duration?: number;

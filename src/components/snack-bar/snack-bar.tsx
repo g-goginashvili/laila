@@ -55,7 +55,7 @@ const SnackBar = ({
             const timer = setTimeout(() => { onExpire?.(id) }, duration);
             return () => clearTimeout(timer);
         }
-    }, []);
+    }, [id, duration, onExpire]);
 
     return (
         <div className={preciseClass} onAnimationEnd={handleAnimationEnd} ref={ref}>

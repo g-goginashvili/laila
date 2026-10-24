@@ -2,24 +2,27 @@ import { useQuery } from "@tanstack/react-query"
 import { getStoresList } from "../../api/stores-api"
 import { useState } from "react";
 import useAuth from "../../hooks/use-auth";
-import { useMatch } from "react-router";
+import { useMatch, useNavigate } from "react-router";
 import { getOrganisationDetails } from "../../api/organisations-api";
+import { queryKeys } from "../../api/query-keys";
+import { firebaseAuth } from "../../utility/firebase";
 
 const useAdminPanelNavigationController = () => {
     const user = useAuth((state) => state.user);
+    const navigate = useNavigate();
 
     const queryOrganisationDetails = useQuery({
-        queryKey: ["getOrganisationDetails", user?.uid],
-        queryFn: () => getOrganisationDetails(user!.uid),
+        queryKey: queryKeys.organisation(user?.uid),
+        queryFn: getOrganisationDetails,
         enabled: !!user
     });
 
-    const [organisation] = queryOrganisationDetails.data ?? [];
+    const organisation = queryOrganisationDetails.data;
 
     const queryStoresList = useQuery({
-        queryKey: ["getStores", organisation?.id],
-        queryFn: () => getStoresList(organisation?.id),
-        enabled: !!organisation?.id
+        queryKey: queryKeys.stores(user?.uid),
+        queryFn: getStoresList,
+        enabled: !!user
     });
 
     const stores = queryStoresList.data ?? [];
@@ -29,6 +32,11 @@ const useAdminPanelNavigationController = () => {
     const isStoresSection = Boolean(useMatch("/stores/*"));
     const storesMatch = useMatch("/stores/:storeId/:option");
 
+    const handleSignOut = async () => {
+        await firebaseAuth.signOut();
+        navigate("/admin-auth", { replace: true });
+    };
+
     return {
         organisation,
         stores,
@@ -36,7 +44,8 @@ const useAdminPanelNavigationController = () => {
         user,
         isStoresSection,
         storesMatch,
-        setIsOptionsActive
+        setIsOptionsActive,
+        handleSignOut
     };
 };
 

@@ -1,6 +1,5 @@
 import Typography from "../../components/typography/typography";
 import Chevron from "../../icons/chevron";
-import { firebaseAuth } from "../../utility/firebase";
 import "./admin-panel-navigation.css";
 
 import { type ReactElement } from "react";
@@ -27,7 +26,8 @@ const AdminPanelNavigation = (): ReactElement => {
         user,
         isStoresSection,
         storesMatch,
-        setIsOptionsActive
+        setIsOptionsActive,
+        handleSignOut
     } = useAdminPanelNavigationController();
 
     return (
@@ -36,7 +36,7 @@ const AdminPanelNavigation = (): ReactElement => {
             <div>
                 <div className="admin-panel-navigation-header">
                     <img
-                        src="../../../gviano-icon.svg"
+                        src="/gviano-icon.svg"
                         alt="Company logo"
                         className="admin-panel-navigation-header-icon"
                     />
@@ -62,7 +62,7 @@ const AdminPanelNavigation = (): ReactElement => {
                                 <>
                                     <div className="line-under-list-item-store" />
                                     <ul className="admin-panel-navigation-sub-items-list" >
-                                        {stores.map((store: any) => (
+                                        {stores.map(store => (
                                             <li key={store.id}>
                                                 <NavLink
                                                     to={`/stores/${store.id}/details`}
@@ -78,7 +78,7 @@ const AdminPanelNavigation = (): ReactElement => {
                                                             ["Details", "Menu", "Availability"].map(option => (
                                                                 <li key={option}>
                                                                     <NavLink
-                                                                        to={`/stores/${store.id}/${option}`}
+                                                                        to={`/stores/${store.id}/${option.toLowerCase()}`}
                                                                         className={({ isActive }) =>
                                                                             `admin-panel-navigation-sub-item ${isActive
                                                                                 ? "admin-panel-navigation-active-sub-item" : ""}`}
@@ -104,11 +104,8 @@ const AdminPanelNavigation = (): ReactElement => {
             <div>
                 {isOptionsActive &&
                     <div className="admin-panel-navigation-account-settings-details">
-                        <button>
-                            <Typography variant="label">Account Settings</Typography>
-                        </button>
                         <button
-                            onClick={() => { firebaseAuth.signOut() }}
+                            onClick={handleSignOut}
                         >
                             <Typography variant="label" color="error">Sign Out</Typography>
                         </button>
