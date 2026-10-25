@@ -6,6 +6,14 @@ export type OrganisationType = {
     singleLocation: boolean;
 };
 
+export type AccountType = {
+    name: string;
+    surname: string;
+    email: string;
+    phoneNumber: string;
+    role: string;
+};
+
 export type StoreStatusType = "draft" | "open" | "temporarily_closed";
 
 export type StoreShiftType = {

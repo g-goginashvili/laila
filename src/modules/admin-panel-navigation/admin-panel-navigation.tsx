@@ -36,6 +36,7 @@ const AdminPanelNavigation = (): ReactElement => {
         setIsAccountMenuOpen,
         setIsMobileNavOpen,
         closeMenus,
+        handleOpenAccount,
         handleSignOut,
     } = useAdminPanelNavigationController();
 
@@ -115,6 +116,9 @@ const AdminPanelNavigation = (): ReactElement => {
                             ))}
                         </div>
                     </div>
+                    <button type="button" role="menuitem" className="admin-nav-menu-item" onClick={handleOpenAccount}>
+                        Account
+                    </button>
                     <button type="button" role="menuitem" className="admin-nav-menu-item admin-nav-menu-item--danger" onClick={handleSignOut}>
                         Sign out
                     </button>

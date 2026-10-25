@@ -44,6 +44,11 @@ const useAdminPanelNavigationController = () => {
         .map(part => part[0]?.toUpperCase() ?? "")
         .join("");
 
+    const handleOpenAccount = () => {
+        closeMenus();
+        navigate("/account");
+    };
+
     const handleSignOut = async () => {
         await firebaseAuth.signOut();
         navigate("/admin-auth", { replace: true });
@@ -63,6 +68,7 @@ const useAdminPanelNavigationController = () => {
         setIsAccountMenuOpen,
         setIsMobileNavOpen,
         closeMenus,
+        handleOpenAccount,
         handleSignOut,
     };
 };

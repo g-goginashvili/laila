@@ -1,0 +1,16 @@
+.account-page-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.account-page-password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.account-page-password-submit {
+    align-self: flex-start;
+}
