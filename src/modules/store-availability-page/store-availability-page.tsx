@@ -5,6 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef } from "react";
 import { Link } from "react-router";
 import StoreTabs from "../../components/admin-ui/store-tabs";
+import StoreAvatar from "../../components/admin-ui/store-avatar";
 import useStoreAvailabilityPageController from "./use-store-availability-page-controller";
 import AvailabilityGrid from "./availability-grid";
 import AvailabilityWeek from "./availability-week";
@@ -135,7 +136,7 @@ const StoreAvailabilityPage = () => {
 
                     {store.tables.length > 0 && dayReservations.length === 0 && !closure &&
                         <div className="adm-card avail-empty" role="status">
-                            <span className="avail-empty-logo"><img src="/gviano-icon.svg" alt="" /></span>
+                            <StoreAvatar name={store.storeName} size="large" />
                             <div className="avail-empty-text">
                                 <strong className="adm-card-title">No reservations on {dateLabel}</strong>
                                 <span className="adm-muted">

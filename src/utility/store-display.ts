@@ -11,18 +11,13 @@ export const storeToday = (store: StoreType) => serviceNow(store.timezone).date;
 export const formatShift = (shift: { opensMinutes: number, closesMinutes: number }) =>
     `${formatMinutes(shift.opensMinutes)}–${formatMinutes(shift.closesMinutes)}`;
 
-export const storeStatusChip = (store: StoreType, variant: "list" | "details" = "list"): StatusChipType => {
-    if (store.status === "draft") return { tone: "neutral", label: variant === "details" ? "Draft — hidden from diners" : "Draft" };
-    if (store.status === "temporarily_closed") return { tone: "warning", label: "Temporarily closed" };
-    if (variant === "list" && shiftsOn(store, storeToday(store)).length === 0) return { tone: "neutral", label: "Closed today" };
-    return { tone: "success", label: "Accepting reservations" };
-};
+// Whether the store opens today (hours and whole-day closures); booking status is shown separately.
+export const storeOpenTodayChip = (store: StoreType): StatusChipType =>
+    store.status !== "temporarily_closed" && shiftsOn(store, storeToday(store)).length > 0
+        ? { tone: "success", label: "Open today" }
+        : { tone: "neutral", label: "Closed today" };
 
-export const todayHoursLabel = (store: StoreType) => {
-    if (store.status === "temporarily_closed") return "Temporarily closed";
-    const shifts = shiftsOn(store, storeToday(store));
-    return shifts.length ? shifts.map(formatShift).join(" · ") : "Closed today";
-};
+export const isAcceptingReservations = (store: Pick<StoreType, "status">) => store.status === "open";
 
 export const streetLine = (store: Pick<StoreType, "address" | "postcode" | "city">) =>
     [store.address, [store.postcode, store.city].filter(Boolean).join(" ")].filter(Boolean).join(", ");

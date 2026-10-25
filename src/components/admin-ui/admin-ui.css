@@ -348,6 +348,38 @@
     box-shadow: var(--shadow-raised);
 }
 
+.adm-store-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: 999px;
+    background-color: var(--primary-container);
+    color: var(--primary-on-container);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    user-select: none;
+}
+
+.adm-store-avatar--medium {
+    width: 44px;
+    height: 44px;
+    font-size: 15px;
+}
+
+.adm-store-avatar--large {
+    width: 48px;
+    height: 48px;
+    font-size: 16px;
+}
+
+.adm-store-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
 .adm-chevron-badge {
     display: flex;
     align-items: center;

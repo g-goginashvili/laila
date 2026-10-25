@@ -5,7 +5,8 @@ import { Link } from "react-router";
 import useStoresPageController from "./use-stores-page-controller";
 import NewStoreDrawer from "./new-store-drawer";
 import { errorMessage } from "../../utility/validation";
-import { seatCount, storeStatusChip, streetLine, todayHoursLabel } from "../../utility/store-display";
+import StoreAvatar from "../../components/admin-ui/store-avatar";
+import { isAcceptingReservations, storeOpenTodayChip, streetLine } from "../../utility/store-display";
 
 const StoresPage = () => {
     const {
@@ -39,8 +40,8 @@ const StoresPage = () => {
             {stores.length > 0 &&
                 <ul className="stores-page-grid">
                     {stores.map(store => {
-                        const chip = storeStatusChip(store);
-                        const isOpen = chip.tone === "success";
+                        const chip = storeOpenTodayChip(store);
+                        const accepting = isAcceptingReservations(store);
                         return (
                             <li key={store.id}>
                                 <Link
@@ -49,17 +50,17 @@ const StoresPage = () => {
                                     aria-label={`${store.storeName}${store.city ? `, ${store.city}` : ""} — open store details`}
                                 >
                                     <div className="stores-page-card-top">
+                                        <StoreAvatar name={store.storeName} />
                                         <div className="stores-page-card-title">
                                             <span className="stores-page-card-name">{store.storeName}</span>
                                             <span className="adm-muted">{streetLine(store)}</span>
                                         </div>
-                                        <span className="adm-chevron-badge stores-page-card-chevron" aria-hidden="true" />
                                     </div>
                                     <div className="stores-page-card-footer">
                                         <span className={`adm-chip adm-chip--${chip.tone}`}>{chip.label}</span>
                                         <dl className="stores-page-card-facts">
-                                            <div><dt>Covers</dt><dd>{seatCount(store)}</dd></div>
-                                            <div><dt>Today</dt><dd className={isOpen ? "" : "adm-muted"}>{todayHoursLabel(store)}</dd></div>
+                                            <div><dt>Tables</dt><dd>{store.tables.length}</dd></div>
+                                            <div><dt>Reservations</dt><dd className={accepting ? "" : "adm-muted"}>{accepting ? "Accepting" : "Not accepting"}</dd></div>
                                         </dl>
                                     </div>
                                 </Link>
