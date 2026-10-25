@@ -49,6 +49,8 @@ const CustomForm = ({
                 handleChange,
                 handleBlur,
                 handleSubmit,
+                setFieldValue,
+                setFieldTouched,
             }) => (
                 <form id={formName} onSubmit={handleSubmit}>
                     <div className={
@@ -71,6 +73,8 @@ const CustomForm = ({
                                     disabled={disabled}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    onValueChange={(next) => setFieldValue(value.name, next)}
+                                    onTouched={() => setFieldTouched(value.name, true)}
                                 />
                             </div>
                         )}

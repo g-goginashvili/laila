@@ -31,3 +31,10 @@
 .input-width-modifier-auto {
     flex: 0 1 auto;
 }
+
+/* On phones, split fields are too narrow for their labels, so stack them. */
+@media (max-width: 480px) {
+    .custom-form-fields-div:not(.custom-form-fields-div-inline) :is(.input-width-modifier-half, .input-width-modifier-third, .input-width-modifier-quarter) {
+        flex-basis: 100%;
+    }
+}

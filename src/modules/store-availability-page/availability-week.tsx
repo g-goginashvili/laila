@@ -40,7 +40,7 @@ const AvailabilityWeek = ({ store, weekStart, today, reservations, onOpenDay }: 
                         </span>
                         <span className="avail-week-figures">
                             <span><span className="avail-week-number">{day.bookings}</span> <span className="adm-muted">{day.bookings === 1 ? "booking" : "bookings"}</span></span>
-                            <span><span className="avail-week-number">{day.covers}</span> <span className="adm-muted">covers</span></span>
+                            <span><span className="avail-week-number">{day.covers}</span> <span className="adm-muted">{day.covers === 1 ? "cover" : "covers"}</span></span>
                         </span>
                         {day.unconfirmed > 0 && <span className="adm-chip adm-chip--warning adm-chip--medium">{day.unconfirmed} unconfirmed</span>}
                     </button>

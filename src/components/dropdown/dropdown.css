@@ -1,0 +1,103 @@
+/* Colours come from the semantic tokens both palettes define (color-system.css and admin-theme.css),
+   so the list matches whichever theme the trigger sits in. */
+
+.dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+}
+
+.dropdown-trigger:disabled {
+    cursor: not-allowed;
+}
+
+.dropdown-value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-placeholder {
+    color: var(--text-placeholder, var(--text-muted));
+}
+
+.dropdown-caret {
+    flex-shrink: 0;
+    width: 8px;
+    height: 8px;
+    margin-right: 2px;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    opacity: 0.7;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.15s ease-out;
+}
+
+.dropdown-trigger[aria-expanded="true"] .dropdown-caret {
+    transform: translateY(2px) rotate(225deg);
+}
+
+.dropdown-list {
+    position: fixed;
+    z-index: 1000;
+    width: max-content;
+    margin: 0;
+    padding: 4px;
+    list-style: none;
+    overflow-y: auto;
+    background-color: var(--surface-raised);
+    color: var(--text-primary);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    box-shadow: var(--shadow-raised, 0 4px 16px rgba(0, 0, 0, 0.16));
+    font-variant-numeric: tabular-nums;
+}
+
+.dropdown-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    line-height: 24px;
+    cursor: pointer;
+}
+
+.dropdown-option.is-active {
+    background-color: var(--surface-sunken);
+}
+
+.dropdown-option.is-selected {
+    font-weight: 500;
+}
+
+.dropdown-option.is-disabled {
+    color: var(--disabled-text);
+    cursor: not-allowed;
+}
+
+.dropdown-option-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-check {
+    flex-shrink: 0;
+    width: 6px;
+    height: 11px;
+    margin-right: 4px;
+    border-right: 2px solid var(--primary-default);
+    border-bottom: 2px solid var(--primary-default);
+    transform: translateY(-2px) rotate(45deg);
+}

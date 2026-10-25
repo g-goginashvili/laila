@@ -25,7 +25,7 @@ export const SignUpSchema = Yup.object().shape({
     phoneNumber: phoneNumberRule,
     orgName: requiredText(100),
     address: requiredText(200),
-    numberOfStores: Yup.string().oneOf(["single", "multiple"]).required("Required"),
+    numberOfStores: Yup.string().required("Choose one").oneOf(["single", "multiple"], "Choose one"),
     password: Yup.string()
         .min(8, "At least 8 characters")
         .max(128, "At most 128 characters")
@@ -39,14 +39,14 @@ export const signUpInitialValues = {
     phoneNumber: "",
     orgName: "",
     address: "",
-    numberOfStores: "single",
+    numberOfStores: "",
     password: "",
 };
 
 export const signUpInputFields: InputFieldType[] = [
     { name: "name", type: "text", label: "Name", width: "half" },
     { name: "surname", type: "text", label: "Surname", width: "half" },
-    { name: "phoneNumber", type: "tel", label: "Phone Number", placeholder: "+995555123456", width: "half" },
+    { name: "phoneNumber", type: "tel", label: "Phone Number", placeholder: "+302103614022", width: "half" },
     { name: "email", type: "email", label: "Email", width: "half" },
     { name: "orgName", type: "text", label: "Organisation", width: "half" },
     {

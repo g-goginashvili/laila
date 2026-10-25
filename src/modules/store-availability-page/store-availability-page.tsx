@@ -48,16 +48,8 @@ const StoreAvailabilityPage = () => {
         onError: (mutationError) => addSnackBar(errorMessage(mutationError), { variant: "error" }),
     });
 
-    if (isLoading && !store) return <main className="adm-page adm-page--wide"><p className="adm-muted">Loading availability…</p></main>;
-    if (!store) return <main className="adm-page adm-page--wide"><p className="adm-form-error" role="alert">{errorMessage(error, "Store not found.")}</p></main>;
-
-    const covers = dayReservations.filter(reservation => reservation.status !== "no_show").reduce((total, reservation) => total + reservation.partySize, 0);
-    const seatedNow = dayReservations.filter(reservation => reservation.status === "seated").length;
-    const summary = view === "week"
-        ? `Week of ${formatShortDate(weekStart)} · ${reservations.filter(reservation => reservation.status !== "cancelled").length} reservations`
-        : dayReservations.length
-            ? `${dateLabel} · ${dayReservations.length} ${dayReservations.length === 1 ? "reservation" : "reservations"} · ${covers} covers${isToday ? ` · ${seatedNow} ${seatedNow === 1 ? "table" : "tables"} seated now` : ""}`
-            : `${dateLabel} · no reservations`;
+    if (isLoading && !store) return <main className="adm-page"><p className="adm-muted">Loading availability…</p></main>;
+    if (!store) return <main className="adm-page"><p className="adm-form-error" role="alert">{errorMessage(error, "Store not found.")}</p></main>;
 
     const openNew = () => setDrawer({ type: "reservation", reservationId: null, tableId: null, startMinutes: null, fromGrid: false });
     const drawerReservation = drawer?.type === "reservation" && drawer.reservationId
@@ -67,13 +59,12 @@ const StoreAvailabilityPage = () => {
     const policyNote = `Table time ${store.tableTimeMinutes} min${store.lunchTableTimeMinutes ? ` · ${store.lunchTableTimeMinutes} min at lunch` : ""}. Last seating ${store.lastSeatingMinutes} min before close.`;
 
     return (
-        <main className="adm-page adm-page--wide adm-page--tight">
+        <main className="adm-page">
             <Link to={`/stores/${storeId}/details`} className="adm-back-link"><span className="adm-back-link-arrow" aria-hidden="true">‹</span>Store details</Link>
 
             <header className="adm-page-header adm-page-header--top">
                 <div className="adm-title-block">
                     <h1 className="adm-h1">{store.storeName}</h1>
-                    <p className="adm-subtitle">Availability · {summary}</p>
                 </div>
                 <button type="button" className="adm-btn adm-btn--primary" onClick={openNew}>
                     <span className="adm-btn-glyph" aria-hidden="true">+</span>New reservation

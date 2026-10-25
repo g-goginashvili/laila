@@ -9,7 +9,6 @@ import StoreEditDrawer from "./store-edit-drawer";
 import StoreHoursDrawer from "./store-hours-drawer";
 import StoreTablesDrawer from "./store-tables-drawer";
 import { errorMessage } from "../../utility/validation";
-import { streetLine } from "../../utility/store-display";
 
 const StoreDetailsPage = () => {
     const { store, details, isLoading, error, drawer, setDrawer, applyStore } = useStoreDetailsPageController();
@@ -27,16 +26,12 @@ const StoreDetailsPage = () => {
     const closeDrawer = () => setDrawer(null);
 
     return (
-        <main className="adm-page adm-page--tight">
+        <main className="adm-page">
             <Link to="/stores" className="adm-back-link"><span className="adm-back-link-arrow" aria-hidden="true">‹</span>Stores</Link>
 
             <header className="adm-page-header adm-page-header--top">
                 <div className="adm-title-block store-details-title">
                     <h1 className="adm-h1">{store.storeName}</h1>
-                    <div className="store-details-meta">
-                        <span className={`adm-chip adm-chip--${details.chip.tone}`}>{details.chip.label}</span>
-                        <span className="adm-muted">{streetLine(store)}</span>
-                    </div>
                 </div>
                 <button type="button" className="adm-btn adm-btn--primary store-details-edit" onClick={() => setDrawer("edit")}>Edit</button>
             </header>

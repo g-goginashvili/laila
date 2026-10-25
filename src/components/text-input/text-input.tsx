@@ -1,12 +1,10 @@
 import "./text-input.css";
 
 import Typography from "../typography/typography"
+import Dropdown, { type DropdownOptionType } from "../dropdown/dropdown";
 import type { ChangeEvent, FocusEvent } from "react";
 
-export type TextInputOptionType = {
-    value: string;
-    label: string;
-};
+export type TextInputOptionType = DropdownOptionType;
 
 type TextInputPropType = {
     type?: "text" | "password" | "email" | "tel" | "select";
@@ -18,8 +16,11 @@ type TextInputPropType = {
     helperText?: string;
     errorText?: string;
     disabled?: boolean;
-    onChange?: (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-    onBlur?: (e: FocusEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
+    // Used by type="select", which renders a Dropdown rather than an input.
+    onValueChange?: (value: string) => void;
+    onTouched?: () => void;
 }
 
 const TextInput = ({
@@ -34,6 +35,8 @@ const TextInput = ({
     disabled = false,
     onChange,
     onBlur,
+    onValueChange,
+    onTouched,
 }: TextInputPropType) => {
 
     const elementClass = `text-input-element ${errorText ? "text-input-error-state" : ""}`;
@@ -50,19 +53,19 @@ const TextInput = ({
                     {label}
                 </Typography>
                 {type === "select" ?
-                    <select
+                    <Dropdown
                         id={name}
                         name={name}
                         className={`${elementClass} text-input-select`}
-                        value={value}
+                        value={value ?? ""}
+                        options={options}
+                        // The resting label already says what to pick, like an empty text input.
+                        placeholder=""
                         disabled={disabled}
-                        onChange={onChange}
-                        onBlur={onBlur}
-                    >
-                        {options.map(option =>
-                            <option key={option.value} value={option.value}>{option.label}</option>
-                        )}
-                    </select> :
+                        invalid={!!errorText}
+                        onChange={(next) => onValueChange?.(next)}
+                        onBlur={onTouched}
+                    /> :
                     <input
                         type={type}
                         id={name}

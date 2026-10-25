@@ -11,7 +11,7 @@ import { formatEuro } from "../../utility/service-time";
 
 const StoreMenuPage = () => {
     const {
-        storeId, store, menu, isLoading, error, groups, itemCount, allergenCount, soldOutCount, updatedLabel,
+        storeId, store, menu, isLoading, error, groups, allergenCount, soldOutCount,
         drawer, setDrawer, drag, refresh,
     } = useStoreMenuPageController();
 
@@ -22,16 +22,12 @@ const StoreMenuPage = () => {
         : null;
 
     return (
-        <main className="adm-page adm-page--tight">
+        <main className="adm-page">
             <Link to={`/stores/${storeId}/details`} className="adm-back-link"><span className="adm-back-link-arrow" aria-hidden="true">‹</span>Store details</Link>
 
             <header className="adm-page-header adm-page-header--top">
                 <div className="adm-title-block">
                     <h1 className="adm-h1">{storeName || "Menu"}</h1>
-                    <p className="adm-subtitle">
-                        Menu · {itemCount} {itemCount === 1 ? "item" : "items"} in {groups.length} {groups.length === 1 ? "group" : "groups"}
-                        {updatedLabel && ` · updated ${updatedLabel}`}
-                    </p>
                 </div>
                 <button type="button" className="adm-btn adm-btn--primary" onClick={() => setDrawer({ type: "group", groupId: null })}>
                     <span className="adm-btn-glyph" aria-hidden="true">+</span>New group

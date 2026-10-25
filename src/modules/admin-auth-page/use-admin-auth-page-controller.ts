@@ -10,7 +10,7 @@ import { adminSignUp } from "../../api/auth-api";
 import { errorMessage } from "../../utility/validation";
 
 const FirebaseErrorsMap: Record<string, string> = {
-    "auth/user-not-found": "Unable to authorize an user.",
+    "auth/user-not-found": "Incorrect email or password.",
     "auth/invalid-credential": "Incorrect email or password.",
     "auth/wrong-password": "Incorrect email or password.",
     "auth/user-disabled": "This account has been disabled.",
@@ -71,7 +71,8 @@ const useAdminAuthPageController = () => {
 
         } catch (error) {
             addSnackBar(firebaseErrorMessage(error), { variant: "error" });
-            formikHelpers.resetForm();
+            // Keep the email so a mistyped password doesn't mean retyping everything.
+            formikHelpers.resetForm({ values: { ...values, password: "" } });
         }
     };
 

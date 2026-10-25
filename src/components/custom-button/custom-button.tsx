@@ -45,6 +45,7 @@ const CustomButton = ({
             className={styleClasses}
         >
             <Typography
+                as="span"
                 variant="label"
                 size={size === "small" ? "medium" : "large"}
                 color="inherit"

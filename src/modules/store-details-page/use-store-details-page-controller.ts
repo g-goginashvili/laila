@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import useStore from "../../hooks/use-store";
 import type { StoreTableType, StoreType } from "../../api/types";
 import { addDays, formatDayMonthYear, formatTimestampDate, WEEKDAYS, weekdayOf } from "../../utility/service-time";
-import { formatShift, seatCount, storeStatusChip, storeToday } from "../../utility/store-display";
+import { formatShift, seatCount, storeToday } from "../../utility/store-display";
 
 type DrawerType = "edit" | "hours" | "tables" | null;
 
@@ -49,7 +49,6 @@ const buildDetails = (store: StoreType) => {
     const nextClosure = store.closures[0];
 
     return {
-        chip: storeStatusChip(store, "details"),
         week: WEEKDAYS.map((day, weekday) => ({
             ...day,
             shifts: store.hours.filter(shift => shift.weekday === weekday).map(formatShift),

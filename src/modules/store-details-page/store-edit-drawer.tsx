@@ -16,6 +16,16 @@ const STATUS_OPTIONS: { value: StoreStatusType, label: string, hint: string }[] 
     { value: "draft", label: "Draft", hint: "Hidden from diners." },
 ];
 
+// Mirrors the backend check, so a typo shows on the field instead of as a server error.
+const isValidTimeZone = (timeZone: string) => {
+    try {
+        new Intl.DateTimeFormat("en", { timeZone });
+        return true;
+    } catch {
+        return false;
+    }
+};
+
 const optionalText = (max: number) => Yup.string().trim().max(max, `At most ${max} characters`);
 const wholeNumber = (min: number, max: number) => Yup.string().trim().required("Required")
     .matches(/^\d+$/, "Whole number").test("range", `${min}–${max}`, value => Number(value) >= min && Number(value) <= max);
@@ -51,7 +61,8 @@ const EditStoreSchema = Yup.object({
     depositMinParty: optionalWholeNumber(1, 100),
     cancellationHours: wholeNumber(0, 720),
     gracePeriodMinutes: wholeNumber(0, 240),
-    timezone: Yup.string().trim().required("Required"),
+    timezone: Yup.string().trim().required("Required")
+        .test("time-zone", "Unknown time zone, e.g. Europe/Athens", value => !value || isValidTimeZone(value.trim())),
 });
 
 const toFormValues = (store: StoreType) => ({

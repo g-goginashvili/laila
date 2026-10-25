@@ -7,7 +7,6 @@ import { queryKeys } from "../../api/query-keys";
 import type { MenuType } from "../../api/types";
 import { useSnackBar } from "../../components/snack-bar/snack-bar-context";
 import { errorMessage } from "../../utility/validation";
-import { formatTimestampDate } from "../../utility/service-time";
 
 export type MenuDrawerType =
     | { type: "item", itemId: string | null, groupId: string }
@@ -105,10 +104,8 @@ const useStoreMenuPageController = () => {
         isLoading,
         error,
         groups: orderedGroups,
-        itemCount: items.length,
         allergenCount,
         soldOutCount,
-        updatedLabel: menu?.updatedAt ? formatTimestampDate(menu.updatedAt) : null,
         drawer,
         setDrawer,
         drag,

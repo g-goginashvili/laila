@@ -6,7 +6,8 @@
     gap: 8px;
     padding: 14px 16px;
     align-items: flex-start;
-    width: 475px;
+    /* 32px leaves room for the container's 16px padding on each side on phones. */
+    width: min(475px, calc(100vw - 32px));
 }
 
 .snack-bar button {

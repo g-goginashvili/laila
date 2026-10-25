@@ -9,8 +9,13 @@ import Typography from "../../components/typography/typography";
 import useAdminAuthPageController from "./use-admin-auth-page-controller";
 import { signInInitialValues, signInInputFields, SignInSchema, signUpInitialValues, signUpInputFields, SignUpSchema } from "./admin-auth-page-formik-controller";
 import ForgotPasswordModal from "./admin-auth-page-forgot-password";
+import { Navigate } from "react-router";
+import useAuth from "../../hooks/use-auth";
 
 const AdminAuthPage = () => {
+    const status = useAuth((state) => state.status);
+    const role = useAuth((state) => state.role);
+
     const {
         isForgotPassword,
         isRegistering,
@@ -24,6 +29,11 @@ const AdminAuthPage = () => {
         handleSignIn,
         handlePasswordResetModal,
     } = useAdminAuthPageController();
+
+    // A session kept by "Stay signed in" goes straight to the dashboard; wait for Firebase to restore it
+    // so the form doesn't flash first.
+    if (status === "initializing") return null;
+    if (status === "authenticated" && role === "admin") return <Navigate to="/dashboard" replace />;
 
     return (
         <main className="login-page">
@@ -118,7 +128,7 @@ const AdminAuthPage = () => {
                             <CustomButton
                                 onClick={handlePasswordResetModal}
                                 variant="text"
-                            >Forgot password ?
+                            >Forgot password?
                             </CustomButton>}
                     </div>
                     <div className="buttons-div">

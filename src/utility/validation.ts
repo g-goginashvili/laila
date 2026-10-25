@@ -5,7 +5,7 @@ export const E164_REGEX = /^\+[1-9]\d{7,14}$/;
 
 export const phoneNumberRule = Yup.string()
     .trim()
-    .matches(E164_REGEX, "Use international format, e.g. +995555123456")
+    .matches(E164_REGEX, "Use international format, e.g. +302103614022")
     .required("Required");
 
 export const emailRule = Yup.string().trim().email("Invalid email").max(255, "Too long").required("Required");

@@ -2,13 +2,6 @@
     gap: 8px;
 }
 
-.store-details-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px 12px;
-    align-items: center;
-}
-
 .store-details-edit {
     padding: 10px 28px;
 }

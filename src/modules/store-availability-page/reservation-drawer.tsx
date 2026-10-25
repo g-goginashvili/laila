@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Drawer from "../../components/admin-ui/drawer";
+import Dropdown from "../../components/dropdown/dropdown";
 import Field from "../../components/admin-ui/field";
 import { addReservation, deleteReservation, getReservations, updateReservation } from "../../api/reservations-api";
 import { queryKeys } from "../../api/query-keys";
@@ -189,35 +190,54 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
                 </div>
                 <div className="adm-form-grid adm-form-grid--narrow">
                     <Field label="Time" htmlFor="rv-time" required hint={starts.length ? undefined : "Closed on this date — booking anyway"}>
-                        <select id="rv-time" className="adm-input adm-tabular" value={startMinutes} onChange={(event) => changeTime(Number(event.target.value))}>
-                            {timeOptions.map(option => <option key={option} value={option}>{formatMinutes(option)}</option>)}
-                        </select>
+                        <Dropdown
+                            id="rv-time"
+                            className="adm-input adm-tabular"
+                            value={String(startMinutes)}
+                            onChange={(next) => changeTime(Number(next))}
+                            options={timeOptions.map(option => ({ value: String(option), label: formatMinutes(option) }))}
+                        />
                     </Field>
                     <Field label="Duration" htmlFor="rv-duration"
                         hint={`Ends ${formatMinutes(end)}${table && freeUntil ? ` · table free until ${formatMinutes(freeUntil)}` : ""}`}>
-                        <select id="rv-duration" className="adm-input" value={duration} onChange={(event) => { setDuration(Number(event.target.value)); setDurationTouched(true); }}>
-                            {durationOptions.map(option => <option key={option} value={option}>{option} min</option>)}
-                        </select>
+                        <Dropdown
+                            id="rv-duration"
+                            className="adm-input"
+                            value={String(duration)}
+                            onChange={(next) => { setDuration(Number(next)); setDurationTouched(true); }}
+                            options={durationOptions.map(option => ({ value: String(option), label: `${option} min` }))}
+                        />
                     </Field>
                 </div>
                 <Field label="Table" htmlFor="rv-table" error={errors.tableId}
                     hint={alternatives.length ? `Also free at ${time} for ${partySize}: ${alternatives.slice(0, 4).join(", ")}` : `No other free tables for ${partySize} at ${time}`}>
-                    <select id="rv-table" className="adm-input" value={tableId} onChange={(event) => { setTableId(event.target.value); clearError("tableId"); }}>
-                        <option value="">No table yet</option>
-                        {store.tables.map(entry => {
-                            const isFree = free(entry.id);
-                            return (
-                                <option key={entry.id} value={entry.id} disabled={!isFree && entry.id !== tableId}>
-                                    {entry.label} · {entry.seats} seats{entry.area ? ` · ${entry.area}` : ""}{isFree ? "" : " · booked"}
-                                </option>
-                            );
-                        })}
-                    </select>
+                    <Dropdown
+                        id="rv-table"
+                        className={`adm-input ${errors.tableId ? "adm-input--invalid" : ""}`}
+                        value={tableId}
+                        invalid={!!errors.tableId}
+                        onChange={(next) => { setTableId(next); clearError("tableId"); }}
+                        options={[
+                            { value: "", label: "No table yet" },
+                            ...store.tables.map(entry => {
+                                const isFree = free(entry.id);
+                                return {
+                                    value: entry.id,
+                                    label: `${entry.label} · ${entry.seats} seats${entry.area ? ` · ${entry.area}` : ""}${isFree ? "" : " · booked"}`,
+                                    disabled: !isFree && entry.id !== tableId,
+                                };
+                            }),
+                        ]}
+                    />
                 </Field>
                 <Field label="Status" htmlFor="rv-status">
-                    <select id="rv-status" className="adm-input" value={status} onChange={(event) => setStatus(event.target.value as ReservationStatusType)}>
-                        {(reservation ? ALL_STATUSES : NEW_STATUSES).map(option => <option key={option} value={option}>{RESERVATION_STATUS_LABELS[option]}</option>)}
-                    </select>
+                    <Dropdown
+                        id="rv-status"
+                        className="adm-input"
+                        value={status}
+                        onChange={(next) => setStatus(next as ReservationStatusType)}
+                        options={(reservation ? ALL_STATUSES : NEW_STATUSES).map(option => ({ value: option, label: RESERVATION_STATUS_LABELS[option] }))}
+                    />
                 </Field>
             </section>
 

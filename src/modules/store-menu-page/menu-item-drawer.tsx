@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useRef, useState } from "react";
 import Drawer from "../../components/admin-ui/drawer";
+import Dropdown from "../../components/dropdown/dropdown";
 import Field from "../../components/admin-ui/field";
 import Switch from "../../components/admin-ui/switch";
 import { addMenuItem, deleteMenuItem, updateMenuItem } from "../../api/menu-api";
@@ -145,9 +146,13 @@ const MenuItemDrawer = ({ storeId, storeName, groups, groupId: initialGroupId, i
 
             <div className="adm-form-grid">
                 <Field label="Group" htmlFor="mi-group">
-                    <select id="mi-group" className="adm-input" value={groupId} onChange={(event) => setGroupId(event.target.value)}>
-                        {groups.map(group => <option key={group.id} value={group.id}>{group.name}</option>)}
-                    </select>
+                    <Dropdown
+                        id="mi-group"
+                        className="adm-input"
+                        value={groupId}
+                        onChange={setGroupId}
+                        options={groups.map(group => ({ value: group.id, label: group.name }))}
+                    />
                 </Field>
                 <div className="adm-field">
                     <span className="adm-label">Availability</span>

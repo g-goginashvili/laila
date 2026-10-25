@@ -27,6 +27,8 @@ type TypographyPropType =
         color?: TypographyColorType;
         weight?: TypographyWeightType;
         htmlFor?: string;
+        // Overrides the element picked from the variant, e.g. a span inside a button.
+        as?: ElementType;
     };
 
 const variantMap = {
@@ -44,16 +46,17 @@ const Typography = ({
     weight = "baseline",
     children,
     className,
+    as,
     ...rest
 }: TypographyPropType): ReactElement => {
 
-    const TypographyTag = variantMap[variant] as ElementType;
+    const TypographyTag = as ?? variantMap[variant] as ElementType;
     const preciseClass =
         `typography ` +
         `typography-${color} ` +
         `typography-${variant}-${size} ` +
         `typography-${variant}-${size}-${weight} ` +
-        `${className}`;
+        `${className ?? ""}`;
 
     return (
         <TypographyTag

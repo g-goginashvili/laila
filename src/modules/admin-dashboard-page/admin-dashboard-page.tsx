@@ -2,6 +2,7 @@ import "../../components/admin-ui/admin-ui.css";
 import "./admin-dashboard-page.css";
 
 import { Link } from "react-router";
+import Dropdown from "../../components/dropdown/dropdown";
 import useAdminDashboardPageController from "./use-admin-dashboard-page-controller";
 import { errorMessage } from "../../utility/validation";
 
@@ -73,10 +74,16 @@ const AdminDashboardPage = () => {
                 </div>
                 <div className="adm-field dash-scope">
                     <label htmlFor="dash-scope" className="adm-small adm-muted dash-scope-label">Showing</label>
-                    <select id="dash-scope" className="adm-input adm-input--raised dash-scope-select" value={scope} onChange={(event) => setScope(event.target.value)}>
-                        <option value="all">All stores ({allStores.length})</option>
-                        {allStores.map(store => <option key={store.id} value={store.id}>{store.storeName}</option>)}
-                    </select>
+                    <Dropdown
+                        id="dash-scope"
+                        className="adm-input adm-input--raised dash-scope-select"
+                        value={scope}
+                        onChange={setScope}
+                        options={[
+                            { value: "all", label: `All stores (${allStores.length})` },
+                            ...allStores.map(store => ({ value: store.id, label: store.storeName })),
+                        ]}
+                    />
                 </div>
             </header>
 

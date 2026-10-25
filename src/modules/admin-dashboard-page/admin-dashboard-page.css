@@ -188,6 +188,9 @@
 
 /* Stores today table */
 .dash-table-scroll {
+    /* position: relative keeps absolutely positioned visually-hidden headers inside the scroll box,
+       otherwise they escape it and widen the page on phones. */
+    position: relative;
     overflow: auto;
 }
 
