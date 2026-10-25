@@ -1,85 +1,76 @@
-import "../../styles/admin-page-layout.css";
+import "../../components/admin-ui/admin-ui.css";
+import "./stores-page.css";
 
-import { NavLink } from "react-router";
-import Typography from "../../components/typography/typography";
-import CustomButton from "../../components/custom-button/custom-button";
-import CustomForm from "../../components/custom-form/custom-form";
+import { Link } from "react-router";
 import useStoresPageController from "./use-stores-page-controller";
-import { emptyStoreValues, StoreSchema, storeInputFields } from "./store-form-config";
+import NewStoreDrawer from "./new-store-drawer";
 import { errorMessage } from "../../utility/validation";
+import { seatCount, storeStatusChip, streetLine, todayHoursLabel } from "../../utility/store-display";
 
 const StoresPage = () => {
     const {
         stores,
+        acceptingCount,
         isLoading,
-        isError,
         error,
         isAdding,
-        isSaving,
         setIsAdding,
-        handleAddStore,
     } = useStoresPageController();
 
     return (
-        <div className="admin-page">
-            <div className="admin-page-header">
-                <div className="admin-page-header-text">
-                    <Typography variant="headline" size="medium" weight="emphasis">Stores</Typography>
-                    <Typography variant="body" size="medium" color="secondary">
-                        Locations that belong to your organisation.
-                    </Typography>
+        <main className="adm-page">
+            <header className="adm-page-header">
+                <div className="adm-title-block">
+                    <h1 className="adm-h1">Stores</h1>
+                    <p className="adm-subtitle">
+                        {isLoading ? "Loading…" : `${stores.length} ${stores.length === 1 ? "store" : "stores"} · ${acceptingCount} accepting reservations`}
+                    </p>
                 </div>
-                {!isAdding &&
-                    <CustomButton size="medium" onClick={() => setIsAdding(true)}>Add store</CustomButton>}
-            </div>
+                <button type="button" className="adm-btn adm-btn--primary" onClick={() => setIsAdding(true)}>
+                    <span className="adm-btn-glyph" aria-hidden="true">+</span>New store
+                </button>
+            </header>
 
-            {isAdding &&
-                <section className="admin-page-card">
-                    <Typography variant="title" size="medium" weight="emphasis">New store</Typography>
-                    <CustomForm
-                        key="addStoreCustomForm"
-                        formName="addStoreCustomForm"
-                        initialValues={emptyStoreValues}
-                        validationSchema={StoreSchema}
-                        inputFields={storeInputFields}
-                        disabled={isSaving}
-                        onSubmit={handleAddStore}
-                    />
-                    <div className="admin-page-card-actions">
-                        <CustomButton variant="text" onClick={() => setIsAdding(false)}>Cancel</CustomButton>
-                        <CustomButton size="medium" type="submit" form="addStoreCustomForm" disabled={isSaving}>
-                            {isSaving ? "Saving…" : "Save store"}
-                        </CustomButton>
-                    </div>
-                </section>
-            }
+            {error && <p className="adm-form-error" role="alert">{errorMessage(error, "Could not load stores.")}</p>}
 
-            {isLoading && <Typography variant="body" color="secondary">Loading stores…</Typography>}
-
-            {isError &&
-                <Typography variant="body" color="error">{errorMessage(error, "Could not load stores.")}</Typography>}
-
-            {!isLoading && !isError && stores.length === 0 &&
-                <div className="admin-page-empty">
-                    <Typography variant="body" color="secondary">No stores yet. Add your first location.</Typography>
-                </div>
-            }
+            {!isLoading && !error && stores.length === 0 &&
+                <p className="adm-empty">No stores yet. Add your first location to start taking reservations.</p>}
 
             {stores.length > 0 &&
-                <div className="admin-page-grid">
-                    {stores.map(store => (
-                        <NavLink key={store.id} to={`/stores/${store.id}/details`} className="admin-page-card stores-page-card-link">
-                            <Typography variant="title" size="medium" weight="emphasis">{store.storeName}</Typography>
-                            <div>
-                                <Typography variant="body" size="small" color="secondary">{store.address}</Typography>
-                                <Typography variant="body" size="small" color="secondary">Manager: {store.storeManager}</Typography>
-                                <Typography variant="body" size="small" color="secondary">{store.phoneNumber}</Typography>
-                            </div>
-                        </NavLink>
-                    ))}
-                </div>
+                <ul className="stores-page-grid">
+                    {stores.map(store => {
+                        const chip = storeStatusChip(store);
+                        const isOpen = chip.tone === "success";
+                        return (
+                            <li key={store.id}>
+                                <Link
+                                    to={`/stores/${store.id}/details`}
+                                    className="adm-card adm-link-card stores-page-card"
+                                    aria-label={`${store.storeName}${store.city ? `, ${store.city}` : ""} — open store details`}
+                                >
+                                    <div className="stores-page-card-top">
+                                        <div className="stores-page-card-title">
+                                            <span className="stores-page-card-name">{store.storeName}</span>
+                                            <span className="adm-muted">{streetLine(store)}</span>
+                                        </div>
+                                        <span className="adm-chevron-badge stores-page-card-chevron" aria-hidden="true" />
+                                    </div>
+                                    <div className="stores-page-card-footer">
+                                        <span className={`adm-chip adm-chip--${chip.tone}`}>{chip.label}</span>
+                                        <dl className="stores-page-card-facts">
+                                            <div><dt>Covers</dt><dd>{seatCount(store)}</dd></div>
+                                            <div><dt>Today</dt><dd className={isOpen ? "" : "adm-muted"}>{todayHoursLabel(store)}</dd></div>
+                                        </dl>
+                                    </div>
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
             }
-        </div>
+
+            {isAdding && <NewStoreDrawer onClose={() => setIsAdding(false)} />}
+        </main>
     );
 };
 

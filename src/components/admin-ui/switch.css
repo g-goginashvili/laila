@@ -1,0 +1,51 @@
+.adm-switch {
+    position: relative;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.adm-switch-track {
+    position: absolute;
+    left: 4px;
+    top: 12px;
+    width: 36px;
+    height: 20px;
+    border-radius: 999px;
+    background-color: var(--border-input);
+    transition: background-color 0.15s;
+}
+
+.adm-switch-knob {
+    position: absolute;
+    top: 14px;
+    left: 6px;
+    width: 16px;
+    height: 16px;
+    border-radius: 999px;
+    background-color: var(--surface-raised);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    transition: left 0.15s;
+}
+
+.adm-switch[aria-checked="true"] .adm-switch-track {
+    background-color: var(--primary-solid);
+}
+
+.adm-switch--warning[aria-checked="true"] .adm-switch-track {
+    background-color: var(--warning-solid);
+}
+
+.adm-switch[aria-checked="true"] .adm-switch-knob {
+    left: 22px;
+}
+
+.adm-switch:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}

@@ -7,6 +7,8 @@ import AdminDashboardPage from "../modules/admin-dashboard-page/admin-dashboard-
 import LandingPage from "../modules/landing-page/landing-page";
 import StoresPage from "../modules/stores-page/stores-page";
 import ComingSoonPage from "../modules/coming-soon-page/coming-soon-page";
+import StoreMenuPage from "../modules/store-menu-page/store-menu-page";
+import StoreAvailabilityPage from "../modules/store-availability-page/store-availability-page";
 
 
 const comingSoon = (title: string, description: string) =>
@@ -31,17 +33,11 @@ export const customRouter = createBrowserRouter([
             { path: "/dashboard", Component: AdminDashboardPage },
             { path: "/stores", Component: StoresPage },
             { path: "/stores/:storeId/details", Component: StoreDetailsPage },
-            {
-                path: "/stores/:storeId/menu",
-                element: comingSoon("Menu", "Menu categories, items and prices for this store will be managed here."),
-            },
-            {
-                path: "/stores/:storeId/availability",
-                element: comingSoon("Availability", "Opening hours, tables and bookable time slots will be managed here."),
-            },
+            { path: "/stores/:storeId/menu", Component: StoreMenuPage },
+            { path: "/stores/:storeId/availability", Component: StoreAvailabilityPage },
             {
                 path: "/payments",
-                element: comingSoon("Payments", "Pre-order payments and payouts will appear here."),
+                element: comingSoon("Payments", "Deposits and pre-order payments, payouts and refunds will appear here once online payments are switched on."),
             },
         ]
     }

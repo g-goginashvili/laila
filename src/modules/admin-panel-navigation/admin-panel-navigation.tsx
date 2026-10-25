@@ -1,140 +1,178 @@
-import Typography from "../../components/typography/typography";
-import Chevron from "../../icons/chevron";
+import "../../components/admin-ui/admin-ui.css";
 import "./admin-panel-navigation.css";
 
 import { type ReactElement } from "react";
-import useAdminPanelNavigationController from "./use-admin-panel-navigation-controller";
 import { NavLink } from "react-router";
+import useAdminPanelNavigationController from "./use-admin-panel-navigation-controller";
+import type { AdminThemeModeType } from "../../hooks/use-admin-theme";
 
-type NavItemType = {
-    name: "Dashboard" | "Stores" | "Payments";
-    route: string;
-};
-
-const navItems: NavItemType[] = [
-    { name: "Dashboard", route: "/dashboard" },
-    { name: "Stores", route: "/stores" },
-    { name: "Payments", route: "/payments" },
+const STORE_SECTIONS = [
+    { label: "Details", path: "details" },
+    { label: "Menu", path: "menu" },
+    { label: "Availability", path: "availability" },
 ];
 
-const AdminPanelNavigation = (): ReactElement => {
+const THEME_OPTIONS: { value: AdminThemeModeType, label: string }[] = [
+    { value: "light", label: "Light" },
+    { value: "dark", label: "Dark" },
+    { value: "system", label: "Auto" },
+];
 
+const navClass = ({ isActive }: { isActive: boolean }) => `admin-nav-item ${isActive ? "is-active" : ""}`;
+
+const AdminPanelNavigation = (): ReactElement => {
     const {
         organisation,
         stores,
-        isOptionsActive,
         user,
-        isStoresSection,
-        storesMatch,
-        setIsOptionsActive,
-        handleSignOut
+        initials,
+        activeStoreId,
+        activeSection,
+        isAccountMenuOpen,
+        isMobileNavOpen,
+        themeMode,
+        setThemeMode,
+        setIsAccountMenuOpen,
+        setIsMobileNavOpen,
+        closeMenus,
+        handleSignOut,
     } = useAdminPanelNavigationController();
 
-    return (
-        <nav className="admin-panel-navigation">
+    const brand = (
+        <div className="admin-nav-brand">
+            <span className="admin-nav-logo"><img src="/gviano-icon.svg" alt="" /></span>
+            <div className="admin-nav-brand-text">
+                <span className="admin-nav-brand-title">Gviano Admin Panel</span>
+                <span className="admin-nav-brand-org">{organisation?.orgName}</span>
+            </div>
+        </div>
+    );
 
-            <div>
-                <div className="admin-panel-navigation-header">
-                    <img
-                        src="/gviano-icon.svg"
-                        alt="Company logo"
-                        className="admin-panel-navigation-header-icon"
-                    />
-                    <div className="admin-panel-navigation-header-text">
-                        <Typography variant="title" size="medium">Gviano Admin Panel</Typography>
-                        <Typography variant="body" size="medium">{organisation?.orgName}</Typography>
+    const links = (
+        <ul className="admin-nav-list">
+            <li><NavLink to="/dashboard" className={navClass} onClick={closeMenus}>Dashboard</NavLink></li>
+            <li className="admin-nav-group">
+                <NavLink to="/stores" className={navClass} onClick={closeMenus}>Stores</NavLink>
+                {stores.length > 0 && <>
+                    <div className="admin-nav-divider" />
+                    <ul className="admin-nav-sublist">
+                        {stores.map(store => {
+                            const isActiveStore = store.id === activeStoreId;
+                            return (
+                                <li key={store.id}>
+                                    <NavLink
+                                        to={`/stores/${store.id}/details`}
+                                        className={`admin-nav-subitem ${isActiveStore ? "is-current" : ""}`}
+                                        onClick={closeMenus}
+                                    >
+                                        {store.storeName}
+                                    </NavLink>
+                                    {isActiveStore &&
+                                        <ul className="admin-nav-sublist admin-nav-sublist--sections">
+                                            {STORE_SECTIONS.map(section => (
+                                                <li key={section.path}>
+                                                    <NavLink
+                                                        to={`/stores/${store.id}/${section.path}`}
+                                                        className={`admin-nav-subitem ${activeSection === section.path ? "is-current" : ""}`}
+                                                        aria-current={activeSection === section.path ? "page" : undefined}
+                                                        onClick={closeMenus}
+                                                    >
+                                                        {section.label}
+                                                    </NavLink>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    }
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </>}
+            </li>
+            <li><NavLink to="/payments" className={navClass} onClick={closeMenus}>Payments</NavLink></li>
+        </ul>
+    );
+
+    const account = (
+        <div className="admin-nav-account">
+            {isAccountMenuOpen &&
+                <div className="admin-nav-account-menu" role="menu">
+                    <div className="admin-nav-theme" role="group" aria-label="Theme">
+                        <span className="adm-small adm-muted">Theme</span>
+                        <div className="adm-segmented adm-segmented--compact">
+                            {THEME_OPTIONS.map(option => (
+                                <button
+                                    key={option.value}
+                                    type="button"
+                                    role="menuitemradio"
+                                    aria-checked={themeMode === option.value}
+                                    className={`adm-segmented-item ${themeMode === option.value ? "is-active" : ""}`}
+                                    onClick={() => setThemeMode(option.value)}
+                                >
+                                    {option.label}
+                                </button>
+                            ))}
+                        </div>
                     </div>
+                    <button type="button" role="menuitem" className="admin-nav-menu-item admin-nav-menu-item--danger" onClick={handleSignOut}>
+                        Sign out
+                    </button>
                 </div>
+            }
+            <button
+                type="button"
+                className="admin-nav-account-button"
+                aria-expanded={isAccountMenuOpen}
+                aria-haspopup="menu"
+                onClick={() => setIsAccountMenuOpen(open => !open)}
+            >
+                <span className="admin-nav-avatar" aria-hidden="true">{initials}</span>
+                <span className="admin-nav-account-text">
+                    <span>{user?.displayName}</span>
+                    <span className="adm-muted admin-nav-ellipsis">{user?.email}</span>
+                </span>
+                <span className={`admin-nav-caret ${isAccountMenuOpen ? "is-open" : ""}`} aria-hidden="true" />
+            </button>
+        </div>
+    );
 
-                <ul className="admin-panel-navigation-items-list">
-                    {navItems.map(({ name, route }) => (
-                        <li key={name}>
-                            <NavLink
-                                to={route}
-                                className={({ isActive }) =>
-                                    `admin-panel-navigation-item ${isActive
-                                        ? "admin-panel-navigation-active-item" : ""}`}
-                            >
-                                <Typography variant="label" color="inherit">{name}</Typography>
-                            </NavLink>
-
-                            {(name === "Stores" && isStoresSection && stores.length > 0) &&
-                                <>
-                                    <div className="line-under-list-item-store" />
-                                    <ul className="admin-panel-navigation-sub-items-list" >
-                                        {stores.map(store => (
-                                            <li key={store.id}>
-                                                <NavLink
-                                                    to={`/stores/${store.id}/details`}
-                                                    className={`admin-panel-navigation-sub-item ${storesMatch?.params.storeId === store.id
-                                                        ? "admin-panel-navigation-active-sub-item" : ""}`}
-                                                >
-                                                    <Typography variant="label" color="inherit">{store.storeName}</Typography>
-                                                </NavLink>
-
-                                                {storesMatch?.params.storeId === store.id &&
-                                                    <ul className="admin-panel-navigation-sub-items-list">
-                                                        {
-                                                            ["Details", "Menu", "Availability"].map(option => (
-                                                                <li key={option}>
-                                                                    <NavLink
-                                                                        to={`/stores/${store.id}/${option.toLowerCase()}`}
-                                                                        className={({ isActive }) =>
-                                                                            `admin-panel-navigation-sub-item ${isActive
-                                                                                ? "admin-panel-navigation-active-sub-item" : ""}`}
-                                                                    >
-                                                                        <Typography variant="label" color="inherit">{option}</Typography>
-                                                                    </NavLink>
-                                                                </li>
-                                                            ))
-                                                        }
-                                                    </ul>
-                                                }
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </>
-                            }
-                        </li>
-                    ))}
-                </ul>
-
+    const panel = (
+        <>
+            <div className="admin-nav-top">
+                {brand}
+                {links}
             </div>
+            {account}
+        </>
+    );
 
-            <div>
-                {isOptionsActive &&
-                    <div className="admin-panel-navigation-account-settings-details">
-                        <button
-                            onClick={handleSignOut}
-                        >
-                            <Typography variant="label" color="error">Sign Out</Typography>
-                        </button>
-                    </div>
-                }
+    return (
+        <>
+            <nav aria-label="Admin" className="admin-nav admin-nav--sidebar">{panel}</nav>
 
+            <header className="admin-topbar">
                 <button
-                    onClick={() => { setIsOptionsActive(prev => !prev) }}
-                    className="admin-panel-navigation-account-settings"
+                    type="button"
+                    className="admin-topbar-menu"
+                    aria-label="Open navigation"
+                    aria-expanded={isMobileNavOpen}
+                    onClick={() => setIsMobileNavOpen(true)}
                 >
-                    <div className="admin-panel-navigation-account-avatar-holder">
-                        <Typography variant="body" color="inherit" weight="emphasis">
-                            {
-                                user?.displayName
-                                    ?.split(" ")
-                                    .filter((_, index, arr) => index === 0 || index === arr.length - 1)
-                                    .map(item => item[0])
-                                    .join("")
-                            }
-                        </Typography>
-                    </div>
-                    <div className="admin-panel-navigation-account-settings-text">
-                        <Typography variant="body" size="small">{user?.displayName}</Typography>
-                        <Typography variant="body" size="small" color="secondary">{user?.email}</Typography>
-                    </div>
-                    <Chevron facing={isOptionsActive ? "up" : "down"} />
+                    <span aria-hidden="true" /><span aria-hidden="true" /><span aria-hidden="true" />
                 </button>
-            </div>
-        </nav>
+                <span className="admin-nav-logo admin-nav-logo--small"><img src="/gviano-icon.svg" alt="" /></span>
+                <span className="admin-topbar-title">{organisation?.orgName}</span>
+                <span className="admin-nav-avatar admin-nav-avatar--small" aria-hidden="true">{initials}</span>
+            </header>
+
+            {isMobileNavOpen && <>
+                <div className="adm-drawer-overlay" aria-hidden="true" onClick={() => setIsMobileNavOpen(false)} />
+                <nav aria-label="Admin" className="admin-nav admin-nav--drawer">
+                    <button type="button" className="adm-icon-btn admin-nav-close" aria-label="Close navigation" onClick={() => setIsMobileNavOpen(false)}>×</button>
+                    {panel}
+                </nav>
+            </>}
+        </>
     );
 };
 

@@ -1,0 +1,293 @@
+.store-details-title {
+    gap: 8px;
+}
+
+.store-details-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    align-items: center;
+}
+
+.store-details-edit {
+    padding: 10px 28px;
+}
+
+.store-details-callout-mark {
+    font-weight: 700;
+}
+
+.store-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.store-details-wide {
+    grid-column: 1 / -1;
+}
+
+.store-details-header-end {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
+}
+
+.store-details-header-end .adm-btn--text,
+.adm-card-header > .adm-btn--text {
+    margin: -8px -8px -8px 0;
+}
+
+.store-details-week {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 132px), 1fr));
+    gap: 8px;
+}
+
+.store-details-day {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 104px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+}
+
+.store-details-day.is-closed {
+    background-color: var(--surface-sunken);
+}
+
+.store-details-day.is-today {
+    border-color: var(--border-strong);
+}
+
+.store-details-day.is-today:not(.is-closed) {
+    background-color: var(--surface-base);
+}
+
+.store-details-day-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.store-details-day-name {
+    font-weight: 500;
+    letter-spacing: 0.1px;
+}
+
+.store-details-day.is-closed .store-details-day-name {
+    color: var(--text-secondary);
+}
+
+.store-details-day-name abbr {
+    text-decoration: none;
+}
+
+.store-details-today {
+    padding: 0 8px;
+    border-radius: 999px;
+    background-color: var(--tertiary-solid);
+    color: var(--tertiary-on-solid);
+    font-size: 11px;
+    line-height: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.store-details-shifts {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.store-details-note {
+    margin: 0;
+    text-wrap: pretty;
+}
+
+.store-details-line {
+    display: block;
+}
+
+.store-details-strong {
+    font-weight: 500;
+}
+
+.store-details-tables {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-variant-numeric: tabular-nums;
+}
+
+.store-details-tables-total {
+    margin-top: 4px;
+    padding-top: 6px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.store-details-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace !important;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.store-details-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 16px;
+}
+
+.store-details-link-card {
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+}
+
+.store-details-link-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* Edit store drawer */
+.store-edit-status {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.store-edit-status-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border-default);
+    cursor: pointer;
+}
+
+.store-edit-status-option.is-selected {
+    border-color: var(--primary-outline);
+    background-color: var(--primary-subtle);
+}
+
+.store-edit-status-option input {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    accent-color: var(--primary-solid);
+}
+
+.store-edit-status-text {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+}
+
+.store-edit-confirm {
+    font-size: 14px;
+    line-height: 20px;
+}
+
+/* Hours editor */
+.hours-editor {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.hours-editor-day {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 12px 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.hours-editor-day-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 40px;
+}
+
+.hours-editor-day-name {
+    font-weight: 500;
+    flex: 1;
+}
+
+.hours-editor-shift {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) 44px;
+    gap: 8px;
+    align-items: center;
+}
+
+.hours-editor-add,
+.hours-editor-copy {
+    align-self: flex-start;
+}
+
+/* Tables editor */
+.tables-editor {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    background-color: var(--surface-base);
+    overflow: hidden;
+}
+
+.tables-editor-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 72px minmax(0, 1.3fr) 44px;
+    gap: 8px;
+    align-items: center;
+    padding: 4px 8px 4px 12px;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.tables-editor-head {
+    border-top: none;
+    padding-top: 8px;
+    padding-bottom: 4px;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.tables-editor-row .adm-input {
+    min-height: 44px;
+    padding: 8px 10px;
+    border-color: transparent;
+    background-color: transparent;
+}
+
+.tables-editor-row .adm-input:hover {
+    border-color: var(--border-default);
+}
+
+.tables-editor-row .adm-input:focus {
+    border-color: var(--border-input);
+    background-color: var(--surface-raised);
+}

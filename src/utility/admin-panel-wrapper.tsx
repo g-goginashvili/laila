@@ -9,6 +9,7 @@ import { useSnackBar } from "../components/snack-bar/snack-bar-context";
 import AdminPanelNavigation from "../modules/admin-panel-navigation/admin-panel-navigation";
 import Modal from "../components/modal/modal";
 import { firebaseAuth } from "./firebase";
+import useAdminTheme from "../hooks/use-admin-theme";
 
 const AdminRequireGuard = () => {
     const status = useAuth((state) => state.status);
@@ -17,6 +18,7 @@ const AdminRequireGuard = () => {
 
     const { addSnackBar } = useSnackBar();
     const navigate = useNavigate();
+    const theme = useAdminTheme();
 
     if (status === "initializing") return <div>Loading…</div>;
     if (status === "unauthenticated") return <Navigate to="/admin-auth" replace />;
@@ -38,7 +40,7 @@ const AdminRequireGuard = () => {
     };
 
     return (
-        <>
+        <div className="admin-theme admin-shell" data-theme={theme}>
             {!user?.emailVerified &&
                 <Modal>
                     <Typography
@@ -78,13 +80,11 @@ const AdminRequireGuard = () => {
                     </Typography>
                 </Modal>
             }
-            <div className="admin-panel-wrapper" >
-                <AdminPanelNavigation />
-                <main className="admin-panel-content">
-                    <Outlet />
-                </main>
+            <AdminPanelNavigation />
+            <div className="admin-shell-content">
+                <Outlet />
             </div>
-        </>
+        </div>
     );
 };
 

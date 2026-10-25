@@ -21,12 +21,17 @@ Against a fully local stack: start the auth emulator (`npx firebase emulators:st
 
 ## Admin panel routes
 
+The admin follows the Gviano design board (04 · Restaurant admin). Its colour tokens live in
+`src/styles/admin-theme.css`, scoped to `.admin-theme`, with a light/dark/auto switch in the account menu.
+
 | Route | Page |
 | --- | --- |
 | `/admin-auth` | Sign in / sign up / password reset |
-| `/dashboard` | Organisation overview |
-| `/stores` | Store list and "Add store" |
-| `/stores/:id/details` | Edit or delete a store |
-| `/stores/:id/menu`, `/stores/:id/availability`, `/payments` | Placeholders (not built yet) |
+| `/dashboard` | Today’s covers, seats left, needs-attention list, arrivals, 7-day stats (or a setup checklist) |
+| `/stores` | Store cards and "New store" (`?new=1`) |
+| `/stores/:id/details` | Hours, contact, seating, policy; edit store, hours and tables |
+| `/stores/:id/menu` | Menu groups and items with allergens, sold-out toggle, drag/arrow-key reordering |
+| `/stores/:id/availability` | Day timeline per table (`?date=YYYY-MM-DD`), week view (`?view=week`), whole-day closures |
+| `/payments` | Placeholder |
 
 All API calls go through `src/utility/http-client.ts`, which attaches the signed-in user's Firebase ID token.
