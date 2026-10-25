@@ -12,7 +12,8 @@
 }
 
 /* The label floats by animating transform only: size, line-height and position never change, so the
-   move runs on the compositor without relayout or text re-rasterising each frame. */
+   move runs on the compositor without relayout. No will-change: a permanent layer would keep the label
+   rasterised at full size and leave the scaled-down label soft. */
 .text-input-label {
     --label-rest-y: 16.5px;     /* (53px field - 20px line box) / 2: vertically centred */
     --label-float-y: 3.5px;     /* puts the scaled text where a 12px label at top: 6px would sit */
@@ -26,8 +27,9 @@
     line-height: 20px;
     transform-origin: left top;
     transform: translateY(var(--label-rest-y));
-    transition: transform 0.2s cubic-bezier(0.2, 0, 0, 1), color 0.2s ease-out;
-    will-change: transform;
+    /* Standard ease-in-out spreads the 13px move evenly across frames. A sharply decelerating curve
+       moved ~4px in the first frames, then crept in sub-pixel steps that render as stutter. */
+    transition: transform 0.22s cubic-bezier(0.4, 0, 0.2, 1), color 0.22s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
