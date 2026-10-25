@@ -7,6 +7,7 @@ import NewStoreDrawer from "./new-store-drawer";
 import { errorMessage } from "../../utility/validation";
 import StoreAvatar from "../../components/admin-ui/store-avatar";
 import { isAcceptingReservations, storeOpenTodayChip, streetLine } from "../../utility/store-display";
+import HeartbeatLoader from "../../components/heartbeat-loader/heartbeat-loader";
 
 const StoresPage = () => {
     const {
@@ -23,15 +24,17 @@ const StoresPage = () => {
             <header className="adm-page-header">
                 <div className="adm-title-block">
                     <h1 className="adm-h1">Stores</h1>
-                    <p className="adm-subtitle">
-                        {isLoading ? "Loading…" : `${stores.length} ${stores.length === 1 ? "store" : "stores"} · ${acceptingCount} accepting reservations`}
-                    </p>
+                    {!isLoading &&
+                        <p className="adm-subtitle">
+                            {`${stores.length} ${stores.length === 1 ? "store" : "stores"} · ${acceptingCount} accepting reservations`}
+                        </p>}
                 </div>
                 <button type="button" className="adm-btn adm-btn--primary" onClick={() => setIsAdding(true)}>
                     <span className="adm-btn-glyph" aria-hidden="true">+</span>New store
                 </button>
             </header>
 
+            {isLoading && <HeartbeatLoader label="Loading stores" />}
             {error && <p className="adm-form-error" role="alert">{errorMessage(error, "Could not load stores.")}</p>}
 
             {!isLoading && !error && stores.length === 0 &&

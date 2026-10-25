@@ -6,6 +6,7 @@ import StoreTabs from "../../components/admin-ui/store-tabs";
 import StoreTablesDrawer from "../store-details-page/store-tables-drawer";
 import useStoreTablesPageController from "./use-store-tables-page-controller";
 import { errorMessage } from "../../utility/validation";
+import HeartbeatLoader from "../../components/heartbeat-loader/heartbeat-loader";
 
 const StoreTablesPage = () => {
     const {
@@ -27,7 +28,7 @@ const StoreTablesPage = () => {
 
             <StoreTabs storeId={storeId} />
 
-            {isLoading && !store && <p className="adm-muted">Loading tables…</p>}
+            {isLoading && !store && <HeartbeatLoader label="Loading tables" />}
             {error && !store && <p className="adm-form-error" role="alert">{errorMessage(error, "Could not load the tables.")}</p>}
 
             {store && tables.length === 0 &&

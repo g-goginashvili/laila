@@ -8,6 +8,7 @@ import MenuItemDrawer from "./menu-item-drawer";
 import MenuGroupDrawer from "./menu-group-drawer";
 import { errorMessage } from "../../utility/validation";
 import { formatEuro } from "../../utility/service-time";
+import HeartbeatLoader from "../../components/heartbeat-loader/heartbeat-loader";
 
 const StoreMenuPage = () => {
     const {
@@ -36,7 +37,7 @@ const StoreMenuPage = () => {
 
             <StoreTabs storeId={storeId} />
 
-            {isLoading && <p className="adm-muted">Loading menu…</p>}
+            {isLoading && <HeartbeatLoader label="Loading menu" />}
             {error && <p className="adm-form-error" role="alert">{errorMessage(error, "Could not load the menu.")}</p>}
 
             {menu && groups.length === 0 &&

@@ -9,11 +9,12 @@ import StoreEditDrawer from "./store-edit-drawer";
 import StoreHoursDrawer from "./store-hours-drawer";
 import StoreTablesDrawer from "./store-tables-drawer";
 import { errorMessage } from "../../utility/validation";
+import HeartbeatLoader from "../../components/heartbeat-loader/heartbeat-loader";
 
 const StoreDetailsPage = () => {
     const { store, details, isLoading, error, drawer, setDrawer, applyStore } = useStoreDetailsPageController();
 
-    if (isLoading) return <main className="adm-page"><p className="adm-muted">Loading store…</p></main>;
+    if (isLoading) return <main className="adm-page"><HeartbeatLoader label="Loading store" /></main>;
     if (error || !store || !details) {
         return (
             <main className="adm-page">

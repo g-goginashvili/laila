@@ -10,6 +10,7 @@ import ComingSoonPage from "../modules/coming-soon-page/coming-soon-page";
 import StoreMenuPage from "../modules/store-menu-page/store-menu-page";
 import StoreAvailabilityPage from "../modules/store-availability-page/store-availability-page";
 import StoreTablesPage from "../modules/store-tables-page/store-tables-page";
+import NotFoundPage from "../modules/not-found-page/not-found-page";
 
 
 const comingSoon = (title: string, description: string) =>
@@ -42,5 +43,9 @@ export const customRouter = createBrowserRouter([
                 element: comingSoon("Payments", "Deposits and pre-order payments, payouts and refunds will appear here once online payments are switched on."),
             },
         ]
+    },
+    {
+        path: "*",
+        Component: NotFoundPage,
     }
 ]);

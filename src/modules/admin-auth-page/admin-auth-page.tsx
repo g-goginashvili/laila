@@ -11,6 +11,7 @@ import { signInInitialValues, signInInputFields, SignInSchema, signUpInitialValu
 import ForgotPasswordModal from "./admin-auth-page-forgot-password";
 import { Navigate } from "react-router";
 import useAuth from "../../hooks/use-auth";
+import HeartbeatLoader from "../../components/heartbeat-loader/heartbeat-loader";
 
 const AdminAuthPage = () => {
     const status = useAuth((state) => state.status);
@@ -32,7 +33,7 @@ const AdminAuthPage = () => {
 
     // A session kept by "Stay signed in" goes straight to the dashboard; wait for Firebase to restore it
     // so the form doesn't flash first.
-    if (status === "initializing") return null;
+    if (status === "initializing") return <HeartbeatLoader isFullScreen />;
     if (status === "authenticated" && role === "admin") return <Navigate to="/dashboard" replace />;
 
     return (

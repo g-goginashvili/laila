@@ -5,6 +5,7 @@ import { Link } from "react-router";
 import Dropdown from "../../components/dropdown/dropdown";
 import useAdminDashboardPageController from "./use-admin-dashboard-page-controller";
 import { errorMessage } from "../../utility/validation";
+import HeartbeatLoader from "../../components/heartbeat-loader/heartbeat-loader";
 
 const AdminDashboardPage = () => {
     const {
@@ -14,7 +15,7 @@ const AdminDashboardPage = () => {
         storeRows, weekLabel, bars, metrics,
     } = useAdminDashboardPageController();
 
-    if (isLoading) return <main className="adm-page"><p className="adm-muted">Loading dashboard…</p></main>;
+    if (isLoading) return <main className="adm-page"><HeartbeatLoader label="Loading dashboard" /></main>;
     if (error) return <main className="adm-page"><p className="adm-form-error" role="alert">{errorMessage(error, "Could not load the dashboard.")}</p></main>;
 
     if (!hasLiveStore) {

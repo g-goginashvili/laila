@@ -10,6 +10,7 @@ import AdminPanelNavigation from "../modules/admin-panel-navigation/admin-panel-
 import Modal from "../components/modal/modal";
 import { firebaseAuth } from "./firebase";
 import useAdminTheme from "../hooks/use-admin-theme";
+import HeartbeatLoader from "../components/heartbeat-loader/heartbeat-loader";
 
 const AdminRequireGuard = () => {
     const status = useAuth((state) => state.status);
@@ -20,7 +21,7 @@ const AdminRequireGuard = () => {
     const navigate = useNavigate();
     const theme = useAdminTheme();
 
-    if (status === "initializing") return <div>Loading…</div>;
+    if (status === "initializing") return <HeartbeatLoader isFullScreen />;
     if (status === "unauthenticated") return <Navigate to="/admin-auth" replace />;
     if (role !== "admin") return <Navigate to="/" replace />;
 

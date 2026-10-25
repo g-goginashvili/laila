@@ -20,6 +20,7 @@ import { errorMessage } from "../../utility/validation";
 import { formatMinutes, formatShortDate, addDays, localToday } from "../../utility/service-time";
 import { LEGEND_STATUSES, RESERVATION_STATUS_LABELS } from "./reservation-styles";
 import useAuth from "../../hooks/use-auth";
+import HeartbeatLoader from "../../components/heartbeat-loader/heartbeat-loader";
 
 const StoreAvailabilityPage = () => {
     const {
@@ -62,7 +63,7 @@ const StoreAvailabilityPage = () => {
         onError: (mutationError) => addSnackBar(errorMessage(mutationError), { variant: "error" }),
     });
 
-    if (isLoading && !store) return <main className="adm-page"><p className="adm-muted">Loading availability…</p></main>;
+    if (isLoading && !store) return <main className="adm-page"><HeartbeatLoader label="Loading availability" /></main>;
     if (!store) return <main className="adm-page"><p className="adm-form-error" role="alert">{errorMessage(error, "Store not found.")}</p></main>;
 
     const openNew = () => setDrawer({ type: "reservation", reservationId: null, tableId: null, startMinutes: null, fromGrid: false });
