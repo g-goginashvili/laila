@@ -39,8 +39,8 @@ const AvailabilityGrid = ({
 
     const unassigned = reservations.filter(reservation => !reservation.tableId || !tables.some(table => table.id === reservation.tableId));
     const rows = [
-        ...tables.map(table => ({ id: table.id, label: table.label, seats: table.seats, area: table.area })),
-        ...(unassigned.length ? [{ id: null, label: "No table", seats: null, area: "Assign a table to seat these" }] : []),
+        ...tables.map(table => ({ id: table.id, label: table.label, seats: table.seats, area: table.area, occupied: !!table.occupiedSince })),
+        ...(unassigned.length ? [{ id: null, label: "No table", seats: null, area: "Assign a table to seat these", occupied: false }] : []),
     ];
 
     const showNow = nowMinutes !== null && nowMinutes >= range.start && nowMinutes <= range.end;
@@ -69,12 +69,16 @@ const AvailabilityGrid = ({
                                     <span className="avail-grid-table-label">{row.label}</span>
                                     {row.seats !== null && <span className="adm-muted">{row.seats} seats</span>}
                                 </span>
-                                {row.area && <span className="adm-small adm-muted">{row.area}</span>}
+                                {row.occupied
+                                    ? <span className="adm-small avail-grid-occupied">Occupied</span>
+                                    : row.area && <span className="adm-small adm-muted">{row.area}</span>}
                             </div>
                             {slots.map(slot => {
                                 const half = slot % 60 ? "is-half" : "";
                                 if (!isOpen(slot)) return <div key={slot} role="gridcell" aria-label="Kitchen closed" className={`avail-cell is-closed ${half}`} />;
                                 if (busy(slot) || !row.id || !isBookable(slot)) return <div key={slot} role="gridcell" className={`avail-cell ${half}`} />;
+                                // Occupied tables take no new bookings until freed on the Tables page.
+                                if (row.occupied) return <div key={slot} role="gridcell" aria-label={`${row.label} is occupied`} className={`avail-cell is-occupied ${half}`} />;
                                 return (
                                     <button
                                         key={slot}

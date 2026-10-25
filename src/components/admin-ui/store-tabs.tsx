@@ -4,6 +4,7 @@ import { NavLink } from "react-router";
 
 const SECTIONS = [
     { label: "Details", path: "details" },
+    { label: "Tables", path: "tables" },
     { label: "Menu", path: "menu" },
     { label: "Availability", path: "availability" },
 ] as const;
@@ -11,7 +12,7 @@ const SECTIONS = [
 // Segmented Details / Menu / Availability switcher shown on every store page.
 const StoreTabs = ({ storeId }: { storeId: string }) => {
     return (
-        <nav aria-label="Store sections" className="adm-segmented">
+        <nav aria-label="Store sections" className="adm-segmented adm-segmented--fill">
             {SECTIONS.map(section => (
                 <NavLink
                     key={section.path}

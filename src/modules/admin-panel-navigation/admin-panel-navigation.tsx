@@ -8,6 +8,7 @@ import type { AdminThemeModeType } from "../../hooks/use-admin-theme";
 
 const STORE_SECTIONS = [
     { label: "Details", path: "details" },
+    { label: "Tables", path: "tables" },
     { label: "Menu", path: "menu" },
     { label: "Availability", path: "availability" },
 ];

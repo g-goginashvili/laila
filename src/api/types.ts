@@ -21,6 +21,8 @@ export type StoreTableType = {
     seats: number;
     area: string;
     position: number;
+    // ISO timestamp while guests sit at the table; null when free. Occupied tables can't be booked.
+    occupiedSince: string | null;
 };
 
 export type StoreClosureType = {

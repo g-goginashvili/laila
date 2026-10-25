@@ -1,5 +1,7 @@
 import { http } from "../utility/http-client"
-import type { StoreClosureType, StoreShiftType, StoreTableInputType, StoreType, StoreUpdateType, StoreValuesType } from "./types";
+import type {
+    StoreClosureType, StoreShiftType, StoreTableInputType, StoreTableType, StoreType, StoreUpdateType, StoreValuesType
+} from "./types";
 
 const storePath = (id: string) => `/stores/${encodeURIComponent(id)}`;
 
@@ -29,6 +31,10 @@ export const replaceStoreHours = async ({ id, hours }: { id: string, hours: Omit
 
 export const replaceStoreTables = async ({ id, tables }: { id: string, tables: StoreTableInputType[] }) => {
     return await http.put<StoreType>(`${storePath(id)}/tables`, { tables });
+};
+
+export const setTableOccupancy = async ({ id, tableId, occupied }: { id: string, tableId: string, occupied: boolean }) => {
+    return await http.patch<StoreTableType>(`${storePath(id)}/tables/${encodeURIComponent(tableId)}`, { occupied });
 };
 
 export const addStoreClosure = async ({ id, date, note }: { id: string, date: string, note: string }) => {

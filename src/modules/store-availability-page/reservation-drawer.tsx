@@ -6,7 +6,7 @@ import DatePicker from "../../components/date-picker/date-picker";
 import Field from "../../components/admin-ui/field";
 import { addReservation, deleteReservation, getReservations, updateReservation } from "../../api/reservations-api";
 import { queryKeys } from "../../api/query-keys";
-import type { ReservationStatusType, ReservationType, StoreType } from "../../api/types";
+import type { ReservationStatusType, ReservationType, StoreTableType, StoreType } from "../../api/types";
 import { bookableStarts, isTableFree, shiftsOn, SLOT_MINUTES, tableTimeFor } from "../../utility/availability";
 import { formatMinutes, formatShortDate, serviceNow } from "../../utility/service-time";
 import { errorMessage } from "../../utility/validation";
@@ -74,6 +74,8 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
     const durationOptions = [...new Set([...DURATIONS, tableTimeFor(store, startMinutes), duration])].sort((a, b) => a - b);
 
     const free = (id: string) => isTableFree(id, startMinutes, duration, dayReservations, reservation?.id);
+    // Occupied tables take no new bookings; a booking already on one can stay there.
+    const blockedByOccupancy = (entry: StoreTableType) => !!entry.occupiedSince && entry.id !== reservation?.tableId;
     const table = store.tables.find(entry => entry.id === tableId);
     const end = startMinutes + duration;
     const nextOnTable = table
@@ -82,7 +84,7 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
         : undefined;
     const closesAt = shifts.find(shift => startMinutes >= shift.opensMinutes && startMinutes < shift.closesMinutes)?.closesMinutes;
     const freeUntil = nextOnTable?.startMinutes ?? closesAt;
-    const alternatives = store.tables.filter(entry => entry.id !== tableId && entry.seats >= partySize && free(entry.id)).map(entry => entry.label);
+    const alternatives = store.tables.filter(entry => entry.id !== tableId && entry.seats >= partySize && free(entry.id) && !blockedByOccupancy(entry)).map(entry => entry.label);
     const time = formatMinutes(startMinutes);
 
     const partyHint = table && partySize > table.seats
@@ -104,6 +106,7 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
         if (!validDate) next.date = "Pick a date";
         if (partySize < 1 || partySize > 100) next.partySize = "1–100 guests";
         if (table && !free(table.id) && ["unconfirmed", "confirmed", "seated"].includes(status)) next.tableId = `${table.label} is booked then — pick another table`;
+        if (table && blockedByOccupancy(table)) next.tableId = `${table.label} is occupied — free it on the Tables page or pick another table`;
         setErrors(next);
         if (Object.keys(next).length) return;
 
@@ -229,10 +232,11 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
                             { value: "", label: "No table yet" },
                             ...store.tables.map(entry => {
                                 const isFree = free(entry.id);
+                                const isOccupied = blockedByOccupancy(entry);
                                 return {
                                     value: entry.id,
-                                    label: `${entry.label} · ${entry.seats} seats${entry.area ? ` · ${entry.area}` : ""}${isFree ? "" : " · booked"}`,
-                                    disabled: !isFree && entry.id !== tableId,
+                                    label: `${entry.label} · ${entry.seats} seats${entry.area ? ` · ${entry.area}` : ""}${isOccupied ? " · occupied" : isFree ? "" : " · booked"}`,
+                                    disabled: (isOccupied || !isFree) && entry.id !== tableId,
                                 };
                             }),
                         ]}

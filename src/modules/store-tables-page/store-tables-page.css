@@ -1,0 +1,82 @@
+.tables-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 20px 24px;
+    border-style: dashed;
+    border-color: var(--border-default);
+}
+
+/* Tiles mirror the opening-hours day tiles on the details page: an occupied table looks like a closed day. */
+.tables-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 150px), 1fr));
+    gap: 8px;
+}
+
+.tables-grid > li {
+    display: flex;
+}
+
+.tables-tile {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 88px;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border-subtle);
+    background-color: transparent;
+    color: var(--text-primary);
+    font: inherit;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    cursor: pointer;
+    transition: border-color 0.2s ease-out, background-color 0.2s ease-out;
+}
+
+.tables-tile:hover {
+    border-color: var(--border-strong);
+}
+
+.tables-tile:disabled {
+    cursor: progress;
+}
+
+/* Selected (occupied): closed-day fill plus the strong outline the "Today" tile uses. */
+.tables-tile.is-occupied {
+    background-color: var(--surface-sunken);
+    border-color: var(--border-strong);
+}
+
+.tables-tile-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.tables-tile-name {
+    font-weight: 500;
+    letter-spacing: 0.1px;
+}
+
+.tables-tile.is-occupied .tables-tile-name {
+    color: var(--text-secondary);
+}
+
+.tables-tile-since {
+    color: var(--text-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.tables-note {
+    margin: 0;
+    text-wrap: pretty;
+}

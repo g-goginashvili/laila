@@ -270,6 +270,15 @@
     white-space: nowrap;
 }
 
+.avail-grid-occupied {
+    font-weight: 500;
+    color: var(--text-warning);
+}
+
+.avail-cell.is-occupied {
+    background-color: color-mix(in srgb, var(--warning-container) 45%, transparent);
+}
+
 .avail-grid-table-label {
     font-size: 16px;
     line-height: 24px;

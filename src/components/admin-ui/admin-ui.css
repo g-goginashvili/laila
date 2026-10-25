@@ -561,6 +561,19 @@
     padding: 6px 16px;
 }
 
+/* Store section tabs: on phones they fill the row and share it, so all four fit without scrolling. */
+@media (max-width: 480px) {
+    .adm-segmented--fill {
+        align-self: stretch;
+    }
+
+    .adm-segmented--fill .adm-segmented-item {
+        flex: 1;
+        justify-content: center;
+        padding: 8px 10px;
+    }
+}
+
 /* ---------- Form fields ---------- */
 
 .adm-field {
