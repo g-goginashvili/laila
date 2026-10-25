@@ -111,11 +111,6 @@
     border-radius: 3px;
 }
 
-.avail-swatch--now {
-    width: 2px;
-    background-color: var(--error-solid);
-}
-
 .avail-swatch--closed {
     border: 1px solid var(--border-subtle);
     background: repeating-linear-gradient(135deg, var(--surface-sunken) 0 3px, var(--surface-base) 3px 6px);

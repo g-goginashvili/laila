@@ -17,7 +17,7 @@ import { deleteStoreClosure } from "../../api/stores-api";
 import { queryKeys } from "../../api/query-keys";
 import { useSnackBar } from "../../components/snack-bar/snack-bar-context";
 import { errorMessage } from "../../utility/validation";
-import { formatMinutes, formatShortDate, addDays, localToday } from "../../utility/service-time";
+import { formatShortDate, addDays, localToday } from "../../utility/service-time";
 import { LEGEND_STATUSES, RESERVATION_STATUS_LABELS } from "./reservation-styles";
 import useAuth from "../../hooks/use-auth";
 import HeartbeatLoader from "../../components/heartbeat-loader/heartbeat-loader";
@@ -88,6 +88,38 @@ const StoreAvailabilityPage = () => {
 
             <StoreTabs storeId={storeId} />
 
+            {view === "day" &&
+                <>
+                    {closure &&
+                        <div className="adm-callout adm-callout--warning" role="status">
+                            <strong aria-hidden="true">!</strong>
+                            <span>Closed on {dateLabel}{closure.note ? ` — ${closure.note}` : ""}. Diners can’t book this date.</span>
+                        </div>}
+
+                    {store.tables.length === 0 &&
+                        <div className="adm-card avail-empty" role="status">
+                            <div className="avail-empty-text">
+                                <strong className="adm-card-title">No tables yet</strong>
+                                <span className="adm-muted">Add tables and seats on the store’s details page to start taking reservations.</span>
+                            </div>
+                            <Link to={`/stores/${storeId}/details`} className="adm-btn adm-btn--outline">Set up tables</Link>
+                        </div>}
+
+                    {store.tables.length > 0 && dayReservations.length === 0 && !closure &&
+                        <div className="adm-card avail-empty" role="status">
+                            <StoreAvatar name={store.storeName} size="large" />
+                            <div className="avail-empty-text">
+                                <strong className="adm-card-title">No reservations on {dateLabel}</strong>
+                                <span className="adm-muted">
+                                    {shifts.length
+                                        ? `All ${store.tables.length} tables are free. Click any open slot below to add the first one.`
+                                        : "The store is closed on this day of the week. Change the opening hours to take bookings."}
+                                </span>
+                            </div>
+                            {shifts.length > 0 && <button type="button" className="adm-btn adm-btn--outline" onClick={openNew}>Add reservation</button>}
+                        </div>}
+                </>}
+
             <div className="avail-toolbar">
                 <div className="avail-toolbar-start">
                     <div className="avail-date-nav" ref={dateNavRef}>
@@ -139,37 +171,7 @@ const StoreAvailabilityPage = () => {
                             <li key={status}><span className={`avail-swatch avail-swatch--${status}`} aria-hidden="true" />{RESERVATION_STATUS_LABELS[status]}</li>
                         ))}
                         <li><span className="avail-swatch avail-swatch--closed" aria-hidden="true" />Kitchen closed</li>
-                        {isToday && now && <li><span className="avail-swatch avail-swatch--now" aria-hidden="true" />Now · {formatMinutes(now.minutes)}</li>}
                     </ul>
-
-                    {closure &&
-                        <div className="adm-callout adm-callout--warning" role="status">
-                            <strong aria-hidden="true">!</strong>
-                            <span>Closed on {dateLabel}{closure.note ? ` — ${closure.note}` : ""}. Diners can’t book this date.</span>
-                        </div>}
-
-                    {store.tables.length === 0 &&
-                        <div className="adm-card avail-empty" role="status">
-                            <div className="avail-empty-text">
-                                <strong className="adm-card-title">No tables yet</strong>
-                                <span className="adm-muted">Add tables and seats on the store’s details page to start taking reservations.</span>
-                            </div>
-                            <Link to={`/stores/${storeId}/details`} className="adm-btn adm-btn--outline">Set up tables</Link>
-                        </div>}
-
-                    {store.tables.length > 0 && dayReservations.length === 0 && !closure &&
-                        <div className="adm-card avail-empty" role="status">
-                            <StoreAvatar name={store.storeName} size="large" />
-                            <div className="avail-empty-text">
-                                <strong className="adm-card-title">No reservations on {dateLabel}</strong>
-                                <span className="adm-muted">
-                                    {shifts.length
-                                        ? `All ${store.tables.length} tables are free. Click any open slot below to add the first one.`
-                                        : "The store is closed on this day of the week. Change the opening hours to take bookings."}
-                                </span>
-                            </div>
-                            {shifts.length > 0 && <button type="button" className="adm-btn adm-btn--outline" onClick={openNew}>Add reservation</button>}
-                        </div>}
 
                     {store.tables.length > 0 &&
                         <AvailabilityGrid
