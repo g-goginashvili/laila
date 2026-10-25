@@ -2,10 +2,12 @@ import "../../components/admin-ui/admin-ui.css";
 import "./store-availability-page.css";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { Link } from "react-router";
 import StoreTabs from "../../components/admin-ui/store-tabs";
 import StoreAvatar from "../../components/admin-ui/store-avatar";
+import DatePopover from "../../components/date-picker/date-popover";
+import { popoverRoot } from "../../components/popover/use-anchored-position";
 import useStoreAvailabilityPageController from "./use-store-availability-page-controller";
 import AvailabilityGrid from "./availability-grid";
 import AvailabilityWeek from "./availability-week";
@@ -15,7 +17,7 @@ import { deleteStoreClosure } from "../../api/stores-api";
 import { queryKeys } from "../../api/query-keys";
 import { useSnackBar } from "../../components/snack-bar/snack-bar-context";
 import { errorMessage } from "../../utility/validation";
-import { formatMinutes, formatShortDate, addDays } from "../../utility/service-time";
+import { formatMinutes, formatShortDate, addDays, localToday } from "../../utility/service-time";
 import { LEGEND_STATUSES, RESERVATION_STATUS_LABELS } from "./reservation-styles";
 import useAuth from "../../hooks/use-auth";
 
@@ -28,7 +30,18 @@ const StoreAvailabilityPage = () => {
     const uid = useAuth((state) => state.user?.uid);
     const queryClient = useQueryClient();
     const { addSnackBar } = useSnackBar();
-    const dateInputRef = useRef<HTMLInputElement>(null);
+    const dateNavRef = useRef<HTMLDivElement>(null);
+    const dateButtonRef = useRef<HTMLButtonElement>(null);
+    const [isPickerOpen, setIsPickerOpen] = useState(false);
+    const [pickerContainer, setPickerContainer] = useState<HTMLElement | null>(null);
+    const togglePicker = () => {
+        if (!isPickerOpen) setPickerContainer(popoverRoot(dateNavRef.current));
+        setIsPickerOpen(!isPickerOpen);
+    };
+    const closePicker = useCallback((returnFocus: boolean) => {
+        setIsPickerOpen(false);
+        if (returnFocus) dateButtonRef.current?.focus();
+    }, []);
 
     const refreshReservations = () => {
         queryClient.invalidateQueries({ queryKey: ["reservations", uid, storeId] });
@@ -76,23 +89,32 @@ const StoreAvailabilityPage = () => {
 
             <div className="avail-toolbar">
                 <div className="avail-toolbar-start">
-                    <div className="avail-date-nav">
+                    <div className="avail-date-nav" ref={dateNavRef}>
                         <button type="button" aria-label={view === "week" ? "Previous week" : "Previous day"} onClick={() => shiftDate(-1)}>‹</button>
-                        <button type="button" className="avail-date-button" aria-haspopup="dialog" onClick={() => dateInputRef.current?.showPicker?.()}>
+                        <button
+                            ref={dateButtonRef}
+                            type="button"
+                            className="avail-date-button"
+                            aria-haspopup="dialog"
+                            aria-expanded={isPickerOpen}
+                            onClick={togglePicker}
+                        >
                             {view === "week" ? `${formatShortDate(weekStart).slice(0, -5)} – ${formatShortDate(addDays(weekStart, 6))}` : dateLabel}
                             <span className="avail-date-caret" aria-hidden="true" />
                         </button>
-                        <input
-                            ref={dateInputRef}
-                            type="date"
-                            className="avail-date-input"
-                            tabIndex={-1}
-                            aria-hidden="true"
-                            value={date}
-                            onChange={(event) => event.target.value && goToDate(event.target.value)}
-                        />
                         <button type="button" aria-label={view === "week" ? "Next week" : "Next day"} onClick={() => shiftDate(1)}>›</button>
                     </div>
+                    <DatePopover
+                        isOpen={isPickerOpen}
+                        anchorRef={dateNavRef}
+                        container={pickerContainer}
+                        onClose={closePicker}
+                        value={date}
+                        onSelect={goToDate}
+                        today={now?.date ?? localToday()}
+                        highlight={view === "week" ? { from: weekStart, to: addDays(weekStart, 6) } : undefined}
+                        label={view === "week" ? "Choose week" : "Choose date"}
+                    />
                     <button type="button" className="adm-btn adm-btn--outline" onClick={goToToday} aria-current={isToday ? "date" : undefined}>Today</button>
                 </div>
                 <div className="avail-toolbar-end">

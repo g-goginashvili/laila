@@ -16,6 +16,23 @@ export const addDays = (date: string, days: number) => {
 // 0 = Monday … 6 = Sunday
 export const weekdayOf = (date: string) => (toUtcDate(date).getUTCDay() + 6) % 7;
 
+export const startOfMonth = (date: string) => `${date.slice(0, 7)}-01`;
+
+// Same day in another month, clamped to that month's last day (31 Jan + 1 month → 28/29 Feb).
+export const addMonths = (date: string, months: number) => {
+    const value = toUtcDate(startOfMonth(date));
+    value.setUTCMonth(value.getUTCMonth() + months);
+    const lastDay = new Date(Date.UTC(value.getUTCFullYear(), value.getUTCMonth() + 1, 0)).getUTCDate();
+    value.setUTCDate(Math.min(Number(date.slice(8, 10)), lastDay));
+    return value.toISOString().slice(0, 10);
+};
+
+// Today's date (YYYY-MM-DD) in the browser's time zone.
+export const localToday = () => {
+    const now = new Date();
+    return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+};
+
 export const serviceNow = (timeZone: string, at: Date = new Date()): ServiceNowType => {
     const parts = new Intl.DateTimeFormat("en-CA", {
         timeZone,
@@ -56,6 +73,10 @@ const dateFormat = (options: Intl.DateTimeFormatOptions) => new Intl.DateTimeFor
 export const formatShortDate = (date: string) =>
     dateFormat({ weekday: "short", day: "numeric", month: "short", year: "numeric" }).format(toUtcDate(date)).replace(",", "");
 
+// "October 2026"
+export const formatMonthYear = (date: string) =>
+    dateFormat({ month: "long", year: "numeric" }).format(toUtcDate(date));
+
 // "Thursday 17 September"
 export const formatLongDate = (date: string) =>
     dateFormat({ weekday: "long", day: "numeric", month: "long" }).format(toUtcDate(date)).replace(",", "");
@@ -63,6 +84,10 @@ export const formatLongDate = (date: string) =>
 // "Thu 17"
 export const formatDayLabel = (date: string) =>
     dateFormat({ weekday: "short", day: "numeric" }).format(toUtcDate(date)).replace(",", "");
+
+// "Thursday 17 September 2026", for screen readers on calendar days
+export const formatFullDate = (date: string) =>
+    dateFormat({ weekday: "long", day: "numeric", month: "long", year: "numeric" }).format(toUtcDate(date)).replace(",", "");
 
 // "14 May 2019"
 export const formatDayMonthYear = (date: string) =>

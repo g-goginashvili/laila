@@ -4,6 +4,8 @@ import { useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
 import Drawer from "../../components/admin-ui/drawer";
 import Field from "../../components/admin-ui/field";
+import DatePicker from "../../components/date-picker/date-picker";
+import { serviceNow } from "../../utility/service-time";
 import useFormState from "../../components/admin-ui/use-form-state";
 import { deleteStore, updateStore } from "../../api/stores-api";
 import type { StoreStatusType, StoreType, StoreUpdateType } from "../../api/types";
@@ -180,6 +182,20 @@ const StoreEditDrawer = ({ store, onClose, onSaved }: { store: StoreType, onClos
         />
     );
 
+    // Optional dates, so the calendar offers Clear.
+    const dateInput = (key: "reopensOn" | "openedOn") => (
+        <DatePicker
+            id={`se-${key}`}
+            className={`adm-input ${errors[key] ? "adm-input--invalid" : ""}`}
+            value={values[key]}
+            invalid={!!errors[key]}
+            clearable
+            placeholder="Not set"
+            today={serviceNow(values.timezone || store.timezone).date}
+            onChange={(next) => setField(key, next)}
+        />
+    );
+
     const field = (key: keyof FormValuesType, label: string, control: ReactNode, extra: { required?: boolean, hint?: string, optional?: string } = {}) => (
         <Field label={label} htmlFor={`se-${key}`} error={errors[key]} {...extra}>{control}</Field>
     );
@@ -220,7 +236,7 @@ const StoreEditDrawer = ({ store, onClose, onSaved }: { store: StoreType, onClos
                 </div>
                 {values.status === "temporarily_closed" && <div className="adm-form-grid">
                     {field("closureNote", "Note for diners", input("closureNote", { placeholder: "Renovation until 21 Sep" }), { optional: "Optional" })}
-                    {field("reopensOn", "Reopens on", input("reopensOn", { type: "date" }), { optional: "Optional", hint: "Bookings open again from this date." })}
+                    {field("reopensOn", "Reopens on", dateInput("reopensOn"), { optional: "Optional", hint: "Bookings open again from this date." })}
                 </div>}
             </fieldset>
 
@@ -235,7 +251,7 @@ const StoreEditDrawer = ({ store, onClose, onSaved }: { store: StoreType, onClos
                     <textarea id="se-description" className="adm-input" rows={3} value={values.description} onChange={(event) => setField("description", event.target.value)} />,
                     { optional: "Optional" })}
                 <div className="adm-form-grid">
-                    {field("openedOn", "Opened", input("openedOn", { type: "date" }), { optional: "Optional" })}
+                    {field("openedOn", "Opened", dateInput("openedOn"), { optional: "Optional" })}
                     {field("timezone", "Time zone", input("timezone", { placeholder: "Europe/Athens" }), { required: true })}
                 </div>
             </fieldset>

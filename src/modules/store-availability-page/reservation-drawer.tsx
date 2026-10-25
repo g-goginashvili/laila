@@ -2,12 +2,13 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Drawer from "../../components/admin-ui/drawer";
 import Dropdown from "../../components/dropdown/dropdown";
+import DatePicker from "../../components/date-picker/date-picker";
 import Field from "../../components/admin-ui/field";
 import { addReservation, deleteReservation, getReservations, updateReservation } from "../../api/reservations-api";
 import { queryKeys } from "../../api/query-keys";
 import type { ReservationStatusType, ReservationType, StoreType } from "../../api/types";
 import { bookableStarts, isTableFree, shiftsOn, SLOT_MINUTES, tableTimeFor } from "../../utility/availability";
-import { formatMinutes, formatShortDate } from "../../utility/service-time";
+import { formatMinutes, formatShortDate, serviceNow } from "../../utility/service-time";
 import { errorMessage } from "../../utility/validation";
 import { useSnackBar } from "../../components/snack-bar/snack-bar-context";
 import { DATE_PATTERN } from "./availability-dates";
@@ -185,7 +186,14 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
                         <span className={errors.partySize || partyHint.error ? "adm-error" : "adm-hint"}>{errors.partySize ?? partyHint.text}</span>
                     </div>
                     <Field label="Date" htmlFor="rv-date" required error={errors.date}>
-                        <input id="rv-date" type="date" className="adm-input adm-tabular" value={date} onChange={(event) => { setDate(event.target.value); clearError("date"); }} />
+                        <DatePicker
+                            id="rv-date"
+                            className={`adm-input ${errors.date ? "adm-input--invalid" : ""}`}
+                            value={date}
+                            invalid={!!errors.date}
+                            today={serviceNow(store.timezone).date}
+                            onChange={(next) => { setDate(next); clearError("date"); }}
+                        />
                     </Field>
                 </div>
                 <div className="adm-form-grid adm-form-grid--narrow">

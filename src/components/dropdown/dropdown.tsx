@@ -1,7 +1,8 @@
 import "./dropdown.css";
 
-import { useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import { createPortal } from "react-dom";
+import useAnchoredPosition, { popoverRoot } from "../popover/use-anchored-position";
 
 export type DropdownOptionType = {
     value: string;
@@ -25,8 +26,6 @@ type DropdownPropType = {
 };
 
 const LIST_MAX_HEIGHT = 280;
-const LIST_GAP = 4;
-const VIEWPORT_MARGIN = 8;
 const TYPEAHEAD_RESET_MS = 600;
 
 // Single-select dropdown used for every select in the app: a combobox button plus a listbox.
@@ -54,8 +53,8 @@ const Dropdown = ({
 
     const [isOpen, setIsOpen] = useState(false);
     const [activeIndex, setActiveIndex] = useState(-1);
-    const [position, setPosition] = useState<CSSProperties>({});
     const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
+    const position = useAnchoredPosition(isOpen, triggerRef, listRef, { matchWidth: true, maxHeight: LIST_MAX_HEIGHT });
 
     const selectedIndex = options.findIndex(option => option.value === value);
     const selected = selectedIndex >= 0 ? options[selectedIndex] : undefined;
@@ -69,8 +68,7 @@ const Dropdown = ({
 
     const open = (preferLast = false) => {
         if (disabled || options.length === 0) return;
-        // Portal into the themed shell so admin colour tokens still apply outside the drawer.
-        setPortalTarget(triggerRef.current?.closest<HTMLElement>(".admin-theme") ?? document.body);
+        setPortalTarget(popoverRoot(triggerRef.current));
         setActiveIndex(selectedIndex >= 0 && !options[selectedIndex]!.disabled
             ? selectedIndex
             : preferLast ? enabledIndex(options.length - 1, -1) : enabledIndex(0, 1));
@@ -139,39 +137,6 @@ const Dropdown = ({
                 if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) handleTypeahead(event.key);
         }
     };
-
-    useLayoutEffect(() => {
-        if (!isOpen) return;
-
-        const place = () => {
-            const trigger = triggerRef.current;
-            if (!trigger) return;
-            const rect = trigger.getBoundingClientRect();
-            const below = window.innerHeight - rect.bottom - LIST_GAP - VIEWPORT_MARGIN;
-            const above = rect.top - LIST_GAP - VIEWPORT_MARGIN;
-            const wanted = Math.min(LIST_MAX_HEIGHT, listRef.current?.scrollHeight ?? LIST_MAX_HEIGHT);
-            const openUp = below < wanted && above > below;
-            // At least as wide as the trigger, wider if the options need it, and never off-screen.
-            const maxWidth = window.innerWidth - VIEWPORT_MARGIN * 2;
-            const width = Math.min(Math.max(rect.width, listRef.current?.offsetWidth ?? rect.width), maxWidth);
-
-            setPosition({
-                left: Math.max(VIEWPORT_MARGIN, Math.min(rect.left, window.innerWidth - VIEWPORT_MARGIN - width)),
-                minWidth: rect.width,
-                maxWidth,
-                maxHeight: Math.max(120, Math.min(LIST_MAX_HEIGHT, openUp ? above : below)),
-                ...(openUp ? { bottom: window.innerHeight - rect.top + LIST_GAP } : { top: rect.bottom + LIST_GAP }),
-            });
-        };
-
-        place();
-        window.addEventListener("resize", place);
-        window.addEventListener("scroll", place, true);
-        return () => {
-            window.removeEventListener("resize", place);
-            window.removeEventListener("scroll", place, true);
-        };
-    }, [isOpen, portalTarget]);
 
     useEffect(() => {
         if (!isOpen || activeIndex < 0) return;
