@@ -4,7 +4,7 @@ import AdminAuthPage from "../modules/admin-auth-page/admin-auth-page";
 import AdminRequireGuard from "../utility/admin-panel-wrapper";
 import StoreDetailsPage from "../modules/store-details-page/store-details-page";
 import AdminDashboardPage from "../modules/admin-dashboard-page/admin-dashboard-page";
-import LandingPage from "../modules/landing-page/landing-page";
+// import LandingPage from "../modules/landing-page/landing-page";
 import StoresPage from "../modules/stores-page/stores-page";
 import ComingSoonPage from "../modules/coming-soon-page/coming-soon-page";
 import StoreMenuPage from "../modules/store-menu-page/store-menu-page";
@@ -20,11 +20,7 @@ const comingSoon = (title: string, description: string) =>
 export const customRouter = createBrowserRouter([
     {
         path: "/",
-        Component: LandingPage,
-    },
-    {
-        path: "/home",
-        Component: LandingPage,
+        Component: AdminAuthPage,
     },
     {
         path: "/admin-auth",
