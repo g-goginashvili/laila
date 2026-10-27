@@ -12,6 +12,8 @@ const TICK_MS = 30_000;
 
 export type TableCardType = StoreTableType & {
     occupied: boolean;
+    // Held by an ongoing reservation: only completing that reservation frees it.
+    isLocked: boolean;
     occupiedLabel: string | null;
 };
 
@@ -70,6 +72,7 @@ const useStoreTablesPageController = () => {
     const tables: TableCardType[] = (store?.tables ?? []).map(table => ({
         ...table,
         occupied: !!table.occupiedSince,
+        isLocked: !!table.ongoingGuest,
         occupiedLabel: table.occupiedSince && store ? occupiedLabel(table.occupiedSince, store.timezone, nowMs) : null,
     }));
 
@@ -83,7 +86,7 @@ const useStoreTablesPageController = () => {
         applyStore,
         tables,
         freeCount: free.length,
-        toggle: (table: TableCardType) => mutate({ id: storeId, tableId: table.id, occupied: !table.occupied }),
+        toggle: (table: TableCardType) => !table.isLocked && mutate({ id: storeId, tableId: table.id, occupied: !table.occupied }),
         isToggling: (tableId: string) => isPending && variables?.tableId === tableId,
         isEditing,
         setIsEditing,

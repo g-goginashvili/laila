@@ -49,6 +49,14 @@
     cursor: progress;
 }
 
+.tables-tile.is-locked {
+    cursor: not-allowed;
+}
+
+.tables-tile.is-locked:hover {
+    border-color: var(--border-strong);
+}
+
 /* Selected (occupied): closed-day fill plus the strong outline the "Today" tile uses. */
 .tables-tile.is-occupied {
     background-color: var(--surface-sunken);
@@ -74,6 +82,10 @@
 .tables-tile-since {
     color: var(--text-secondary);
     font-variant-numeric: tabular-nums;
+}
+
+.tables-tile-guest {
+    color: var(--text-success);
 }
 
 .tables-note {

@@ -31,6 +31,8 @@ export type StoreTableType = {
     position: number;
     // ISO timestamp while guests sit at the table; null when free. Occupied tables can't be booked.
     occupiedSince: string | null;
+    // Guest of the ongoing reservation seated here; while set the table can't be freed by hand.
+    ongoingGuest: string | null;
 };
 
 export type StoreClosureType = {
@@ -135,7 +137,7 @@ export type MenuItemInputType = {
     available: boolean;
 };
 
-export type ReservationStatusType = "unconfirmed" | "confirmed" | "seated" | "finished" | "no_show" | "cancelled";
+export type ReservationStatusType = "upcoming" | "ongoing" | "completed" | "no_show" | "cancelled";
 
 export type ReservationType = {
     id: string;

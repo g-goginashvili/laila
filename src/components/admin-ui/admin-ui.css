@@ -561,16 +561,19 @@
     padding: 6px 16px;
 }
 
-/* Store section tabs: on phones they fill the row and share it, so all four fit without scrolling. */
+/* Store section tabs: on phones they fill the row and share it, so all five fit without scrolling. */
 @media (max-width: 480px) {
     .adm-segmented--fill {
         align-self: stretch;
+        gap: 2px;
     }
 
     .adm-segmented--fill .adm-segmented-item {
-        flex: 1;
+        flex: 1 1 auto;
         justify-content: center;
-        padding: 8px 10px;
+        padding: 8px 6px;
+        font-size: 13px;
+        letter-spacing: 0;
     }
 }
 

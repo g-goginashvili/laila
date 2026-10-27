@@ -54,7 +54,7 @@ const AdminDashboardPage = () => {
                         <h2 id="dash-preview-h" className="adm-card-title">What will appear here</h2>
                         <ul className="dash-bullets">
                             <li>Today’s covers, seats left tonight and who is arriving next</li>
-                            <li>Anything that needs a decision — unconfirmed parties, no-shows holding tables, sold-out dishes</li>
+                            <li>Anything that needs a decision — no-shows holding tables, sold-out dishes</li>
                             <li>Occupancy, no-shows and cancellations for the last 7 days, per store or for the whole group</li>
                         </ul>
                         <p className="adm-muted">
@@ -157,19 +157,15 @@ const AdminDashboardPage = () => {
                     </header>
                     {arrivals.length === 0 && <p className="dash-list-empty">No one is due in the next 90 minutes.</p>}
                     <ul className="dash-list">
-                        {arrivals.map(reservation => {
-                            const unconfirmed = reservation.status === "unconfirmed";
-                            return (
-                                <li key={reservation.id} className="dash-arrival">
-                                    <span className="dash-arrival-time">{reservation.time}</span>
-                                    <div className="dash-arrival-guest">
-                                        <span className="dash-arrival-name"><span className="dash-strong dash-ellipsis">{reservation.guestName}</span><span className="adm-muted">· {reservation.partySize}</span></span>
-                                        {reservation.meta && <span className="adm-small adm-muted dash-ellipsis">{reservation.meta}</span>}
-                                    </div>
-                                    <span className={`adm-chip adm-chip--medium adm-chip--${unconfirmed ? "warning" : "secondary"}`}>{unconfirmed ? "Unconfirmed" : "Confirmed"}</span>
-                                </li>
-                            );
-                        })}
+                        {arrivals.map(reservation => (
+                            <li key={reservation.id} className="dash-arrival">
+                                <span className="dash-arrival-time">{reservation.time}</span>
+                                <div className="dash-arrival-guest">
+                                    <span className="dash-arrival-name"><span className="dash-strong dash-ellipsis">{reservation.guestName}</span><span className="adm-muted">· {reservation.partySize}</span></span>
+                                    {reservation.meta && <span className="adm-small adm-muted dash-ellipsis">{reservation.meta}</span>}
+                                </div>
+                            </li>
+                        ))}
                     </ul>
                     {arrivalsStoreId &&
                         <Link to={`/stores/${arrivalsStoreId}/availability`} className="dash-more-link">

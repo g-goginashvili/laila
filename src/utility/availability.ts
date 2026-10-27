@@ -6,7 +6,7 @@ import { weekdayOf } from "./service-time";
 export const SLOT_MINUTES = 30;
 const LUNCH_ENDS_MINUTES = 16 * 60;
 
-export const ACTIVE_STATUSES: ReservationStatusType[] = ["unconfirmed", "confirmed", "seated"];
+export const ACTIVE_STATUSES: ReservationStatusType[] = ["upcoming", "ongoing"];
 
 type StorePolicyType = Pick<StoreType, "tableTimeMinutes" | "lunchTableTimeMinutes" | "lastSeatingMinutes">;
 

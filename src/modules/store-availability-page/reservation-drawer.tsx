@@ -7,7 +7,7 @@ import Field from "../../components/admin-ui/field";
 import { addReservation, deleteReservation, getReservations, updateReservation } from "../../api/reservations-api";
 import { queryKeys } from "../../api/query-keys";
 import type { ReservationStatusType, ReservationType, StoreTableType, StoreType } from "../../api/types";
-import { bookableStarts, isTableFree, shiftsOn, SLOT_MINUTES, tableTimeFor } from "../../utility/availability";
+import { ACTIVE_STATUSES, bookableStarts, isTableFree, shiftsOn, SLOT_MINUTES, tableTimeFor } from "../../utility/availability";
 import { formatMinutes, formatShortDate, serviceNow } from "../../utility/service-time";
 import { errorMessage } from "../../utility/validation";
 import { useSnackBar } from "../../components/snack-bar/snack-bar-context";
@@ -17,8 +17,10 @@ import { RESERVATION_STATUS_LABELS } from "./reservation-styles";
 const PHONE_PATTERN = /^\+?[0-9][0-9 ()-]{5,24}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const DURATIONS = [60, 90, 120, 150, 180];
-const NEW_STATUSES: ReservationStatusType[] = ["confirmed", "unconfirmed", "seated"];
-const ALL_STATUSES: ReservationStatusType[] = ["unconfirmed", "confirmed", "seated", "finished", "no_show", "cancelled"];
+const NEW_STATUSES: ReservationStatusType[] = ["upcoming", "ongoing"];
+const ALL_STATUSES: ReservationStatusType[] = ["upcoming", "ongoing", "completed", "no_show", "cancelled"];
+// A seated party keeps its table until it's completed.
+const ONGOING_STATUSES: ReservationStatusType[] = ["ongoing", "completed"];
 const FALLBACK_SLOTS = Array.from({ length: 24 }, (_, index) => 12 * 60 + index * SLOT_MINUTES);
 
 type ReservationDrawerPropType = {
@@ -46,7 +48,7 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
     const [duration, setDuration] = useState<number>(reservation?.durationMinutes ?? tableTimeFor(store, initialTime));
     const [durationTouched, setDurationTouched] = useState<boolean>(!!reservation);
     const [tableId, setTableId] = useState<string>(reservation?.tableId ?? initialTable ?? "");
-    const [status, setStatus] = useState<ReservationStatusType>(reservation?.status ?? "confirmed");
+    const [status, setStatus] = useState<ReservationStatusType>(reservation?.status ?? "upcoming");
     const [notes, setNotes] = useState<string>(reservation?.notes ?? "");
     const [errors, setErrors] = useState<Record<string, string | undefined>>({});
     const [isConfirmingDelete, setIsConfirmingDelete] = useState<boolean>(false);
@@ -86,6 +88,8 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
     const freeUntil = nextOnTable?.startMinutes ?? closesAt;
     const alternatives = store.tables.filter(entry => entry.id !== tableId && entry.seats >= partySize && free(entry.id) && !blockedByOccupancy(entry)).map(entry => entry.label);
     const time = formatMinutes(startMinutes);
+    const isSeated = reservation?.status === "ongoing";
+    const statusOptions = isSeated ? ONGOING_STATUSES : reservation ? ALL_STATUSES : NEW_STATUSES;
 
     const partyHint = table && partySize > table.seats
         ? { text: `Over ${table.label}’s ${table.seats} seats — pick a larger table`, error: true }
@@ -105,7 +109,8 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
         if (email.trim() && !EMAIL_PATTERN.test(email.trim())) next.email = "Invalid email";
         if (!validDate) next.date = "Pick a date";
         if (partySize < 1 || partySize > 100) next.partySize = "1–100 guests";
-        if (table && !free(table.id) && ["unconfirmed", "confirmed", "seated"].includes(status)) next.tableId = `${table.label} is booked then — pick another table`;
+        if (status === "ongoing" && !table) next.tableId = "Pick the table the party is sitting at";
+        if (table && !free(table.id) && ACTIVE_STATUSES.includes(status)) next.tableId = `${table.label} is booked then — pick another table`;
         if (table && blockedByOccupancy(table)) next.tableId = `${table.label} is occupied — free it on the Tables page or pick another table`;
         setErrors(next);
         if (Object.keys(next).length) return;
@@ -148,7 +153,7 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
                     </div>
                 </>
                 : <>
-                    {reservation && <button type="button" className="adm-btn adm-btn--danger-text" onClick={() => setIsConfirmingDelete(true)}>Delete</button>}
+                    {reservation && !isSeated && <button type="button" className="adm-btn adm-btn--danger-text" onClick={() => setIsConfirmingDelete(true)}>Delete</button>}
                     <div className="adm-drawer-footer-end">
                         <button type="button" className="adm-btn adm-btn--outline" onClick={onClose}>Cancel</button>
                         <button type="submit" className="adm-btn adm-btn--primary" disabled={isCreating || isUpdating}>{reservation ? "Save changes" : "Add reservation"}</button>
@@ -191,6 +196,7 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
                     <Field label="Date" htmlFor="rv-date" required error={errors.date}>
                         <DatePicker
                             id="rv-date"
+                            disabled={isSeated}
                             className={`adm-input ${errors.date ? "adm-input--invalid" : ""}`}
                             value={date}
                             invalid={!!errors.date}
@@ -221,11 +227,12 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
                     </Field>
                 </div>
                 <Field label="Table" htmlFor="rv-table" error={errors.tableId}
-                    hint={alternatives.length ? `Also free at ${time} for ${partySize}: ${alternatives.slice(0, 4).join(", ")}` : `No other free tables for ${partySize} at ${time}`}>
+                    hint={isSeated ? "The party is seated here. Complete the reservation to free the table." : alternatives.length ? `Also free at ${time} for ${partySize}: ${alternatives.slice(0, 4).join(", ")}` : `No other free tables for ${partySize} at ${time}`}>
                     <Dropdown
                         id="rv-table"
                         className={`adm-input ${errors.tableId ? "adm-input--invalid" : ""}`}
                         value={tableId}
+                        disabled={isSeated}
                         invalid={!!errors.tableId}
                         onChange={(next) => { setTableId(next); clearError("tableId"); }}
                         options={[
@@ -242,13 +249,14 @@ const ReservationDrawer = ({ store, uid, date: initialDate, reservation, tableId
                         ]}
                     />
                 </Field>
-                <Field label="Status" htmlFor="rv-status">
+                <Field label="Status" htmlFor="rv-status"
+                    hint={status === "ongoing" ? `${table?.label ?? "The table"} stays occupied until the reservation is completed` : undefined}>
                     <Dropdown
                         id="rv-status"
                         className="adm-input"
                         value={status}
                         onChange={(next) => setStatus(next as ReservationStatusType)}
-                        options={(reservation ? ALL_STATUSES : NEW_STATUSES).map(option => ({ value: option, label: RESERVATION_STATUS_LABELS[option] }))}
+                        options={statusOptions.map(option => ({ value: option, label: RESERVATION_STATUS_LABELS[option] }))}
                     />
                 </Field>
             </section>

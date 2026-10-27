@@ -11,6 +11,7 @@ const STORE_SECTIONS = [
     { label: "Tables", path: "tables" },
     { label: "Menu", path: "menu" },
     { label: "Availability", path: "availability" },
+    { label: "Reservations", path: "reservations" },
 ];
 
 const THEME_OPTIONS: { value: AdminThemeModeType, label: string }[] = [

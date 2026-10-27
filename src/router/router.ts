@@ -9,6 +9,7 @@ import StoresPage from "../modules/stores-page/stores-page";
 import ComingSoonPage from "../modules/coming-soon-page/coming-soon-page";
 import StoreMenuPage from "../modules/store-menu-page/store-menu-page";
 import StoreAvailabilityPage from "../modules/store-availability-page/store-availability-page";
+import StoreReservationsPage from "../modules/store-reservations-page/store-reservations-page";
 import StoreTablesPage from "../modules/store-tables-page/store-tables-page";
 import NotFoundPage from "../modules/not-found-page/not-found-page";
 import AccountPage from "../modules/account-page/account-page";
@@ -36,6 +37,7 @@ export const customRouter = createBrowserRouter([
             { path: "/stores/:storeId/tables", Component: StoreTablesPage },
             { path: "/stores/:storeId/menu", Component: StoreMenuPage },
             { path: "/stores/:storeId/availability", Component: StoreAvailabilityPage },
+            { path: "/stores/:storeId/reservations", Component: StoreReservationsPage },
             {
                 path: "/payments",
                 element: comingSoon("Payments", "Deposits and pre-order payments, payouts and refunds will appear here once online payments are switched on."),

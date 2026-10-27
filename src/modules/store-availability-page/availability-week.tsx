@@ -22,7 +22,7 @@ const AvailabilityWeek = ({ store, weekStart, today, reservations, onOpenDay }: 
             closure: store.closures.find(closure => closure.date === date),
             bookings: booked.length,
             covers: booked.filter(reservation => reservation.status !== "no_show").reduce((total, reservation) => total + reservation.partySize, 0),
-            unconfirmed: booked.filter(reservation => reservation.status === "unconfirmed").length,
+            ongoing: booked.filter(reservation => reservation.status === "ongoing").length,
         };
     });
 
@@ -42,7 +42,7 @@ const AvailabilityWeek = ({ store, weekStart, today, reservations, onOpenDay }: 
                             <span><span className="avail-week-number">{day.bookings}</span> <span className="adm-muted">{day.bookings === 1 ? "booking" : "bookings"}</span></span>
                             <span><span className="avail-week-number">{day.covers}</span> <span className="adm-muted">{day.covers === 1 ? "cover" : "covers"}</span></span>
                         </span>
-                        {day.unconfirmed > 0 && <span className="adm-chip adm-chip--warning adm-chip--medium">{day.unconfirmed} unconfirmed</span>}
+                        {day.ongoing > 0 && <span className="adm-chip adm-chip--success adm-chip--medium">{day.ongoing} ongoing</span>}
                     </button>
                 </li>
             ))}

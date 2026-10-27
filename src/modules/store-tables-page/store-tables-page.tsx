@@ -51,10 +51,10 @@ const StoreTablesPage = () => {
                             <li key={table.id}>
                                 <button
                                     type="button"
-                                    className={`tables-tile ${table.occupied ? "is-occupied" : ""}`}
+                                    className={`tables-tile ${table.occupied ? "is-occupied" : ""} ${table.isLocked ? "is-locked" : ""}`}
                                     aria-pressed={table.occupied}
                                     aria-describedby={`table-${table.id}-hint`}
-                                    disabled={isToggling(table.id)}
+                                    disabled={table.isLocked || isToggling(table.id)}
                                     onClick={() => toggle(table)}
                                 >
                                     <span className="tables-tile-head">
@@ -67,15 +67,19 @@ const StoreTablesPage = () => {
                                     <span className={table.occupied ? "tables-tile-since" : "adm-muted"}>
                                         {table.occupiedLabel ?? "Timestamp not started"}
                                     </span>
+                                    {table.ongoingGuest &&
+                                        <span className="adm-small tables-tile-guest">Ongoing reservation · {table.ongoingGuest}</span>}
                                     <span id={`table-${table.id}-hint`} className="adm-visually-hidden">
-                                        {table.occupied ? "Click to free this table." : "Click to mark this table occupied."}
+                                        {table.isLocked
+                                            ? "Complete the ongoing reservation to free this table."
+                                            : table.occupied ? "Click to free this table." : "Click to mark this table occupied."}
                                     </span>
                                 </button>
                             </li>
                         ))}
                     </ul>
 
-                    <p className="adm-muted tables-note">Click a table to mark it occupied. It can’t be booked until you click it again.</p>
+                    <p className="adm-muted tables-note">Click a table to mark it occupied. It can’t be booked until you click it again. Tables with an ongoing reservation free up when that reservation is marked completed.</p>
                 </section>}
 
             {isEditing && store && <StoreTablesDrawer store={store} onClose={() => setIsEditing(false)} onSaved={applyStore} />}

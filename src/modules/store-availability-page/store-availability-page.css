@@ -117,33 +117,25 @@
 }
 
 /* Shared status colours for swatches, grid blocks and chips. */
-.avail-swatch--unconfirmed,
-.avail-block--unconfirmed,
-.avail-status-chip--unconfirmed {
-    background-color: var(--warning-container);
-    color: var(--warning-on-container);
-    border: 1px dashed var(--warning-outline);
-}
-
-.avail-swatch--confirmed,
-.avail-block--confirmed,
-.avail-status-chip--confirmed {
+.avail-swatch--upcoming,
+.avail-block--upcoming,
+.avail-status-chip--upcoming {
     background-color: var(--secondary-container);
     color: var(--secondary-on-container);
     border: 1px solid var(--secondary-border-subtle);
 }
 
-.avail-swatch--seated,
-.avail-block--seated,
-.avail-status-chip--seated {
+.avail-swatch--ongoing,
+.avail-block--ongoing,
+.avail-status-chip--ongoing {
     background-color: var(--success-solid);
     color: var(--success-on-solid);
     border: 1px solid var(--success-solid);
 }
 
-.avail-swatch--finished,
-.avail-block--finished,
-.avail-status-chip--finished {
+.avail-swatch--completed,
+.avail-block--completed,
+.avail-status-chip--completed {
     background-color: var(--neutral-container);
     color: var(--text-secondary);
     border: 1px solid var(--border-default);
