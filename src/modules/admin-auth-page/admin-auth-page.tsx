@@ -49,6 +49,7 @@ const AdminAuthPage = () => {
                         color="inherit"
                         size="medium"
                         weight="emphasis"
+                        className="text-section-title"
                     >
                         Every customer's reservation in one place.
                     </Typography>

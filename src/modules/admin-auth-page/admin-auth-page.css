@@ -31,6 +31,10 @@
   color: var(--primary-default);
 }
 
+.text-section-title {
+  font-family: "Ellak", sans-serif;
+}
+
 .login-section {
   flex: 0 1 60%;
   padding: 24px;

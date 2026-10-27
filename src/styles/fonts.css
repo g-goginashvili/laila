@@ -7,3 +7,12 @@
   font-style: normal;
   font-display: swap;
 }
+
+/* Display face; one weight, declared across the range so bold text isn't synthesized. */
+@font-face {
+  font-family: "Ellak";
+  src: url("../assets/fonts/Ellak.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
