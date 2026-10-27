@@ -3,10 +3,10 @@ import type {
     StoreClosureType, StoreShiftType, StoreTableInputType, StoreTableType, StoreType, StoreUpdateType, StoreValuesType
 } from "./types";
 
-const storePath = (id: string) => `/stores/${encodeURIComponent(id)}`;
+const storePath = (id: string) => `/admin/stores/${encodeURIComponent(id)}`;
 
 export const getStoresList = async () => {
-    return await http.get<StoreType[]>("/stores");
+    return await http.get<StoreType[]>("/admin/stores");
 };
 
 export const getStore = async (id: string) => {
@@ -14,7 +14,7 @@ export const getStore = async (id: string) => {
 };
 
 export const addStore = async (values: StoreValuesType) => {
-    return await http.post<StoreType>("/stores", values);
+    return await http.post<StoreType>("/admin/stores", values);
 };
 
 export const updateStore = async ({ id, values }: { id: string, values: StoreUpdateType }) => {

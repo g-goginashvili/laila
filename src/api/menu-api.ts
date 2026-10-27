@@ -1,7 +1,7 @@
 import { http } from "../utility/http-client"
 import type { MenuGroupType, MenuItemInputType, MenuItemType, MenuType } from "./types";
 
-const menuPath = (storeId: string) => `/stores/${encodeURIComponent(storeId)}/menu`;
+const menuPath = (storeId: string) => `/admin/stores/${encodeURIComponent(storeId)}/menu`;
 
 export const getMenu = async (storeId: string) => {
     return await http.get<MenuType>(menuPath(storeId));

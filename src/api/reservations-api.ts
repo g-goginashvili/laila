@@ -1,7 +1,7 @@
 import { http } from "../utility/http-client"
 import type { ReservationInputType, ReservationType } from "./types";
 
-const reservationsPath = (storeId: string) => `/stores/${encodeURIComponent(storeId)}/reservations`;
+const reservationsPath = (storeId: string) => `/admin/stores/${encodeURIComponent(storeId)}/reservations`;
 
 export const getReservations = async ({ storeId, from, to }: { storeId: string, from: string, to: string }) => {
     return await http.get<ReservationType[]>(`${reservationsPath(storeId)}?from=${from}&to=${to}`);
