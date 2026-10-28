@@ -65,7 +65,16 @@ const useAdminAuthPageController = () => {
     ) => {
         try {
             await setPersistence(firebaseAuth, staySignedIn ? browserLocalPersistence : browserSessionPersistence);
-            await signInWithEmailAndPassword(firebaseAuth, values.email, values.password);
+            const { user } = await signInWithEmailAndPassword(firebaseAuth, values.email, values.password);
+            // Only admin accounts may enter the panel; anyone else would be bounced back here by the guard
+            // with no explanation, so turn them away before claiming success.
+            const { claims } = await user.getIdTokenResult();
+            if (claims.role !== "admin") {
+                await firebaseAuth.signOut();
+                addSnackBar(`${values.email} is not an admin and cannot access the admin panel.`, { variant: "error" });
+                formikHelpers.resetForm({ values: { ...values, password: "" } });
+                return;
+            }
             addSnackBar("Signed in.");
             navigate("/dashboard", { replace: true });
 
