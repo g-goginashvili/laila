@@ -88,11 +88,6 @@ const StoreReservationsPage = () => {
                 <ol aria-label="Reservations" className="resv-list">
                     {reservations.map(reservation => {
                         const table = tableLabel(reservation.tableId);
-                        const meta = [
-                            table ? `Table ${table}` : "No table",
-                            `${reservation.durationMinutes} min`,
-                            reservation.phone,
-                        ];
                         return (
                             <li key={reservation.id}>
                                 <button
@@ -100,10 +95,15 @@ const StoreReservationsPage = () => {
                                     className={`adm-card resv-card ${reservation.status === "cancelled" ? "is-cancelled" : ""}`}
                                     onClick={() => setDrawer({ reservationId: reservation.id })}
                                 >
-                                    <span className="resv-card-when">
-                                        <span className="resv-card-time">{formatMinutes(reservation.startMinutes)}</span>
-                                        <span className="adm-small adm-muted">
-                                            {reservation.date === today ? "Today" : formatShortDate(reservation.date).slice(0, -5)}
+                                    <span className="resv-card-head">
+                                        <span className="resv-card-when">
+                                            <span className="resv-card-time">{formatMinutes(reservation.startMinutes)}</span>
+                                            <span className="adm-small adm-muted">
+                                                {reservation.date === today ? "Today" : formatShortDate(reservation.date).slice(0, -5)}
+                                            </span>
+                                        </span>
+                                        <span className={`adm-chip adm-chip--medium avail-status-chip avail-status-chip--${reservation.status}`}>
+                                            {RESERVATION_STATUS_LABELS[reservation.status]}
                                         </span>
                                     </span>
                                     <span className="resv-card-guest">
@@ -111,11 +111,11 @@ const StoreReservationsPage = () => {
                                             <span className="resv-ellipsis">{reservation.guestName}</span>
                                             <span className="adm-muted">· {reservation.partySize} {reservation.partySize === 1 ? "guest" : "guests"}</span>
                                         </span>
-                                        <span className="adm-small adm-muted resv-ellipsis">{meta.join(" · ")}</span>
+                                        <span className="adm-small adm-muted resv-ellipsis">
+                                            {table ? `Table ${table}` : "No table"} · {reservation.durationMinutes} min
+                                        </span>
+                                        <span className="adm-small adm-muted resv-ellipsis adm-tabular">{reservation.phone}</span>
                                         {reservation.notes && <span className="adm-small resv-card-notes">{reservation.notes}</span>}
-                                    </span>
-                                    <span className={`adm-chip adm-chip--medium avail-status-chip avail-status-chip--${reservation.status}`}>
-                                        {RESERVATION_STATUS_LABELS[reservation.status]}
                                     </span>
                                 </button>
                             </li>

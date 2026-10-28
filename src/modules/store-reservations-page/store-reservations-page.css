@@ -16,27 +16,39 @@
     text-wrap: pretty;
 }
 
+/* Cards fill each row left to right, then wrap. */
 .resv-list {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
     gap: 10px;
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
+.resv-list > li {
+    display: flex;
+}
+
 .resv-card {
-    display: grid;
-    grid-template-columns: 84px minmax(0, 1fr) auto;
-    gap: 4px 16px;
-    align-items: center;
-    width: 100%;
-    padding: 14px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 0;
+    padding: 14px 16px;
     font: inherit;
     color: var(--text-primary);
     text-align: left;
     cursor: pointer;
     transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.resv-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
 }
 
 .resv-card:hover {
@@ -55,7 +67,8 @@
 
 .resv-card-when {
     display: flex;
-    flex-direction: column;
+    gap: 8px;
+    align-items: baseline;
 }
 
 .resv-card-time {
@@ -98,28 +111,4 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-}
-
-/* Phones: time stacks above the guest, chip sits top-right. */
-@media (max-width: 480px) {
-    .resv-card {
-        grid-template-columns: minmax(0, 1fr) auto;
-        padding: 12px 16px;
-    }
-
-    .resv-card-when {
-        flex-direction: row;
-        gap: 8px;
-        align-items: baseline;
-    }
-
-    .resv-card-guest {
-        grid-column: 1 / -1;
-        grid-row: 2;
-    }
-
-    .resv-card > .adm-chip {
-        grid-column: 2;
-        grid-row: 1;
-    }
 }
